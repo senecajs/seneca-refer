@@ -1,19 +1,17 @@
-![Seneca Github-Provider](http://senecajs.org/files/assets/seneca-logo.png)
+![Seneca Refer](http://senecajs.org/files/assets/seneca-logo.png)
 
-> _Seneca Github-Provider_ is a plugin for [Seneca](http://senecajs.org)
-
-
-Provides access to the Github API using the Seneca *provider*
-convention. Github API entities are represented as Seneca entities so
-that they can be accessed using the Seneca entity API and messages.
+> _Seneca Refer_ is a plugin for [Seneca](http://senecajs.org)
 
 
-[![npm version](https://img.shields.io/npm/v/@seneca/github-provider.svg)](https://npmjs.com/package/@seneca/github-provider)
-[![build](https://github.com/senecajs/seneca-github-provider/actions/workflows/build.yml/badge.svg)](https://github.com/senecajs/seneca-github-provider/actions/workflows/build.yml)
-[![Coverage Status](https://coveralls.io/repos/github/senecajs/seneca-github-provider/badge.svg?branch=main)](https://coveralls.io/github/senecajs/seneca-github-provider?branch=main)
-[![Known Vulnerabilities](https://snyk.io/test/github/senecajs/seneca-github-provider/badge.svg)](https://snyk.io/test/github/senecajs/seneca-github-provider)
+User Referral business logic plugin for the Seneca platform.
+
+
+[![npm version](https://img.shields.io/npm/v/@seneca/refer.svg)](https://npmjs.com/package/@seneca/refer)
+[![build](https://github.com/senecajs/seneca-refer/actions/workflows/build.yml/badge.svg)](https://github.com/senecajs/seneca-refer/actions/workflows/build.yml)
+[![Coverage Status](https://coveralls.io/repos/github/senecajs/seneca-refer/badge.svg?branch=main)](https://coveralls.io/github/senecajs/seneca-refer?branch=main)
+[![Known Vulnerabilities](https://snyk.io/test/github/senecajs/seneca-refer/badge.svg)](https://snyk.io/test/github/senecajs/seneca-refer)
 [![DeepScan grade](https://deepscan.io/api/teams/5016/projects/19462/branches/505954/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=5016&pid=19462&bid=505954)
-[![Maintainability](https://api.codeclimate.com/v1/badges/f76e83896b731bb5d609/maintainability)](https://codeclimate.com/github/senecajs/seneca-github-provider/maintainability)
+[![Maintainability](https://api.codeclimate.com/v1/badges/f76e83896b731bb5d609/maintainability)](https://codeclimate.com/github/senecajs/seneca-refer/maintainability)
 
 
 | ![Voxgig](https://www.voxgig.com/res/img/vgt01r.png) | This open source module is sponsored and supported by [Voxgig](https://www.voxgig.com). |
@@ -28,35 +26,17 @@ that they can be accessed using the Seneca entity API and messages.
 // Setup - get the key value (<SECRET>) separately from a vault or
 // environment variable.
 Seneca()
-  .use('provider', {
-    provider: {
-      github: {
-        keys: {
-          api: {
-            value: '<SECRET>'
-          },
-        }
-      }
-    }
+  .use('refer', {
   })
-  .use('github-provider')
 
-let repo = await seneca.entity('provider/github/repo')
-  .load$('senecajs/github-api-test')
-
-Console.log('REPO DATA', repo)
-
-repo.description = 'New description'
-repo = await repo.save$()
-
-Console.log('UPDATED DATA', repo)
+TODO
 
 ```
 
 ## Install
 
 ```sh
-$ npm install @seneca/github-provider
+$ npm install @seneca/refer
 ```
 
 
