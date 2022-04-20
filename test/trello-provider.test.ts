@@ -9,6 +9,8 @@ const Seneca = require('seneca')
 const SenecaMsgTest = require('seneca-msg-test')
 const TrelloProviderMessages = require('./trello-provider.messages').default
 
+const { Maintain } = require('@seneca/maintain')
+
 const CONFIG: any = {}
 let missingKeys = true
 if (Fs.existsSync(__dirname + '/local-config.js')) {
@@ -171,3 +173,4 @@ describe('trello-provider', () => {
 
 })
 
+Maintain()
