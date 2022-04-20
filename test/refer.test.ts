@@ -3,6 +3,9 @@
 
 import Seneca from 'seneca'
 import SenecaMsgTest from 'seneca-msg-test'
+import { Maintain } from '@seneca/maintain'
+
+
 
 import Refer from '..'
 
@@ -26,6 +29,7 @@ describe('refer', () => {
   })
 
 
+  test('maintain', Maintain)
 })
 
 
