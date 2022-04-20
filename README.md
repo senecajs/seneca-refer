@@ -42,56 +42,37 @@ TODO
 
 <!--START:options-->
 
-### Options
 
-- `debug` : boolean <i><small>false</small></i>
+## Options
 
-Set plugin options when loading with:
+*None.*
 
-```js
-
-
-seneca.use('GithubProvider', { name: value, ... })
-
-
-```
-
-<small>Note: <code>foo.bar</code> in the list above means
-<code>{ foo: { bar: ... } }</code></small>
 
 <!--END:options-->
 
 <!--START:action-list-->
 
-### Action Patterns
 
-- [role:entity,base:github,cmd:load,name:repo,zone:provider](#-roleentitybasegithubcmdloadnamerepozoneprovider-)
-- [role:entity,base:github,cmd:save,name:repo,zone:provider](#-roleentitybasegithubcmdsavenamerepozoneprovider-)
-- [sys:provider,get:info,provider:github](#-sysprovidergetinfoprovidergithub-)
+## Action Patterns
+
+* [biz:refer,create:entry](#-bizrefercreateentry-)
+
 
 <!--END:action-list-->
 
 <!--START:action-desc-->
 
-### Action Descriptions
 
-#### &laquo; `role:entity,base:github,cmd:load,name:repo,zone:provider` &raquo;
+## Action Descriptions
 
-Load GitHub repository data into an entity.
+### &laquo; `biz:refer,create:entry` &raquo;
 
----
+Create referral entry.
 
-#### &laquo; `role:entity,base:github,cmd:save,name:repo,zone:provider` &raquo;
 
-Update GitHub repository data from an entity.
 
----
+----------
 
-#### &laquo; `sys:provider,get:info,provider:github` &raquo;
-
-Get information about the provider.
-
----
 
 <!--END:action-desc-->
 

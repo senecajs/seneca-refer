@@ -35,7 +35,7 @@
     "LICENSE"
   ],
   "devDependencies": {
-    "@seneca/doc": "^4.0.1",
+    "@seneca/doc": "^4.1.0",
     "@seneca/maintain": "^0.0.19",
     "@seneca/provider": "^0.2.0",
     "@types/jest": "^27.4.1",
