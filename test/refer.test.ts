@@ -9,7 +9,7 @@ import { Maintain } from '@seneca/maintain'
 
 import Refer from '..'
 
-import HappyMessages from './happy.messages'
+import BasicMessages from './basic.messages'
 
 
 describe('refer', () => {
@@ -18,18 +18,20 @@ describe('refer', () => {
     const seneca = Seneca({ legacy: false })
       .test()
       .use('promisify')
+      .use('entity')
       .use(Refer)
     await seneca.ready()
   })
 
 
-  test('messages-happy', async () => {
+  test('basic.messages', async () => {
     const seneca = await makeSeneca()
-    await (SenecaMsgTest(seneca, HappyMessages)())
+    await (SenecaMsgTest(seneca, BasicMessages)())
   })
 
 
-  test('maintain', Maintain)
+  // Ensure plugin is maintainable
+  // test('maintain', Maintain)
 })
 
 
@@ -38,18 +40,52 @@ async function makeSeneca() {
   const seneca = Seneca({ legacy: false })
     .test()
     .use('promisify')
+    .use('entity')
+
+  await makeBasicRules(seneca)
+
+  seneca
     .use(Refer)
 
-  makeBasicRules(seneca)
+  await makeMockActions(seneca)
 
+  // print all message patterns
+  // console.log(seneca.list())
 
-  await seneca.ready()
-  return seneca
+  return seneca.ready()
 }
 
 
 
 async function makeBasicRules(seneca: any) {
+  await seneca.entity('refer/rule').save$({
+    ent: 'refer/occur',
+    cmd: 'save',
+    where: { kind: 'create' },
+    call: [{
+      sys: 'email',
+      send: 'email',
+      fromaddr: '`config:sender.invite.email`',
+      subject: '`config:sender.invite.subject`',
+      toaddr: '`occur:sender.invite.subject`',
+      code: 'invite',
+      kind: 'refer',
+    }]
+  })
+}
 
 
+async function makeMockActions(seneca: any) {
+  seneca.message(
+    'sys:email,send:email,toaddr:alice@example.com',
+    async function(msg: any) {
+      this.entity('mock/email').save$({
+        toaddr: msg.toaddr,
+        fromaddr: msg.fromaddr,
+        subject: msg.subject,
+        kind: msg.kind,
+        code: msg.code,
+        what: 'sent',
+      })
+    })
 }

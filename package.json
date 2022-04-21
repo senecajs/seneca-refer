@@ -40,7 +40,7 @@
     "@seneca/provider": "^0.2.0",
     "@types/jest": "^27.4.1",
     "@types/node": "^17.0.25",
-    "esbuild": "^0.14.36",
+    "esbuild": "^0.14.37",
     "esbuild-jest": "^0.5.0",
     "jest": "^27.5.1",
     "seneca-msg-test": "^3.2.0",
