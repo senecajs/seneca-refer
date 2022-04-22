@@ -3,13 +3,13 @@
 
 import Seneca from 'seneca'
 import SenecaMsgTest from 'seneca-msg-test'
-// import { Maintain } from '@seneca/maintain'
+import { Maintain } from '@seneca/maintain'
 
 
 
 import Refer from '..'
 
-// import BasicMessages from './basic.messages'
+import BasicMessages from './basic.messages'
 
 
 describe('refer', () => {
@@ -24,13 +24,13 @@ describe('refer', () => {
   })
 
 
-  // test('basic.messages', async () => {
-  //   const seneca = await makeSeneca()
-  //   await (SenecaMsgTest(seneca, BasicMessages)())
-  // })
+  test('basic.messages', async () => {
+    const seneca = await makeSeneca()
+    await (SenecaMsgTest(seneca, BasicMessages)())
+  })
 
 
-  // test('maintain', Maintain)
+  test('maintain', Maintain)
 })
 
 
