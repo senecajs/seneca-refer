@@ -30,8 +30,7 @@ describe('refer', () => {
   })
 
 
-  // Ensure plugin is maintainable
-  // test('maintain', Maintain)
+  test('maintain', Maintain)
 })
 
 

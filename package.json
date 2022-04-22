@@ -36,7 +36,7 @@
   ],
   "devDependencies": {
     "@seneca/doc": "^4.1.0",
-    "@seneca/maintain": "^0.0.19",
+    "@seneca/maintain": "^0.0.20",
     "@seneca/provider": "^0.2.0",
     "@types/jest": "^27.4.1",
     "@types/node": "^17.0.25",
