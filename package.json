@@ -59,6 +59,5 @@
     "seneca-entity": ">=16",
     "@seneca/entity-util": ">=1"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
