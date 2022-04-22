@@ -6,7 +6,16 @@ export default {
   allow: { missing: true },
 
   calls: [
+
+    // User with id=u01 sends referal to friend alice@example.com
+    // Creating:
+    //   - refer/entry referral record
+    //   - refer/occur event record
+    //   - sent email to alice@example.com (mock/email record)
+    // Email sending to be implemented with @seneca/mail later
+    // NOTE: implementation is just hard-coded!
     {
+      print: false,
       name: 'create-alice',
       pattern: 'create:entry',
       params: {
@@ -35,6 +44,7 @@ export default {
     // Print entire database
     // { print: true, pattern: 'biz:null,role:mem-store,cmd:dump' },
 
+    // Validate the refer/entry exists and is correct
     {
       pattern: 'biz:null,role:entity,base:refer,name:entry,cmd:list',
       out: [{
@@ -45,6 +55,7 @@ export default {
       }]
     },
 
+    // Validate the refer/occur exists and is correct
     {
       pattern: 'biz:null,role:entity,base:refer,name:occur,cmd:list',
       out: [{
@@ -56,7 +67,7 @@ export default {
       }]
     },
 
-
+    // Validate email was 'sent' (uses mock entity)
     {
       pattern: 'biz:null,role:entity,base:mock,name:email,cmd:list',
       out: [{
@@ -68,6 +79,53 @@ export default {
     },
 
 
+    // Accept the referral
+    // NOTE: fails as not implemented at all
+    /*
+    {
+      print: true,
+      pattern: 'accept:entry',
+      params: {
+        key: '`create-alice:out.entry.key`'
+      },
+      out: {
+        ok: true
+      }
+    },
+
+    // Validate new refer/occur record
+    {
+      pattern: 'biz:null,role:entity,base:refer,name:occur,cmd:load',
+      params: { q: { kind: 'accept' } },
+      out: {
+        entry_id: '`create-alice:out.entry.id`',
+        entry_kind: 'standard',
+        kind: 'accept',
+        email: 'alice@example.com'
+      }
+    },
+
+    // Validate new refer/reward updated
+    {
+      pattern: 'biz:null,role:entity,base:refer,name:reward,cmd:load',
+      params: { q: { entry_id: '`create-alice:out.entry.id`' } },
+      out: {
+        entry_id: '`create-alice:out.entry.id`',
+        entry_kind: 'standard',
+        kind: 'accept',
+        count: 1 // alice@example.com accepted
+      }
+    },
+    */
+
 
   ]
 }
+
+
+
+/* ADDITIONAL SCENARIOS
+ * Another user send a referral to alice@example.com
+ *   - before acceptance
+ *   - after acceptance
+*/

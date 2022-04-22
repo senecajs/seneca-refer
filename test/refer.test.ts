@@ -41,6 +41,7 @@ async function makeSeneca() {
     .test()
     .use('promisify')
     .use('entity')
+    .use('entity-util', { when: { active: true } })
 
   await makeBasicRules(seneca)
 
