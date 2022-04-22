@@ -6,8 +6,8 @@ import SenecaMsgTest from 'seneca-msg-test'
 import { Maintain } from '@seneca/maintain'
 
 
-
-import Refer from '..'
+import ReferDoc from '../src/refer-doc'
+import Refer from '../src/refer'
 
 import BasicMessages from './basic.messages'
 
@@ -15,6 +15,7 @@ import BasicMessages from './basic.messages'
 describe('refer', () => {
 
   test('happy', async () => {
+    expect(ReferDoc).toBeDefined()
     const seneca = Seneca({ legacy: false })
       .test()
       .use('promisify')
