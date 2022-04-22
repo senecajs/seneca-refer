@@ -62,9 +62,8 @@ function refer(options) {
     }
     async function prepare() {
         let seneca = this;
-        await seneca.post('biz:refer,load:rules');
+        // await seneca.post('biz:refer,load:rules')
     }
-    return {};
 }
 // Default options.
 const defaults = {

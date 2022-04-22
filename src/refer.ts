@@ -84,11 +84,9 @@ function refer(this: any, options: any) {
 
   async function prepare(this: any) {
     let seneca = this
-    await seneca.post('biz:refer,load:rules')
+    // await seneca.post('biz:refer,load:rules')
   }
 
-
-  return {}
 }
 
 
