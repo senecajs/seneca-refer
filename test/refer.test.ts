@@ -2,14 +2,14 @@
 
 
 import Seneca from 'seneca'
-import SenecaMsgTest from 'seneca-msg-test'
-import { Maintain } from '@seneca/maintain'
+// import SenecaMsgTest from 'seneca-msg-test'
+// import { Maintain } from '@seneca/maintain'
 
 
 
 import Refer from '..'
 
-import BasicMessages from './basic.messages'
+// import BasicMessages from './basic.messages'
 
 
 describe('refer', () => {
