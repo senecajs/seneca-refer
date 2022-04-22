@@ -86,6 +86,9 @@ function refer(this: any, options: any) {
     let seneca = this
     await seneca.post('biz:refer,load:rules')
   }
+
+
+  return {}
 }
 
 
