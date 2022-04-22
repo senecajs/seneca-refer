@@ -56,6 +56,7 @@ TODO
 ## Action Patterns
 
 * [biz:refer,create:entry](#-bizrefercreateentry-)
+* [biz:refer,load:rules](#-bizreferloadrules-)
 
 
 <!--END:action-list-->
@@ -68,6 +69,13 @@ TODO
 ### &laquo; `biz:refer,create:entry` &raquo;
 
 Create referral entry.
+
+
+
+----------
+### &laquo; `biz:refer,load:rules` &raquo;
+
+No description provided.
 
 
 
