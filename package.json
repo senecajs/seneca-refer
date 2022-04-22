@@ -34,8 +34,7 @@
     "src/**/*.ts",
     "LICENSE"
   ],
-  "xdevDependencies": {
-    "@seneca/doc": "^4.1.0",
+  "devDependencies": {
     "@seneca/maintain": "^0.0.20",
     "@types/jest": "^27.4.1",
     "@types/node": "^17.0.25",
@@ -45,19 +44,10 @@
     "seneca-msg-test": "^3.2.0",
     "typescript": "^4.6.3"
   },
-  "devDependencies": {
-    "@types/jest": "^27.4.1",
-    "@types/node": "^17.0.25",
-    "esbuild": "^0.14.38",
-    "esbuild-jest": "^0.5.0",
-    "jest": "^27.5.1",
-    "typescript": "^4.6.3"
-  },
   "peerDependencies": {
+    "@seneca/entity-util": ">=1",
     "seneca": ">=3",
-    "seneca-promisify": ">=2",
     "seneca-entity": ">=16",
-    "@seneca/entity-util": ">=1"
-  },
-  "dependencies": {}
+    "seneca-promisify": ">=2"
+  }
 }
