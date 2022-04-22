@@ -48,7 +48,10 @@
   },
   "peerDependencies": {
     "seneca": ">=3",
+    "seneca-promisify": ">=2",
     "seneca-entity": ">=16",
-    "seneca-promisify": ">=2"
+    "@seneca/entity-util": ">=1"
+  },
+  "dependencies": {
   }
 }

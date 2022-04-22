@@ -13,7 +13,9 @@ function refer(options) {
         let entry = await seneca.entity('refer/entry').save$({
             user_id: msg.user_id,
             kind: msg.kind,
-            email: msg.email
+            email: msg.email,
+            // TODO: use a longer key!
+            key: this.util.Nid() // unique key for this referral, used for validation
         });
         let occur = await seneca.entity('refer/occur').save$({
             user_id: msg.user_id,
