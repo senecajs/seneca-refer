@@ -19,7 +19,7 @@ describe('refer', () => {
       .test()
       .use('promisify')
       .use('entity')
-    // .use(Refer)
+      .use(Refer)
     await seneca.ready()
   })
 
