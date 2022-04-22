@@ -4,9 +4,7 @@
 
 > _Seneca Github-Provider_ is a plugin for [Seneca](http://senecajs.org)
 
-
 User Referral business logic plugin for the Seneca platform.
-
 
 [![npm version](https://img.shields.io/npm/v/@seneca/refer.svg)](https://npmjs.com/package/@seneca/refer)
 [![build](https://github.com/senecajs/seneca-refer/actions/workflows/build.yml/badge.svg)](https://github.com/senecajs/seneca-refer/actions/workflows/build.yml)
@@ -18,61 +16,47 @@ User Referral business logic plugin for the Seneca platform.
 | ![Voxgig](https://www.voxgig.com/res/img/vgt01r.png) | This open source module is sponsored and supported by [Voxgig](https://www.voxgig.com). |
 | ---------------------------------------------------- | --------------------------------------------------------------------------------------- |
 
-
 ## Install
 
 ```sh
 $ npm install @seneca/refer
 ```
 
-
 ## Quick Example
 
 ```js
 // Setup - get the key value (<SECRET>) separately from a vault or
 // environment variable.
-Seneca()
-  .use('refer', {
-  })
+Seneca().use('refer', {})
 
 TODO
-
 ```
-
 
 <!--START:options-->
 
+### Options
 
-## Options
-
-*None.*
-
+_None._
 
 <!--END:options-->
 
 <!--START:action-list-->
 
+### Action Patterns
 
-## Action Patterns
-
-* [biz:refer,create:entry](#-bizrefercreateentry-)
-
+- [biz:refer,create:entry](#-bizrefercreateentry-)
 
 <!--END:action-list-->
 
 <!--START:action-desc-->
 
+### Action Descriptions
 
-## Action Descriptions
-
-### &laquo; `biz:refer,create:entry` &raquo;
+#### &laquo; `biz:refer,create:entry` &raquo;
 
 Create referral entry.
 
-
-
-----------
-
+---
 
 <!--END:action-desc-->
 
