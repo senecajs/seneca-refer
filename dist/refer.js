@@ -6,6 +6,7 @@ function refer(options) {
     seneca
         .fix('biz:refer')
         .message('create:entry', actCreateEntry)
+        // .message('accept:entry', actAcceptEntry)
         .message('load:rules', actLoadRules)
         .prepare(prepare);
     async function actCreateEntry(msg) {

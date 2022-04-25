@@ -1,5 +1,7 @@
 
 
+// Basic referral: sent email invite to a friend
+
 export default {
   print: false,
   pattern: 'biz:refer',
@@ -15,18 +17,18 @@ export default {
     // Email sending to be implemented with @seneca/mail later
     // NOTE: implementation is just hard-coded!
     {
-      print: false,
+      print: true,
       name: 'create-alice',
-      pattern: 'create:entry',
+      pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
         user_id: 'u01',
-        kind: 'standard',
+        kind: 'standard',   // avoid using 'type', 'kind' has fewer conflicts
         email: 'alice@example.com'
       },
       out: {
         ok: true,
         entry: {
-          user_id: 'u01',
+          user_id: 'u01',  // _id suffix for foreign keys
           kind: 'standard',
           email: 'alice@example.com'
         },
@@ -46,6 +48,7 @@ export default {
 
     // Validate the refer/entry exists and is correct
     {
+      print: true,
       pattern: 'biz:null,role:entity,base:refer,name:entry,cmd:list',
       out: [{
         id: '`create-alice:out.entry.id`',
@@ -59,6 +62,7 @@ export default {
     {
       pattern: 'biz:null,role:entity,base:refer,name:occur,cmd:list',
       out: [{
+        // back references, see: https://github.com/rjrodger/inks
         id: '`create-alice:out.occur[0].id`',
         entry_id: '`create-alice:out.entry.id`',
         entry_kind: 'standard',

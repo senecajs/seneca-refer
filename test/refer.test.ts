@@ -25,6 +25,8 @@ describe('refer', () => {
   })
 
 
+  // Use seneca-msg-test for the referral scenarios
+
   test('basic.messages', async () => {
     const seneca = await makeSeneca()
     await (SenecaMsgTest(seneca, BasicMessages)())
@@ -50,10 +52,12 @@ async function makeSeneca() {
 
   await makeMockActions(seneca)
 
+  await seneca.ready()
+
   // print all message patterns
   // console.log(seneca.list())
 
-  return seneca.ready()
+  return seneca
 }
 
 

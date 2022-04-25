@@ -9,11 +9,19 @@
 * https://userguiding.com/blog/saas-referral-programs/
 
 
+# Vanity URL example
+
+* https://thisweekinstartups.com/
+  * https://thisweekinstartups.com/vanta
+  
+  
+
 
 
 ## Entities
 
 As per Seneca convention, plurals are *not* used.
+
 
 
 
@@ -26,19 +34,13 @@ Assumes fields:
 
 
 
-### refer/point
-
-Referral entry point; link or code; many inbound users
-
-Child: refer/entry
-
-
 ### refer/entry
 
+The main table.
 A referral from a user to an invitee.
 
 Does *not* store state. To allow for more flexible business rules, referral "state" is
-determined by child roes in refer/occur
+determined by child rows in refer/occur
 
 Parent: refer/point
 Child: refer/occur
@@ -47,8 +49,9 @@ Child: refer/occur
 ### refer/occur
 
 An event in the referal process. Used instead of a single "state" on refer/entry
+Not called "event" to avoid conflicts.
 
-Triggers various external actions - rewards etc.
+Triggers various external actions - sending email, rewards etc.
 
 Parent: refer/entry
 
@@ -62,4 +65,20 @@ Actual actions are app specific - encoded by messages
 ### refer/reward
 
 Track user "rewards" wrt referrals, such as # of referrals, kind of "points"
+
+
+### refer/point
+
+Referral entry point; link or code; many inbound users
+Vanity urls, etc.
+
+Child: refer/entry
+
+
+
+
+
+
+
+
 

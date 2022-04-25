@@ -7,6 +7,7 @@ function refer(this: any, options: any) {
   seneca
     .fix('biz:refer')
     .message('create:entry', actCreateEntry)
+    // .message('accept:entry', actAcceptEntry)
     .message('load:rules', actLoadRules)
     .prepare(prepare)
 
@@ -30,7 +31,6 @@ function refer(this: any, options: any) {
       entry_id: entry.id,
       kind: 'create',
     })
-
 
     return {
       ok: true,
