@@ -1,14 +1,11 @@
-
-
 // Basic referral: sent email invite to a friend
 
 export default {
   print: false,
-  pattern: 'biz:refer',
+  pattern: "biz:refer",
   allow: { missing: true },
 
   calls: [
-
     // User with id=u01 sends referal to friend alice@example.com
     // Creating:
     //   - refer/entry referral record
@@ -18,28 +15,28 @@ export default {
     // NOTE: implementation is just hard-coded!
     {
       print: true,
-      name: 'create-alice',
-      pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
+      name: "create-alice",
+      pattern: "create:entry", // call { biz:refer, create:entry, ...params }
       params: {
-        user_id: 'u01',
-        kind: 'standard',   // avoid using 'type', 'kind' has fewer conflicts
-        email: 'alice@example.com'
+        user_id: "u01",
+        kind: "standard", // avoid using 'type', 'kind' has fewer conflicts
+        email: "alice@example.com",
       },
       out: {
         ok: true,
         entry: {
-          user_id: 'u01',  // _id suffix for foreign keys
-          kind: 'standard',
-          email: 'alice@example.com'
+          user_id: "u01", // _id suffix for foreign keys
+          kind: "standard",
+          email: "alice@example.com",
         },
         occur: [
           {
-            user_id: 'u01',
-            entry_kind: 'standard',
-            kind: 'create',
-            email: 'alice@example.com'
-          }
-        ]
+            user_id: "u01",
+            entry_kind: "standard",
+            kind: "create",
+            email: "alice@example.com",
+          },
+        ],
       },
     },
 
@@ -49,39 +46,44 @@ export default {
     // Validate the refer/entry exists and is correct
     {
       print: true,
-      pattern: 'biz:null,role:entity,base:refer,name:entry,cmd:list',
-      out: [{
-        id: '`create-alice:out.entry.id`',
-        user_id: 'u01',
-        kind: 'standard',
-        email: 'alice@example.com'
-      }]
+      pattern: "biz:null,role:entity,base:refer,name:entry,cmd:list",
+      out: [
+        {
+          id: "`create-alice:out.entry.id`",
+          user_id: "u01",
+          kind: "standard",
+          email: "alice@example.com",
+        },
+      ],
     },
 
     // Validate the refer/occur exists and is correct
     {
-      pattern: 'biz:null,role:entity,base:refer,name:occur,cmd:list',
-      out: [{
-        // back references, see: https://github.com/rjrodger/inks
-        id: '`create-alice:out.occur[0].id`',
-        entry_id: '`create-alice:out.entry.id`',
-        entry_kind: 'standard',
-        kind: 'create',
-        email: 'alice@example.com'
-      }]
+      pattern: "biz:null,role:entity,base:refer,name:occur,cmd:list",
+      out: [
+        {
+          // back references, see: https://github.com/rjrodger/inks
+          id: "`create-alice:out.occur[0].id`",
+          entry_id: "`create-alice:out.entry.id`",
+          entry_kind: "standard",
+          kind: "create",
+          email: "alice@example.com",
+        },
+      ],
     },
 
     // Validate email was 'sent' (uses mock entity)
     {
-      pattern: 'biz:null,role:entity,base:mock,name:email,cmd:list',
-      out: [{
-        toaddr: 'alice@example.com',
-        fromaddr: 'invite@example.com',
-        kind: 'refer',
-        code: 'invite'
-      }]
+      pattern: "biz:null,role:entity,base:mock,name:email,cmd:list",
+      out: [
+        {
+          toaddr: "alice@example.com",
+          fromaddr: "invite@example.com",
+          kind: "refer",
+          code: "invite",
+        },
+      ],
     },
-
 
     // Accept the referral
     // NOTE: fails as not implemented at all
@@ -121,15 +123,11 @@ export default {
       }
     },
     */
-
-
-  ]
-}
-
-
+  ],
+};
 
 /* ADDITIONAL SCENARIOS
  * Another user send a referral to alice@example.com
  *   - before acceptance
  *   - after acceptance
-*/
+ */
