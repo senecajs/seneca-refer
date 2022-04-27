@@ -86,19 +86,24 @@ export default {
     },
 
     // Accept the referral
-    // NOTE: fails as not implemented at all
-    /*
     {
       print: true,
-      pattern: 'accept:entry',
+      pattern: "accept:entry",
       params: {
-        key: '`create-alice:out.entry.key`'
+        key: "`accept-alice:out.entry.key`",
+        user_id: "u01",
       },
       out: {
-        ok: true
-      }
+        ok: true,
+        occur: [
+          {
+            user_id: "u01",
+            kind: "accept",
+          },
+        ],
+      },
     },
-
+    /*
     // Validate new refer/occur record
     {
       pattern: 'biz:null,role:entity,base:refer,name:occur,cmd:load',
