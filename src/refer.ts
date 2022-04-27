@@ -40,15 +40,16 @@ function refer(this: any, options: any) {
   async function actAcceptEntry(this: any, msg: any) {
     let seneca = this;
 
-    let entry = await seneca
+    const entryList = await seneca
       .entity("refer/entry")
       .list$({ user_id: msg.user_id });
+    const entry = entryList[0];
 
-    let occur = await seneca.entity("refer/occur").save$({
+    const occur = await seneca.entity("refer/occur").save$({
       user_id: msg.user_id,
       entry_kind: msg.kind,
       email: msg.email,
-      entry_id: entry[0].id,
+      entry_id: entry.id,
       kind: "accept",
     });
 
