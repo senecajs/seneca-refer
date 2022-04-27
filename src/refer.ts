@@ -11,9 +11,9 @@ function refer(this: any, options: any) {
     .prepare(prepare);
 
   async function actCreateEntry(this: any, msg: any) {
-    let seneca = this;
+    const seneca = this;
 
-    let entry = await seneca.entity("refer/entry").save$({
+    const entry = await seneca.entity("refer/entry").save$({
       user_id: msg.user_id,
       kind: msg.kind,
       email: msg.email,
@@ -22,7 +22,7 @@ function refer(this: any, options: any) {
       key: this.util.Nid(), // unique key for this referral, used for validation
     });
 
-    let occur = await seneca.entity("refer/occur").save$({
+    const occur = await seneca.entity("refer/occur").save$({
       user_id: msg.user_id,
       entry_kind: msg.kind,
       email: msg.email,
@@ -38,7 +38,7 @@ function refer(this: any, options: any) {
   }
 
   async function actAcceptEntry(this: any, msg: any) {
-    let seneca = this;
+    const seneca = this;
 
     const entryList = await seneca
       .entity("refer/entry")
@@ -61,18 +61,18 @@ function refer(this: any, options: any) {
   }
 
   async function actLoadRules(this: any, msg: any) {
-    let seneca = this;
+    const seneca = this;
 
-    let rules = await seneca.entity("refer/rule").list$();
+    const rules = await seneca.entity("refer/rule").list$();
 
     // TODO: handle rule updates?
     // TODO: create a @seneca/rule plugin? later!
 
     for (let rule of rules) {
       if (rule.ent) {
-        let ent = seneca.entity(rule.ent);
-        let canon = ent.canon$({ object: true });
-        let subpat = {
+        const ent = seneca.entity(rule.ent);
+        const canon = ent.canon$({ object: true });
+        const subpat = {
           role: "entity",
           cmd: rule.cmd,
           ...canon,
@@ -83,7 +83,7 @@ function refer(this: any, options: any) {
           // TODO: match and 'where' fields
           if (msg.ent.kind === rule.where.kind) {
             // TODO: handle more than 1!
-            let callmsg = { ...rule.call[0] };
+            const callmsg = { ...rule.call[0] };
 
             // TODO: use https://github.com/rjrodger/inks
             callmsg.toaddr = msg.ent.email;
@@ -98,7 +98,7 @@ function refer(this: any, options: any) {
   }
 
   async function prepare(this: any) {
-    let seneca = this;
+    const seneca = this;
     await seneca.post("biz:refer,load:rules");
   }
 }
