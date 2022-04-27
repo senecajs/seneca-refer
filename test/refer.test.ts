@@ -73,7 +73,7 @@ async function makeBasicRules(seneca: any) {
 async function makeMockActions(seneca: any) {
   seneca.message(
     "sys:email,send:email,toaddr:alice@example.com",
-    async function (msg: any) {
+    async function (this: any, msg: any) {
       this.entity("mock/email").save$({
         toaddr: msg.toaddr,
         fromaddr: msg.fromaddr,
