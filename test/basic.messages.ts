@@ -88,6 +88,7 @@ export default {
     // Accept the referral
     {
       print: true,
+      name: "accept-alice",
       pattern: "accept:entry",
       params: {
         key: "`accept-alice:out.entry.key`",
@@ -95,6 +96,11 @@ export default {
       },
       out: {
         ok: true,
+        entry: {
+          user_id: "u01",
+          kind: "standard",
+          email: "alice@example.com",
+        },
         occur: [
           {
             user_id: "u01",
@@ -103,19 +109,18 @@ export default {
         ],
       },
     },
-    /*
     // Validate new refer/occur record
     {
-      pattern: 'biz:null,role:entity,base:refer,name:occur,cmd:load',
-      params: { q: { kind: 'accept' } },
+      print: true,
+      pattern: "biz:null,role:entity,base:refer,name:occur,cmd:load",
+      params: { q: { kind: "accept" } },
       out: {
-        entry_id: '`create-alice:out.entry.id`',
-        entry_kind: 'standard',
-        kind: 'accept',
-        email: 'alice@example.com'
-      }
+        entry_id: "`accept-alice:out.entry.id`",
+        user_id: "u01",
+        kind: "accept",
+      },
     },
-
+    /*
     // Validate new refer/reward updated
     {
       pattern: 'biz:null,role:entity,base:refer,name:reward,cmd:load',
