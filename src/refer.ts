@@ -6,7 +6,7 @@ function refer(this: any, options: any) {
   seneca
     .fix("biz:refer")
     .message("create:entry", actCreateEntry)
-    // .message('accept:entry', actAcceptEntry)
+    .message("accept:entry", actAcceptEntry)
     .message("load:rules", actLoadRules)
     .prepare(prepare);
 
@@ -28,6 +28,28 @@ function refer(this: any, options: any) {
       email: msg.email,
       entry_id: entry.id,
       kind: "create",
+    });
+
+    return {
+      ok: true,
+      entry,
+      occur: [occur],
+    };
+  }
+
+  async function actAcceptEntry(this: any, msg: any) {
+    let seneca = this;
+
+    let entry = await seneca
+      .entity("refer/entry")
+      .list$({ user_id: msg.user_id });
+
+    let occur = await seneca.entity("refer/occur").save$({
+      user_id: msg.user_id,
+      entry_kind: msg.kind,
+      email: msg.email,
+      entry_id: entry[0].id,
+      kind: "accept",
     });
 
     return {
