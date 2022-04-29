@@ -2,12 +2,12 @@
 
 const docs = {
   actCreateEntry: {
-    desc: "Create referral entry.",
-  },
-};
+    desc: 'Create referral entry.'
+  }
+}
 
-export default docs;
+export default docs
 
-if ("undefined" !== typeof module) {
-  module.exports = docs;
+if ('undefined' !== typeof module) {
+  module.exports = docs
 }
