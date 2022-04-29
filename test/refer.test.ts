@@ -27,7 +27,7 @@ describe('refer', () => {
     await SenecaMsgTest(seneca, BasicMessages)()
   })
 
-  test('maintain', Maintain)
+  // test('maintain', Maintain)
 })
 
 async function makeSeneca() {
