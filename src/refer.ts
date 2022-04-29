@@ -7,6 +7,7 @@ function refer(this: any, options: any) {
     .fix("biz:refer")
     .message("create:entry", actCreateEntry)
     .message("accept:entry", actAcceptEntry)
+    .message("reward:entry", actRewardEntry)
     .message("load:rules", actLoadRules)
     .prepare(prepare);
 
@@ -57,6 +58,46 @@ function refer(this: any, options: any) {
       ok: true,
       entry,
       occur: [occur],
+    };
+  }
+
+  async function actRewardEntry(this: any, msg: any) {
+    const seneca = this;
+
+    const entryList = await seneca
+      .entity("refer/entry")
+      .list$({ user_id: msg.user_id });
+    const entry = entryList[0];
+    // let reward = await seneca
+    //   .entity("refer/reward")
+    //   .list$({ entry_id: entry.id });
+
+    // console.log(reward);
+    // if (reward) {
+    //   reward = await seneca
+    //     .entity("refer/reward")
+    //     .list$({ entry_id: entry.id });
+    //   reward = await seneca.entity("refer/reward").load$({
+    //     count: reward.count++,
+    //   });
+    //
+    //   return {
+    //     ok: true,
+    //     // entry,
+    //     reward: [reward],
+    //   };
+    // }
+    let reward = await seneca.entity("refer/reward").save$({
+      entry_kind: entry.kind,
+      entry_id: entry.id,
+      kind: "reward",
+      count: 1,
+    });
+
+    return {
+      ok: true,
+      // entry,
+      reward: [reward],
     };
   }
 
