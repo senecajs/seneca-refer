@@ -53,12 +53,7 @@ function refer(this: any, options: any) {
       kind: 'accept'
     })
 
-    const reward = await seneca.entity('refer/reward').save$({
-      entry_kind: entry.kind,
-      entry_id: entry.id,
-      kind: 'accept',
-      count: 1
-    })
+    const reward = await getEntryReward(seneca, entry)
 
     return {
       ok: true,
@@ -109,6 +104,24 @@ function refer(this: any, options: any) {
     const seneca = this
     await seneca.post('biz:refer,load:rules')
   }
+}
+
+async function getEntryReward(seneca: any, entry: any): Promise<object> {
+  const reward = await seneca.entity('refer/reward').load$({
+    entry_id: entry.id
+  })
+
+  if (!reward) {
+    return await seneca.entity('refer/reward').save$({
+      entry_kind: entry.kind,
+      entry_id: entry.id,
+      kind: 'accept',
+      count: 1
+    })
+  }
+
+  reward.count = reward.count + 1
+  return await seneca.entity('refer/reward').save$(reward)
 }
 
 type ReferOptions = {
