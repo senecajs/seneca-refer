@@ -53,51 +53,17 @@ function refer(this: any, options: any) {
       kind: 'accept'
     })
 
-    this.act('reward:entry', actRewardEntry)
-
-    return {
-      ok: true,
-      entry,
-      occur: [occur]
-    }
-  }
-
-  async function actRewardEntry(this: any, msg: any) {
-    const seneca = this
-
-    const entryList = await seneca
-      .entity('refer/entry')
-      .list$({ user_id: msg.user_id })
-    const entry = entryList[0]
-    // let reward = await seneca
-    //   .entity("refer/reward")
-    //   .list$({ entry_id: entry.id });
-
-    // console.log(reward);
-    // if (reward) {
-    //   reward = await seneca
-    //     .entity("refer/reward")
-    //     .list$({ entry_id: entry.id });
-    //   reward = await seneca.entity("refer/reward").load$({
-    //     count: reward.count++,
-    //   });
-    //
-    //   return {
-    //     ok: true,
-    //     // entry,
-    //     reward: [reward],
-    //   };
-    // }
-    let reward = await seneca.entity('refer/reward').save$({
+    const reward = await seneca.entity('refer/reward').save$({
       entry_kind: entry.kind,
       entry_id: entry.id,
-      kind: 'reward',
+      kind: 'accept',
       count: 1
     })
 
     return {
       ok: true,
-      // entry,
+      entry,
+      occur: [occur],
       reward: [reward]
     }
   }
