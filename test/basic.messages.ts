@@ -115,44 +115,44 @@ export default {
       pattern: 'biz:null,role:entity,base:refer,name:occur,cmd:load',
       params: { q: { kind: 'accept' } },
       out: {
-        entry_id: "`accept-alice:out.entry.id`",
-        user_id: "u01",
-        kind: "accept",
-      },
+        entry_id: '`accept-alice:out.entry.id`',
+        user_id: 'u01',
+        kind: 'accept'
+      }
     },
 
     // Create a reward
     {
       print: false,
-      name: "reward-alice",
-      pattern: "reward:entry",
+      name: 'reward-alice',
+      pattern: 'reward:entry',
       params: {
-        user_id: "u01",
+        user_id: 'u01'
       },
       out: {
         ok: true,
         reward: [
           {
-            entry_id: "`accept-alice:out.entry.id`",
-            entry_kind: "standard",
-            kind: "reward",
-            count: 1, // alice@example.com accepted
-          },
-        ],
-      },
+            entry_id: '`accept-alice:out.entry.id`',
+            entry_kind: 'standard',
+            kind: 'reward',
+            count: 1 // alice@example.com accepted
+          }
+        ]
+      }
     },
     // Validate new refer/reward updated
     {
       print: false,
-      pattern: "biz:null,role:entity,base:refer,name:reward,cmd:load",
-      params: { q: { entry_id: "`accept-alice:out.entry.id`" } },
+      pattern: 'biz:null,role:entity,base:refer,name:reward,cmd:load',
+      params: { q: { entry_id: '`accept-alice:out.entry.id`' } },
       out: {
-        entry_id: "`accept-alice:out.entry.id`",
-        entry_kind: "standard",
-        kind: "reward",
-        count: 1, // alice@example.com accepted
-      },
-    },
+        entry_id: '`accept-alice:out.entry.id`',
+        entry_kind: 'standard',
+        kind: 'reward',
+        count: 1 // alice@example.com accepted
+      }
+    }
     /*
     // Validate new refer/reward updated
     {
