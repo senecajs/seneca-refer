@@ -123,29 +123,16 @@ export default {
 
     // Validate new refer/reward updated
     {
-      print: false,
+      print: true,
       pattern: 'biz:null,role:entity,base:refer,name:reward,cmd:load',
       params: { q: { entry_id: '`accept-alice:out.entry.id`' } },
       out: {
         entry_id: '`accept-alice:out.entry.id`',
         entry_kind: 'standard',
-        kind: 'reward',
-        count: 1 // alice@example.com accepted
-      }
-    }
-    /*
-    // Validate new refer/reward updated
-    {
-      pattern: 'biz:null,role:entity,base:refer,name:reward,cmd:load',
-      params: { q: { entry_id: '`create-alice:out.entry.id`' } },
-      out: {
-        entry_id: '`create-alice:out.entry.id`',
-        entry_kind: 'standard',
         kind: 'accept',
         count: 1 // alice@example.com accepted
       }
-    },
-    */
+    }
   ]
 }
 
