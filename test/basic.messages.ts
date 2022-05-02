@@ -125,7 +125,7 @@ export default {
     {
       print: true,
       pattern: 'biz:null,role:entity,base:refer,name:reward,cmd:load',
-      params: { q: { entry_id: '`accept-alice:out.entry.id`' } },
+      params: { q: { entry_id: '`create-alice:out.entry.id`' } },
       out: {
         entry_id: '`accept-alice:out.entry.id`',
         entry_kind: 'standard',
