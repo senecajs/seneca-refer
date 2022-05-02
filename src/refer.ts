@@ -7,7 +7,6 @@ function refer(this: any, options: any) {
     .fix('biz:refer')
     .message('create:entry', actCreateEntry)
     .message('accept:entry', actAcceptEntry)
-    .message('reward:entry', actRewardEntry)
     .message('load:rules', actLoadRules)
     .prepare(prepare)
 
@@ -53,6 +52,8 @@ function refer(this: any, options: any) {
       entry_id: entry.id,
       kind: 'accept'
     })
+
+    this.act('reward:entry', actRewardEntry)
 
     return {
       ok: true,
