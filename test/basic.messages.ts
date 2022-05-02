@@ -91,7 +91,7 @@ export default {
       name: 'accept-alice',
       pattern: 'accept:entry',
       params: {
-        key: '`accept-alice:out.entry.key`',
+        key: '`create-alice:out.entry.key`',
         user_id: 'u01'
       },
       out: {
@@ -115,7 +115,7 @@ export default {
       pattern: 'biz:null,role:entity,base:refer,name:occur,cmd:load',
       params: { q: { kind: 'accept' } },
       out: {
-        entry_id: '`accept-alice:out.entry.id`',
+        entry_id: '`create-alice:out.entry.id`',
         user_id: 'u01',
         kind: 'accept'
       }
