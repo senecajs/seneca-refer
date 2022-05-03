@@ -168,5 +168,6 @@ npm run format
 ```
 **Or**
 
-[Open an Issue](https://github.com/senecajs/seneca-refer/issues).
+Feel free to
+[open an Issue](https://github.com/senecajs/seneca-refer/issues).
 ## Background
