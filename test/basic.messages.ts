@@ -130,7 +130,7 @@ export default {
         key: '123'
       },
       out: {
-        ok: true,
+        ok: false,
         error: 'No entry found with this key'
       }
     }
