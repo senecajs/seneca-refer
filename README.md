@@ -4,7 +4,6 @@
 
     User referral business logic plugin for the Seneca platform.
 
-
 [![npm version](https://img.shields.io/npm/v/@seneca/refer.svg)](https://npmjs.com/package/@seneca/refer)
 [![build](https://github.com/senecajs/seneca-refer/actions/workflows/build.yml/badge.svg)](https://github.com/senecajs/seneca-refer/actions/workflows/build.yml)
 [![Coverage Status](https://coveralls.io/repos/github/senecajs/seneca-refer/badge.svg?branch=main)](https://coveralls.io/github/senecajs/seneca-refer?branch=main)
@@ -15,51 +14,40 @@
 | ![Voxgig](https://www.voxgig.com/res/img/vgt01r.png) | This open source module is sponsored and supported by [Voxgig](https://www.voxgig.com). |
 | ---------------------------------------------------- | --------------------------------------------------------------------------------------- |
 
-
 ## Install
 
 ```sh
 $ npm install @seneca/refer
 ```
 
-
 ## Quick Example
 
 ```js
 // Setup - get the key value (<SECRET>) separately from a vault or
 // environment variable.
-Seneca()
-  .use('refer', {
-  })
+Seneca().use('refer', {})
 
 TODO
-
 ```
-
 
 <!--START:options-->
 
-
 ## Options
 
-*None.*
-
+_None._
 
 <!--END:options-->
 
 <!--START:action-list-->
 
-
 ## Action Patterns
 
-* [biz:refer,create:entry](#-bizrefercreateentry-)
-* [biz:refer,load:rules](#-bizreferloadrules-)
-
+- [biz:refer,create:entry](#-bizrefercreateentry-)
+- [biz:refer,load:rules](#-bizreferloadrules-)
 
 <!--END:action-list-->
 
 <!--START:action-desc-->
-
 
 ## Action Descriptions
 
@@ -67,17 +55,13 @@ TODO
 
 Create referral entry.
 
+---
 
-
-----------
 ### &laquo; `biz:refer,load:rules` &raquo;
 
 No description provided.
 
-
-
-----------
-
+---
 
 <!--END:action-desc-->
 

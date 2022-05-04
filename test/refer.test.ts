@@ -64,9 +64,9 @@ async function makeBasicRules(seneca: any) {
         subject: '`config:sender.invite.subject`',
         toaddr: '`occur:sender.invite.subject`',
         code: 'invite',
-        kind: 'refer'
-      }
-    ]
+        kind: 'refer',
+      },
+    ],
   })
 }
 
@@ -80,7 +80,7 @@ async function makeMockActions(seneca: any) {
         subject: msg.subject,
         kind: msg.kind,
         code: msg.code,
-        what: 'sent'
+        what: 'sent',
       })
     }
   )
