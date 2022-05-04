@@ -119,7 +119,22 @@ export default {
         user_id: 'u01',
         kind: 'accept'
       }
+    },
+
+    // Check return for invalid entry key
+    {
+      print: true,
+      name: 'accept-alice',
+      pattern: 'accept:entry',
+      params: {
+        key: '123'
+      },
+      out: {
+        ok: true,
+        error: 'No entry found with this key'
+      }
     }
+
     /*
     // Validate new refer/reward updated
     {
