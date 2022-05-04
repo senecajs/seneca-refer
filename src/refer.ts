@@ -42,6 +42,13 @@ function refer(this: any, options: any) {
 
     const entry = await seneca.entity('refer/entry').load$({ key: msg.key })
 
+    if (!entry) {
+      return {
+        ok: true,
+        error: 'No entry found with this key'
+      }
+    }
+
     const occur = await seneca.entity('refer/occur').save$({
       user_id: msg.user_id,
       entry_kind: msg.kind,
