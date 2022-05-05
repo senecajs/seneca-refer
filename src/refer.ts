@@ -19,7 +19,7 @@ function refer(this: any, options: any) {
       email: msg.email,
 
       // TODO: use a longer key!
-      key: this.util.Nid() // unique key for this referral, used for validation
+      key: this.util.Nid(), // unique key for this referral, used for validation
     })
 
     const occur = await seneca.entity('refer/occur').save$({
@@ -27,30 +27,34 @@ function refer(this: any, options: any) {
       entry_kind: msg.kind,
       email: msg.email,
       entry_id: entry.id,
-      kind: 'create'
+      kind: 'create',
     })
 
     return {
       ok: true,
       entry,
-      occur: [occur]
+      occur: [occur],
     }
   }
 
   async function actAcceptEntry(this: any, msg: any) {
     const seneca = this
 
-    const entryList = await seneca
-      .entity('refer/entry')
-      .list$({ user_id: msg.user_id })
-    const entry = entryList[0]
+    const entry = await seneca.entity('refer/entry').load$({ key: msg.key })
+
+    if (!entry) {
+      return {
+        ok: false,
+        error: 'No entry found with this key',
+      }
+    }
 
     const occur = await seneca.entity('refer/occur').save$({
       user_id: msg.user_id,
       entry_kind: msg.kind,
       email: msg.email,
       entry_id: entry.id,
-      kind: 'accept'
+      kind: 'accept',
     })
 
     const reward = await getEntryReward(seneca, entry)
@@ -79,7 +83,7 @@ function refer(this: any, options: any) {
           role: 'entity',
           cmd: rule.cmd,
           ...canon,
-          out$: true
+          out$: true,
         }
 
         seneca.sub(subpat, function (this: any, msg: any) {
@@ -131,7 +135,7 @@ type ReferOptions = {
 // Default options.
 const defaults: ReferOptions = {
   // TODO: Enable debug logging
-  debug: false
+  debug: false,
 }
 
 Object.assign(refer, { defaults })

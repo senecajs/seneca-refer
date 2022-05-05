@@ -28,9 +28,7 @@ $ npm install @seneca/refer
 ```js
 // Setup - get the key value (<SECRET>) separately from a vault or
 // environment variable.
-Seneca()
-  .use('refer', {
-  })
+Seneca().use('refer', {})
 
 TODO
 
@@ -39,11 +37,9 @@ TODO
 
 <!--START:options-->
 
-
 ## Options
 
-*None.*
-
+_None._
 
 <!--END:options-->
 
@@ -65,6 +61,7 @@ TODO
 
 Create referral entry.
 
+---
 
 ----------
 
@@ -80,10 +77,7 @@ Accept referral entry.
 
 No description provided.
 
-
-
-----------
-
+---
 
 <!--END:action-desc-->
 

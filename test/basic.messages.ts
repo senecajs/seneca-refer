@@ -20,24 +20,24 @@ export default {
       params: {
         user_id: 'u01',
         kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
-        email: 'alice@example.com'
+        email: 'alice@example.com',
       },
       out: {
         ok: true,
         entry: {
           user_id: 'u01', // _id suffix for foreign keys
           kind: 'standard',
-          email: 'alice@example.com'
+          email: 'alice@example.com',
         },
         occur: [
           {
             user_id: 'u01',
             entry_kind: 'standard',
             kind: 'create',
-            email: 'alice@example.com'
-          }
-        ]
-      }
+            email: 'alice@example.com',
+          },
+        ],
+      },
     },
 
     // Print entire database
@@ -52,9 +52,9 @@ export default {
           id: '`create-alice:out.entry.id`',
           user_id: 'u01',
           kind: 'standard',
-          email: 'alice@example.com'
-        }
-      ]
+          email: 'alice@example.com',
+        },
+      ],
     },
 
     // Validate the refer/occur exists and is correct
@@ -67,9 +67,9 @@ export default {
           entry_id: '`create-alice:out.entry.id`',
           entry_kind: 'standard',
           kind: 'create',
-          email: 'alice@example.com'
-        }
-      ]
+          email: 'alice@example.com',
+        },
+      ],
     },
 
     // Validate email was 'sent' (uses mock entity)
@@ -80,9 +80,9 @@ export default {
           toaddr: 'alice@example.com',
           fromaddr: 'invite@example.com',
           kind: 'refer',
-          code: 'invite'
-        }
-      ]
+          code: 'invite',
+        },
+      ],
     },
 
     // Accept the referral
@@ -92,22 +92,22 @@ export default {
       pattern: 'accept:entry',
       params: {
         key: '`create-alice:out.entry.key`',
-        user_id: 'u01'
+        user_id: 'u01',
       },
       out: {
         ok: true,
         entry: {
           user_id: 'u01',
           kind: 'standard',
-          email: 'alice@example.com'
+          email: 'alice@example.com',
         },
         occur: [
           {
             user_id: 'u01',
-            kind: 'accept'
-          }
-        ]
-      }
+            kind: 'accept',
+          },
+        ],
+      },
     },
     // Validate new refer/occur record
     {
@@ -117,8 +117,22 @@ export default {
       out: {
         entry_id: '`create-alice:out.entry.id`',
         user_id: 'u01',
-        kind: 'accept'
-      }
+        kind: 'accept',
+      },
+    },
+
+    // Check return for invalid entry key
+    {
+      print: true,
+      name: 'accept-alice',
+      pattern: 'accept:entry',
+      params: {
+        key: '123',
+      },
+      out: {
+        ok: false,
+        error: 'No entry found with this key',
+      },
     },
 
     // Validate new refer/reward updated
