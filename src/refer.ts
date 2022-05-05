@@ -63,7 +63,7 @@ function refer(this: any, options: any) {
       ok: true,
       entry,
       occur: [occur],
-      reward: [reward]
+      reward: [reward],
     }
   }
 
@@ -112,7 +112,7 @@ function refer(this: any, options: any) {
 
 async function getEntryReward(seneca: any, entry: any): Promise<object> {
   const reward = await seneca.entity('refer/reward').load$({
-    entry_id: entry.id
+    entry_id: entry.id,
   })
 
   if (!reward) {
@@ -120,7 +120,7 @@ async function getEntryReward(seneca: any, entry: any): Promise<object> {
       entry_kind: entry.kind,
       entry_id: entry.id,
       kind: 'accept',
-      count: 1
+      count: 1,
     })
   }
 

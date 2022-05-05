@@ -144,10 +144,10 @@ export default {
         entry_id: '`accept-alice:out.entry.id`',
         entry_kind: 'standard',
         kind: 'accept',
-        count: 1 // alice@example.com accepted
-      }
-    }
-  ]
+        count: 1, // alice@example.com accepted
+      },
+    },
+  ],
 }
 
 /* ADDITIONAL SCENARIOS
