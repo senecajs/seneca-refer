@@ -103,6 +103,9 @@ export default {
         },
         occur: [
           {
+            entry_kind: 'standard',
+            entry_id: '`create-alice:out.entry.id`',
+            email: 'alice@example.com',
             user_id: 'u01',
             kind: 'accept',
           },
@@ -115,9 +118,29 @@ export default {
       pattern: 'biz:null,role:entity,base:refer,name:occur,cmd:load',
       params: { q: { kind: 'accept' } },
       out: {
+        entry_kind: 'standard',
         entry_id: '`create-alice:out.entry.id`',
+        email: 'alice@example.com',
         user_id: 'u01',
         kind: 'accept',
+      },
+    },
+
+    // Validate new refer/reward updated
+    {
+      print: true,
+      pattern: 'biz:null,role:entity,base:refer,name:reward,cmd:load',
+      params: {
+        q: {
+          entry_id: '`create-alice:out.entry.id`',
+        },
+      },
+      out: {
+        entry_id: '`create-alice:out.entry.id`',
+        entry_kind: 'standard',
+        kind: 'accept',
+        award: 'incr',
+        count: 1, // alice@example.com accepted
       },
     },
 
@@ -132,19 +155,6 @@ export default {
       out: {
         ok: false,
         error: 'No entry found with this key',
-      },
-    },
-
-    // Validate new refer/reward updated
-    {
-      print: true,
-      pattern: 'biz:null,role:entity,base:refer,name:reward,cmd:load',
-      params: { q: { entry_id: '`create-alice:out.entry.id`' } },
-      out: {
-        entry_id: '`accept-alice:out.entry.id`',
-        entry_kind: 'standard',
-        kind: 'accept',
-        count: 1, // alice@example.com accepted
       },
     },
   ],
