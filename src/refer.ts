@@ -7,6 +7,7 @@ function refer(this: any, options: any) {
     .fix('biz:refer')
     .message('create:entry', actCreateEntry)
     .message('accept:entry', actAcceptEntry)
+    .message('give:award', actRewardEntry)
     .message('load:rules', actLoadRules)
     .prepare(prepare)
 
@@ -51,20 +52,40 @@ function refer(this: any, options: any) {
 
     const occur = await seneca.entity('refer/occur').save$({
       user_id: msg.user_id,
-      entry_kind: msg.kind,
-      email: msg.email,
+      entry_kind: entry.kind,
+      email: entry.email,
       entry_id: entry.id,
       kind: 'accept',
     })
-
-    const reward = await getEntryReward(seneca, entry)
 
     return {
       ok: true,
       entry,
       occur: [occur],
-      reward: [reward],
     }
+  }
+
+  async function actRewardEntry(this: any, msg: any) {
+    const entry = await this.entity('refer/occur').load$({
+      entry_id: msg.entry_id,
+    })
+
+    let reward = await this.entity('refer/reward').load$({
+      entry_id: entry.id,
+    })
+
+    if (!reward) {
+      reward = seneca.make('refer/reward', {
+        entry_id: msg.entry_id,
+        entry_kind: msg.entry_kind,
+        kind: msg.kind,
+        award: msg.award,
+      })
+      reward[msg.field] = 0
+    }
+
+    reward[msg.field] = reward[msg.field] + 1
+    await reward.save$()
   }
 
   async function actLoadRules(this: any, msg: any) {
@@ -79,6 +100,7 @@ function refer(this: any, options: any) {
       if (rule.ent) {
         const ent = seneca.entity(rule.ent)
         const canon = ent.canon$({ object: true })
+        delete canon['zone']
         const subpat = {
           role: 'entity',
           cmd: rule.cmd,
@@ -99,6 +121,18 @@ function refer(this: any, options: any) {
             this.act(callmsg)
           }
         })
+
+        seneca.sub(subpat, function (this: any, msg: any) {
+          if (rule.where.kind === 'accept') {
+            const callmsg = {
+              ...rule.call[0],
+              ent: ent,
+              entry_id: msg.q.entry_id,
+              entry_kind: msg.q.entry_kind,
+            }
+            this.act(callmsg)
+          }
+        })
       }
       // else ignore as not yet implemented
     }
@@ -108,24 +142,6 @@ function refer(this: any, options: any) {
     const seneca = this
     await seneca.post('biz:refer,load:rules')
   }
-}
-
-async function getEntryReward(seneca: any, entry: any): Promise<object> {
-  const reward = await seneca.entity('refer/reward').load$({
-    entry_id: entry.id,
-  })
-
-  if (!reward) {
-    return await seneca.entity('refer/reward').save$({
-      entry_kind: entry.kind,
-      entry_id: entry.id,
-      kind: 'accept',
-      count: 1,
-    })
-  }
-
-  reward.count = reward.count + 1
-  return await seneca.entity('refer/reward').save$(reward)
 }
 
 type ReferOptions = {
