@@ -106,13 +106,13 @@ function refer(this: any, options: any) {
         const subpat = {
           role: 'entity',
           cmd: rule.cmd,
+          q: rule.where,
           ...canon,
           out$: true,
         }
 
         seneca.sub(subpat, function (this: any, msg: any) {
-          // TODO: match and 'where' fields
-          if (msg.ent.kind === rule.where.kind && msg.ent.kind === 'create') {
+          if (rule.where.kind === 'create') {
             // TODO: handle more than 1!
             const callmsg = { ...rule.call[0] }
 
@@ -125,7 +125,7 @@ function refer(this: any, options: any) {
         })
 
         seneca.sub(subpat, function (this: any, msg: any) {
-          if (msg.ent.kind === rule.where.kind && msg.ent.kind === 'accept') {
+          if (rule.where.kind === 'accept') {
             const callmsg = {
               ...rule.call[0],
               ent: ent,
@@ -139,7 +139,6 @@ function refer(this: any, options: any) {
       // else ignore as not yet implemented
     }
   }
-
   async function prepare(this: any) {
     const seneca = this
     await seneca.post('biz:refer,load:rules')
