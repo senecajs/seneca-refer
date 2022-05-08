@@ -112,7 +112,7 @@ function refer(this: any, options: any) {
 
         seneca.sub(subpat, function (this: any, msg: any) {
           // TODO: match and 'where' fields
-          if (msg.ent.kind === rule.where.kind) {
+          if (msg.ent.kind === rule.where.kind && msg.ent.kind === 'create') {
             // TODO: handle more than 1!
             const callmsg = { ...rule.call[0] }
 
@@ -125,7 +125,7 @@ function refer(this: any, options: any) {
         })
 
         seneca.sub(subpat, function (this: any, msg: any) {
-          if (rule.where.kind === 'accept') {
+          if (msg.ent.kind === rule.where.kind && msg.ent.kind === 'accept') {
             const callmsg = {
               ...rule.call[0],
               ent: ent,
