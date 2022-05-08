@@ -100,30 +100,29 @@ function refer(this: any, options: any) {
 
     for (let rule of rules) {
       if (rule.ent) {
-        const subpat = subPatBuilder(seneca, rule)
+        const subpat = generateSubPat(seneca, rule)
 
         seneca.sub(subpat, function (this: any, msg: any) {
           if (rule.where.kind === 'create') {
-            // TODO: handle more than 1!
-            const callmsg = { ...rule.call[0] }
+            rule.call.forEach((callmsg: any) => {
+              // TODO: use https://github.com/rjrodger/inks
+              callmsg.toaddr = msg.ent.email
+              callmsg.fromaddr = 'invite@example.com'
 
-            // TODO: use https://github.com/rjrodger/inks
-            callmsg.toaddr = msg.ent.email
-            callmsg.fromaddr = 'invite@example.com'
-
-            this.act(callmsg)
+              this.act(callmsg)
+            })
           }
         })
 
         seneca.sub(subpat, function (this: any, msg: any) {
           if (rule.where.kind === 'accept') {
-            const callmsg = {
-              ...rule.call[0],
-              ent: seneca.entity(rule.ent),
-              entry_id: msg.q.entry_id,
-              entry_kind: msg.q.entry_kind,
-            }
-            this.act(callmsg)
+            rule.call.forEach((callmsg: any) => {
+              callmsg.ent = seneca.entity(rule.ent)
+              callmsg.entry_id = msg.q.entry_id
+              callmsg.entry_kind = msg.q.entry_kind
+
+              this.act(callmsg)
+            })
           }
         })
       }
@@ -135,7 +134,7 @@ function refer(this: any, options: any) {
     await seneca.post('biz:refer,load:rules')
   }
 
-  function subPatBuilder(seneca: any, rule: any): object {
+  function generateSubPat(seneca: any, rule: any): object {
     const ent = seneca.entity(rule.ent)
     const canon = ent.canon$({ object: true })
     Object.keys(canon).forEach((key) => {
