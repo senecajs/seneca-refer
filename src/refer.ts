@@ -100,16 +100,7 @@ function refer(this: any, options: any) {
 
     for (let rule of rules) {
       if (rule.ent) {
-        const ent = seneca.entity(rule.ent)
-        const canon = ent.canon$({ object: true })
-        delete canon['zone']
-        const subpat = {
-          role: 'entity',
-          cmd: rule.cmd,
-          q: rule.where,
-          ...canon,
-          out$: true,
-        }
+        const subpat = subPatBuilder(seneca, rule)
 
         seneca.sub(subpat, function (this: any, msg: any) {
           if (rule.where.kind === 'create') {
@@ -128,7 +119,7 @@ function refer(this: any, options: any) {
           if (rule.where.kind === 'accept') {
             const callmsg = {
               ...rule.call[0],
-              ent: ent,
+              ent: seneca.entity(rule.ent),
               entry_id: msg.q.entry_id,
               entry_kind: msg.q.entry_kind,
             }
@@ -142,6 +133,23 @@ function refer(this: any, options: any) {
   async function prepare(this: any) {
     const seneca = this
     await seneca.post('biz:refer,load:rules')
+  }
+
+  function subPatBuilder(seneca: any, rule: any): object {
+    const ent = seneca.entity(rule.ent)
+    const canon = ent.canon$({ object: true })
+    Object.keys(canon).forEach((key) => {
+      if (!canon[key]) {
+        delete canon[key]
+      }
+    })
+    return {
+      role: 'entity',
+      cmd: rule.cmd,
+      q: rule.where,
+      ...canon,
+      out$: true,
+    }
   }
 }
 
