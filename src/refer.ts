@@ -66,7 +66,9 @@ function refer(this: any, options: any) {
   }
 
   async function actRewardEntry(this: any, msg: any) {
-    const entry = await this.entity('refer/occur').load$({
+    const seneca = this
+
+    const entry = await seneca.entity('refer/occur').load$({
       entry_id: msg.entry_id,
     })
 
