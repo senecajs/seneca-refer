@@ -46,7 +46,7 @@ function refer(this: any, options: any) {
     if (!entry) {
       return {
         ok: false,
-        error: 'No entry found with this key',
+        why: 'entry-unknown',
       }
     }
 

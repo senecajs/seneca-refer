@@ -154,7 +154,7 @@ export default {
       },
       out: {
         ok: false,
-        error: 'No entry found with this key',
+        why: 'entry-unknown',
       },
     },
   ],

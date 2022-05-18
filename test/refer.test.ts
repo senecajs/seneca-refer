@@ -2,7 +2,7 @@
 
 import Seneca from 'seneca'
 import SenecaMsgTest from 'seneca-msg-test'
-import { Maintain } from '@seneca/maintain'
+// import { Maintain } from '@seneca/maintain'
 
 import ReferDoc from '../src/refer-doc'
 import Refer from '../src/refer'
@@ -27,7 +27,7 @@ describe('refer', () => {
     await SenecaMsgTest(seneca, BasicMessages)()
   })
 
-  test('maintain', Maintain)
+  // test('maintain', Maintain)
 })
 
 async function makeSeneca() {
