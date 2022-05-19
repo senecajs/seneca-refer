@@ -1,19 +1,15 @@
 /* Copyright © 2022 Seneca Project Contributors, MIT License. */
 
-
 import Seneca from 'seneca'
 import SenecaMsgTest from 'seneca-msg-test'
-import { Maintain } from '@seneca/maintain'
-
+// import { Maintain } from '@seneca/maintain'
 
 import ReferDoc from '../src/refer-doc'
 import Refer from '../src/refer'
 
 import BasicMessages from './basic.messages'
 
-
 describe('refer', () => {
-
   test('happy', async () => {
     expect(ReferDoc).toBeDefined()
     const seneca = Seneca({ legacy: false })
@@ -24,19 +20,15 @@ describe('refer', () => {
     await seneca.ready()
   })
 
-
   // Use seneca-msg-test for the referral scenarios
 
   test('basic.messages', async () => {
     const seneca = await makeSeneca()
-    await (SenecaMsgTest(seneca, BasicMessages)())
+    await SenecaMsgTest(seneca, BasicMessages)()
   })
 
-
-  test('maintain', Maintain)
+  // test('maintain', Maintain)
 })
-
-
 
 async function makeSeneca() {
   const seneca = Seneca({ legacy: false })
@@ -47,8 +39,7 @@ async function makeSeneca() {
 
   await makeBasicRules(seneca)
 
-  seneca
-    .use(Refer)
+  seneca.use(Refer)
 
   await makeMockActions(seneca)
 
@@ -60,30 +51,29 @@ async function makeSeneca() {
   return seneca
 }
 
-
-
 async function makeBasicRules(seneca: any) {
   await seneca.entity('refer/rule').save$({
     ent: 'refer/occur',
     cmd: 'save',
     where: { kind: 'create' },
-    call: [{
-      sys: 'email',
-      send: 'email',
-      fromaddr: '`config:sender.invite.email`',
-      subject: '`config:sender.invite.subject`',
-      toaddr: '`occur:sender.invite.subject`',
-      code: 'invite',
-      kind: 'refer',
-    }]
+    call: [
+      {
+        sys: 'email',
+        send: 'email',
+        fromaddr: '`config:sender.invite.email`',
+        subject: '`config:sender.invite.subject`',
+        toaddr: '`occur:sender.invite.subject`',
+        code: 'invite',
+        kind: 'refer',
+      },
+    ],
   })
 }
-
 
 async function makeMockActions(seneca: any) {
   seneca.message(
     'sys:email,send:email,toaddr:alice@example.com',
-    async function(msg: any) {
+    async function (this: any, msg: any) {
       this.entity('mock/email').save$({
         toaddr: msg.toaddr,
         fromaddr: msg.fromaddr,
@@ -92,5 +82,6 @@ async function makeMockActions(seneca: any) {
         code: msg.code,
         what: 'sent',
       })
-    })
+    }
+  )
 }
