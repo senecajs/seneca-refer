@@ -8,6 +8,7 @@ import ReferDoc from '../src/refer-doc'
 import Refer from '../src/refer'
 
 import BasicMessages from './basic.messages'
+import MultiMessages from './multi.messages'
 
 describe('refer', () => {
   test('happy', async () => {
@@ -26,6 +27,15 @@ describe('refer', () => {
     const seneca = await makeSeneca()
     await SenecaMsgTest(seneca, BasicMessages)()
   })
+
+  // test('maintain', Maintain)
+})
+
+// Use seneca-msg-test for multiple referrals
+
+test('multi.messages', async () => {
+  const seneca = await makeSeneca()
+  await SenecaMsgTest(seneca, MultiMessages)()
 
   // test('maintain', Maintain)
 })
@@ -85,17 +95,14 @@ async function makeBasicRules(seneca: any) {
 }
 
 async function makeMockActions(seneca: any) {
-  seneca.message(
-    'sys:email,send:email,toaddr:alice@example.com',
-    async function (this: any, msg: any) {
-      this.entity('mock/email').save$({
-        toaddr: msg.toaddr,
-        fromaddr: msg.fromaddr,
-        subject: msg.subject,
-        kind: msg.kind,
-        code: msg.code,
-        what: 'sent',
-      })
-    }
-  )
+  seneca.message('sys:email,send:email', async function (this: any, msg: any) {
+    this.entity('mock/email').save$({
+      toaddr: msg.toaddr,
+      fromaddr: msg.fromaddr,
+      subject: msg.subject,
+      kind: msg.kind,
+      code: msg.code,
+      what: 'sent',
+    })
+  })
 }
