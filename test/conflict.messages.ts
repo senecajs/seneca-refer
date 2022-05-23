@@ -145,5 +145,19 @@ export default {
         },
       ],
     },
+    // try to accept a lost referral
+    {
+      print: true,
+      name: 'accept-alice',
+      pattern: 'accept:entry',
+      params: {
+        key: '`create-alice3:out.entry.key`',
+        user_id: 'u03',
+      },
+      out: {
+        ok: false,
+        why: 'entry-lost',
+      },
+    },
   ],
 }
