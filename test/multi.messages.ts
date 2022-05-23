@@ -135,5 +135,29 @@ export default {
         },
       ],
     },
+    // Validate all email were 'sent' (uses mock entity)
+    {
+      pattern: 'biz:null,role:entity,base:mock,name:email,cmd:list',
+      out: [
+        {
+          toaddr: 'alice@example.com',
+          fromaddr: 'invite@example.com',
+          kind: 'refer',
+          code: 'invite',
+        },
+        {
+          toaddr: 'johndoe@example.com',
+          fromaddr: 'invite@example.com',
+          kind: 'refer',
+          code: 'invite',
+        },
+        {
+          toaddr: 'foo@example.com',
+          fromaddr: 'invite@example.com',
+          kind: 'refer',
+          code: 'invite',
+        },
+      ],
+    },
   ],
 }
