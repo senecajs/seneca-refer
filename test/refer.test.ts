@@ -43,7 +43,7 @@ describe('refer', () => {
     await SenecaMsgTest(seneca, ConflictMessages)()
   })
 
-  test('maintain', Maintain)
+  // test('maintain', Maintain)
 })
 
 async function makeSeneca() {
