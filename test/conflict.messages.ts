@@ -123,5 +123,27 @@ export default {
         },
       ],
     },
+    // // Validate that the remaining referrals have the status equal to lost
+    {
+      print: true,
+      pattern: 'biz:null,role:entity,base:refer,name:occur,cmd:list',
+      params: { q: { kind: 'lost' } },
+      out: [
+        {
+          entry_kind: 'standard',
+          entry_id: '`create-alice:out.entry.id`',
+          email: 'alice@example.com',
+          user_id: 'u01',
+          kind: 'lost',
+        },
+        {
+          entry_kind: 'standard',
+          entry_id: '`create-alice3:out.entry.id`',
+          email: 'alice@example.com',
+          user_id: 'u03',
+          kind: 'lost',
+        },
+      ],
+    },
   ],
 }
