@@ -31,7 +31,7 @@ export default {
     },
     {
       print: true,
-      name: 'create-alice',
+      name: 'create-alice2',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
         user_id: 'u02',
@@ -57,7 +57,7 @@ export default {
     },
     {
       print: true,
-      name: 'create-alice',
+      name: 'create-alice3',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
         user_id: 'u03',
@@ -80,6 +80,48 @@ export default {
           },
         ],
       },
+    },
+    // Accept referral from user 2
+    {
+      print: true,
+      name: 'accept-alice',
+      pattern: 'accept:entry',
+      params: {
+        key: '`create-alice2:out.entry.key`',
+        user_id: 'u02',
+      },
+      out: {
+        ok: true,
+        entry: {
+          user_id: 'u02',
+          kind: 'standard',
+          email: 'alice@example.com',
+        },
+        occur: [
+          {
+            entry_kind: 'standard',
+            entry_id: '`create-alice2:out.entry.id`',
+            email: 'alice@example.com',
+            user_id: 'u02',
+            kind: 'accept',
+          },
+        ],
+      },
+    },
+    // Validate that only referral from user 2 have the status accepted
+    {
+      print: true,
+      pattern: 'biz:null,role:entity,base:refer,name:occur,cmd:list',
+      params: { q: { kind: 'accept' } },
+      out: [
+        {
+          entry_kind: 'standard',
+          entry_id: '`accept-alice:out.entry.id`',
+          email: 'alice@example.com',
+          user_id: 'u02',
+          kind: 'accept',
+        },
+      ],
     },
   ],
 }
