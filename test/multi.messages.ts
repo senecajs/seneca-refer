@@ -268,5 +268,33 @@ export default {
         },
       ],
     },
+    // Validate new all refer/reward updated
+    {
+      print: true,
+      pattern: 'biz:null,role:entity,base:refer,name:reward,cmd:list',
+      out: [
+        {
+          entry_id: '`create-multiple:out.entry.id`',
+          entry_kind: 'standard',
+          kind: 'accept',
+          award: 'incr',
+          count: 1,
+        },
+        {
+          entry_id: '`create-multiple2:out.entry.id`',
+          entry_kind: 'standard',
+          kind: 'accept',
+          award: 'incr',
+          count: 1,
+        },
+        {
+          entry_id: '`create-multiple3:out.entry.id`',
+          entry_kind: 'standard',
+          kind: 'accept',
+          award: 'incr',
+          count: 1,
+        },
+      ],
+    },
   ],
 }
