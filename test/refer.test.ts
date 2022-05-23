@@ -9,6 +9,7 @@ import Refer from '../src/refer'
 
 import BasicMessages from './basic.messages'
 import MultiMessages from './multi.messages'
+import ConflictMessages from './conflict.messages'
 
 describe('refer', () => {
   test('happy', async () => {
@@ -33,6 +34,13 @@ describe('refer', () => {
   test('multi.messages', async () => {
     const seneca = await makeSeneca()
     await SenecaMsgTest(seneca, MultiMessages)()
+  })
+
+  // Use seneca-msg-test for conflict referrals
+
+  test('conflict.messages', async () => {
+    const seneca = await makeSeneca()
+    await SenecaMsgTest(seneca, ConflictMessages)()
   })
 
   test('maintain', Maintain)
