@@ -98,6 +98,18 @@ async function makeBasicRules(seneca: any) {
       },
     ],
   })
+
+  await seneca.entity('refer/rule').save$({
+    ent: 'refer/occur',
+    cmd: 'save',
+    where: { kind: 'lost' },
+    call: [
+      {
+        lost: 'entry',
+        biz: 'refer',
+      },
+    ],
+  })
 }
 
 async function makeMockActions(seneca: any) {
