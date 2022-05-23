@@ -51,6 +51,18 @@ function refer(this: any, options: any) {
       }
     }
 
+    let lostOccur = await this.entity('refer/occur').load$({
+      entry_id: entry.id,
+      kind: 'lost',
+    })
+
+    if (lostOccur) {
+      return {
+        ok: false,
+        why: 'entry-lost',
+      }
+    }
+
     const occur = await seneca.entity('refer/occur').save$({
       user_id: msg.user_id,
       entry_kind: entry.kind,
