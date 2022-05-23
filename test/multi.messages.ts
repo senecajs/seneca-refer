@@ -159,5 +159,85 @@ export default {
         },
       ],
     },
+
+    // Accept all referrals
+    {
+      print: true,
+      name: 'accept-multiple',
+      pattern: 'accept:entry',
+      params: {
+        key: '`create-multiple:out.entry.key`',
+        user_id: 'u01',
+      },
+      out: {
+        ok: true,
+        entry: {
+          user_id: 'u01',
+          kind: 'standard',
+          email: 'alice@example.com',
+        },
+        occur: [
+          {
+            entry_kind: 'standard',
+            entry_id: '`create-multiple:out.entry.id`',
+            email: 'alice@example.com',
+            user_id: 'u01',
+            kind: 'accept',
+          },
+        ],
+      },
+    },
+    {
+      print: true,
+      name: 'accept-multiple',
+      pattern: 'accept:entry',
+      params: {
+        key: '`create-multiple2:out.entry.key`',
+        user_id: 'u02',
+      },
+      out: {
+        ok: true,
+        entry: {
+          user_id: 'u02',
+          kind: 'standard',
+          email: 'johndoe@example.com',
+        },
+        occur: [
+          {
+            entry_kind: 'standard',
+            entry_id: '`create-multiple2:out.entry.id`',
+            email: 'johndoe@example.com',
+            user_id: 'u02',
+            kind: 'accept',
+          },
+        ],
+      },
+    },
+    {
+      print: true,
+      name: 'accept-multiple',
+      pattern: 'accept:entry',
+      params: {
+        key: '`create-multiple3:out.entry.key`',
+        user_id: 'u03',
+      },
+      out: {
+        ok: true,
+        entry: {
+          user_id: 'u03',
+          kind: 'standard',
+          email: 'foo@example.com',
+        },
+        occur: [
+          {
+            entry_kind: 'standard',
+            entry_id: '`create-multiple3:out.entry.id`',
+            email: 'foo@example.com',
+            user_id: 'u03',
+            kind: 'accept',
+          },
+        ],
+      },
+    },
   ],
 }
