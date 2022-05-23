@@ -239,5 +239,34 @@ export default {
         ],
       },
     },
+    // Validate new refer/occur records
+    {
+      print: true,
+      pattern: 'biz:null,role:entity,base:refer,name:occur,cmd:list',
+      params: { q: { kind: 'accept' } },
+      out: [
+        {
+          entry_kind: 'standard',
+          entry_id: '`create-multiple:out.entry.id`',
+          email: 'alice@example.com',
+          user_id: 'u01',
+          kind: 'accept',
+        },
+        {
+          entry_kind: 'standard',
+          entry_id: '`create-multiple2:out.entry.id`',
+          email: 'johndoe@example.com',
+          user_id: 'u02',
+          kind: 'accept',
+        },
+        {
+          entry_kind: 'standard',
+          entry_id: '`create-multiple3:out.entry.id`',
+          email: 'foo@example.com',
+          user_id: 'u03',
+          kind: 'accept',
+        },
+      ],
+    },
   ],
 }
