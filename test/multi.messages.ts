@@ -107,5 +107,33 @@ export default {
         },
       ],
     },
+
+    // Validate that all refer/occur exists and are correct
+    {
+      pattern: 'biz:null,role:entity,base:refer,name:occur,cmd:list',
+      out: [
+        {
+          id: '`create-multiple:out.occur[0].id`',
+          entry_id: '`create-multiple:out.entry.id`',
+          entry_kind: 'standard',
+          kind: 'create',
+          email: 'alice@example.com',
+        },
+        {
+          id: '`create-multiple2:out.occur[0].id`',
+          entry_id: '`create-multiple2:out.entry.id`',
+          entry_kind: 'standard',
+          kind: 'create',
+          email: 'johndoe@example.com',
+        },
+        {
+          id: '`create-multiple3:out.occur[0].id`',
+          entry_id: '`create-multiple3:out.entry.id`',
+          entry_kind: 'standard',
+          kind: 'create',
+          email: 'foo@example.com',
+        },
+      ],
+    },
   ],
 }
