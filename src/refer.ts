@@ -90,6 +90,27 @@ function refer(this: any, options: any) {
     }
   }
 
+  async function actLostEntry(this: any, msg: any) {
+    const seneca = this
+
+    const entryList = await seneca.entity('refer/occur').list$({
+      email: msg.email,
+      kind: 'create',
+    })
+    entryList.forEach((entry: any) => {
+      if (entry.user_id === msg.userWinner) {
+        return
+      }
+      seneca.entity('refer/occur').save$({
+        user_id: entry.user_id,
+        entry_kind: entry.entry_kind,
+        email: msg.email,
+        entry_id: entry.entry_id,
+        kind: 'lost',
+      })
+    })
+  }
+
   async function actRewardEntry(this: any, msg: any) {
     const seneca = this
 
@@ -113,27 +134,6 @@ function refer(this: any, options: any) {
 
     reward[msg.field] = reward[msg.field] + 1
     await reward.save$()
-  }
-
-  async function actLostEntry(this: any, msg: any) {
-    const seneca = this
-
-    const entryList = await seneca.entity('refer/occur').list$({
-      email: msg.email,
-      kind: 'create',
-    })
-    entryList.forEach((entry: any) => {
-      if (entry.user_id === msg.userWinner) {
-        return
-      }
-      seneca.entity('refer/occur').save$({
-        user_id: entry.user_id,
-        entry_kind: entry.entry_kind,
-        email: msg.email,
-        entry_id: entry.entry_id,
-        kind: 'lost',
-      })
-    })
   }
 
   async function actLoadRules(this: any, msg: any) {
