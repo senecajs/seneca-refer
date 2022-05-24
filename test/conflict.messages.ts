@@ -159,5 +159,20 @@ export default {
         why: 'entry-lost',
       },
     },
+    // try to referral a user
+    {
+      print: true,
+      name: 'create-alice',
+      pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
+      params: {
+        user_id: 'u05',
+        kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
+        email: 'alice@example.com',
+      },
+      out: {
+        ok: false,
+        why: 'entry-already-accepted',
+      },
+    },
   ],
 }
