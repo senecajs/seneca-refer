@@ -8,6 +8,7 @@ import ReferDoc from '../src/refer-doc'
 import Refer from '../src/refer'
 
 import BasicMessages from './basic.messages'
+import LimitMessages from './limit.messages'
 import MultiMessages from './multi.messages'
 import ConflictMessages from './conflict.messages'
 
@@ -29,19 +30,24 @@ describe('refer', () => {
     await SenecaMsgTest(seneca, BasicMessages)()
   })
 
-  // Use seneca-msg-test for multiple referrals
-
-  test('multi.messages', async () => {
+  test('limit.messages', async () => {
     const seneca = await makeSeneca()
-    await SenecaMsgTest(seneca, MultiMessages)()
+    await SenecaMsgTest(seneca, LimitMessages)()
   })
 
-  // Use seneca-msg-test for conflict referrals
-
-  test('conflict.messages', async () => {
-    const seneca = await makeSeneca()
-    await SenecaMsgTest(seneca, ConflictMessages)()
-  })
+  // // Use seneca-msg-test for multiple referrals
+  //
+  // test('multi.messages', async () => {
+  //   const seneca = await makeSeneca()
+  //   await SenecaMsgTest(seneca, MultiMessages)()
+  // })
+  //
+  // // Use seneca-msg-test for conflict referrals
+  //
+  // test('conflict.messages', async () => {
+  //   const seneca = await makeSeneca()
+  //   await SenecaMsgTest(seneca, ConflictMessages)()
+  // })
 
   // test('maintain', Maintain)
 })
@@ -98,7 +104,17 @@ async function makeBasicRules(seneca: any) {
       },
     ],
   })
-
+  await seneca.entity('refer/rule').save$({
+    ent: 'refer/occur',
+    cmd: 'save',
+    where: { kind: 'limit' },
+    call: [
+      {
+        update: 'point',
+        biz: 'refer',
+      },
+    ],
+  })
   await seneca.entity('refer/rule').save$({
     ent: 'refer/occur',
     cmd: 'save',

@@ -6,7 +6,32 @@ export default {
   allow: { missing: true },
 
   calls: [
-    // User with id=u01 sends referal to friend alice@example.com
+    {
+      print: true,
+      name: 'create-point',
+      pattern: 'create:point',
+      params: {
+        user_id: 'u01',
+        kind: 'standard',
+        email: 'u01@example.com',
+        link: 'u01.com',
+        vanity_urls: ['myVanityUrl', 'myOtherVanityUrl'],
+        limit: 2,
+      },
+      out: {
+        ok: true,
+        point: {
+          user_id: 'u01',
+          kind: 'standard',
+          email: 'u01@example.com',
+          link: 'u01.com',
+          vanity_urls: ['myVanityUrl', 'myOtherVanityUrl'],
+          limit: 2,
+          remaining: 2,
+        },
+      },
+    },
+    // User with id=u01 sends referral to friend alice@example.com
     // Creating:
     //   - refer/entry referral record
     //   - refer/occur event record
@@ -141,6 +166,26 @@ export default {
         kind: 'accept',
         award: 'incr',
         count: 1, // alice@example.com accepted
+      },
+    },
+
+    // Validate number of remaining referrals
+    {
+      print: true,
+      pattern: 'biz:null,role:entity,base:refer,name:point,cmd:load',
+      params: {
+        q: {
+          user_id: 'u01',
+        },
+      },
+      out: {
+        user_id: 'u01',
+        kind: 'standard',
+        email: 'u01@example.com',
+        link: 'u01.com',
+        vanity_urls: ['myVanityUrl', 'myOtherVanityUrl'],
+        limit: 2,
+        remaining: 1,
       },
     },
 
