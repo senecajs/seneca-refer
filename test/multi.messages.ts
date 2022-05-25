@@ -11,9 +11,6 @@ export default {
       params: {
         user_id: 'u01',
         kind: 'standard',
-        email: 'u01@example.com',
-        link: 'u01.com',
-        vanity_urls: ['myVanityUrl', 'myOtherVanityUrl'],
         limit: 2,
       },
       out: {
@@ -21,9 +18,6 @@ export default {
         point: {
           user_id: 'u01',
           kind: 'standard',
-          email: 'u01@example.com',
-          link: 'u01.com',
-          vanity_urls: ['myVanityUrl', 'myOtherVanityUrl'],
           limit: 2,
           remaining: 2,
         },
@@ -37,7 +31,6 @@ export default {
       params: {
         user_id: 'u02',
         kind: 'special',
-        email: 'u02@example.com',
         link: 'u02.com',
         vanity_urls: ['myVanityUrl2', 'myOtherVanityUrl2'],
         limit: 200,
@@ -47,7 +40,6 @@ export default {
         point: {
           user_id: 'u02',
           kind: 'special',
-          email: 'u02@example.com',
           link: 'u02.com',
           vanity_urls: ['myVanityUrl2', 'myOtherVanityUrl2'],
           limit: 200,
@@ -63,9 +55,6 @@ export default {
       params: {
         user_id: 'u03',
         kind: 'standard',
-        email: 'u03@example.com',
-        link: 'u03.com',
-        vanity_urls: ['myVanityUrl3', 'myOtherVanityUrl3'],
         limit: 2,
       },
       out: {
@@ -73,9 +62,6 @@ export default {
         point: {
           user_id: 'u03',
           kind: 'standard',
-          email: 'u03@example.com',
-          link: 'u03.com',
-          vanity_urls: ['myVanityUrl3', 'myOtherVanityUrl3'],
           limit: 2,
           remaining: 2,
         },
@@ -88,8 +74,7 @@ export default {
       name: 'create-multiple',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
-        user_id: 'u01',
-        kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
+        point_id: '`create-point:out.point.id`',
         email: 'alice@example.com',
       },
       out: {
@@ -114,8 +99,7 @@ export default {
       name: 'create-multiple2',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
-        user_id: 'u02',
-        kind: 'special', // avoid using 'type', 'kind' has fewer conflicts
+        point_id: '`create-point2:out.point.id`',
         email: 'johndoe@example.com',
       },
       out: {
@@ -140,8 +124,7 @@ export default {
       name: 'create-multiple3',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
-        user_id: 'u03',
-        kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
+        point_id: '`create-point3:out.point.id`',
         email: 'foo@example.com',
       },
       out: {
@@ -150,6 +133,7 @@ export default {
           user_id: 'u03', // _id suffix for foreign keys
           kind: 'standard',
           email: 'foo@example.com',
+          point_id: '`create-point3:out.point.id`',
         },
         occur: [
           {
@@ -172,18 +156,21 @@ export default {
           user_id: 'u01',
           kind: 'standard',
           email: 'alice@example.com',
+          point_id: '`create-point:out.point.id`',
         },
         {
           id: '`create-multiple2:out.entry.id`',
           user_id: 'u02',
           kind: 'special',
           email: 'johndoe@example.com',
+          point_id: '`create-point2:out.point.id`',
         },
         {
           id: '`create-multiple3:out.entry.id`',
           user_id: 'u03',
           kind: 'standard',
           email: 'foo@example.com',
+          point_id: '`create-point3:out.point.id`',
         },
       ],
     },
