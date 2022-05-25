@@ -4,6 +4,7 @@ export default {
   allow: { missing: true },
 
   calls: [
+    //Create refer/point row for user
     {
       print: true,
       name: 'create-point',
@@ -29,6 +30,8 @@ export default {
         },
       },
     },
+    // Creating:
+    //   - refer/entry referral records
     {
       print: true,
       name: 'create-alice',
@@ -51,32 +54,6 @@ export default {
             entry_kind: 'standard',
             kind: 'create',
             email: 'alice@example.com',
-          },
-        ],
-      },
-    },
-    {
-      print: true,
-      name: 'create-alice3',
-      pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
-      params: {
-        user_id: 'u01',
-        kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
-        email: 'alice3@example.com',
-      },
-      out: {
-        ok: true,
-        entry: {
-          user_id: 'u01', // _id suffix for foreign keys
-          kind: 'standard',
-          email: 'alice3@example.com',
-        },
-        occur: [
-          {
-            user_id: 'u01',
-            entry_kind: 'standard',
-            kind: 'create',
-            email: 'alice3@example.com',
           },
         ],
       },
@@ -107,6 +84,33 @@ export default {
         ],
       },
     },
+    {
+      print: true,
+      name: 'create-alice3',
+      pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
+      params: {
+        user_id: 'u01',
+        kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
+        email: 'alice3@example.com',
+      },
+      out: {
+        ok: true,
+        entry: {
+          user_id: 'u01', // _id suffix for foreign keys
+          kind: 'standard',
+          email: 'alice3@example.com',
+        },
+        occur: [
+          {
+            user_id: 'u01',
+            entry_kind: 'standard',
+            kind: 'create',
+            email: 'alice3@example.com',
+          },
+        ],
+      },
+    },
+
     // Validate the remaining isn't changed if the invite isn't accepted
     {
       print: true,
@@ -190,7 +194,7 @@ export default {
         remaining: 0,
       },
     },
-    // Validate referral accept above the limit
+    // Validate referral accepted above the limit
     {
       print: true,
       name: 'accept-alice',
