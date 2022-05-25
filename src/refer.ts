@@ -72,10 +72,6 @@ function refer(this: any, options: any) {
           occur: [occur],
         }
       }
-      return {
-        ok: false,
-        why: 'no-invites',
-      }
     }
     return {
       ok: false,
