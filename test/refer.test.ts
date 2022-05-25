@@ -42,12 +42,12 @@ describe('refer', () => {
     await SenecaMsgTest(seneca, MultiMessages)()
   })
 
-  // // Use seneca-msg-test for conflict referrals
-  //
-  // test('conflict.messages', async () => {
-  //   const seneca = await makeSeneca()
-  //   await SenecaMsgTest(seneca, ConflictMessages)()
-  // })
+  // Use seneca-msg-test for conflict referrals
+
+  test('conflict.messages', async () => {
+    const seneca = await makeSeneca()
+    await SenecaMsgTest(seneca, ConflictMessages)()
+  })
 
   // test('maintain', Maintain)
 })
