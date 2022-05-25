@@ -33,7 +33,7 @@ export default {
         kind: 'special',
         link: 'u02.com',
         vanity_urls: ['myVanityUrl2', 'myOtherVanityUrl2'],
-        limit: 200,
+        limit: 3,
       },
       out: {
         ok: true,
@@ -42,8 +42,8 @@ export default {
           kind: 'special',
           link: 'u02.com',
           vanity_urls: ['myVanityUrl2', 'myOtherVanityUrl2'],
-          limit: 200,
-          remaining: 200,
+          limit: 3,
+          remaining: 3,
         },
       },
     },
@@ -202,6 +202,7 @@ export default {
         },
       ],
     },
+
     // Validate all email were 'sent' (uses mock entity)
     {
       pattern: 'biz:null,role:entity,base:mock,name:email,cmd:list',
@@ -280,6 +281,7 @@ export default {
         ],
       },
     },
+
     {
       print: true,
       name: 'accept-multiple',
