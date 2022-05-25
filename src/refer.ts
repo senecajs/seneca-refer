@@ -41,28 +41,25 @@ function refer(this: any, options: any) {
     })
     if (!occur) {
       let point = await seneca.entity('refer/point').load$({
-        user_id: msg.user_id,
-        kind: msg.kind,
+        id: msg.point_id,
       })
 
       if (point.remaining <= point.limit && point.remaining != 0) {
         const entry = await seneca.entity('refer/entry').save$({
-          user_id: msg.user_id,
-          kind: msg.kind,
+          user_id: point.user_id,
+          kind: point.kind,
           email: msg.email,
-          limit: msg.limit,
+          point_id: point.id,
 
           // TODO: use a longer key!
           key: this.util.Nid(), // unique key for this referral, used for validation
         })
 
         occur = await seneca.entity('refer/occur').save$({
-          user_id: msg.user_id,
-          entry_kind: msg.kind,
+          user_id: point.user_id,
+          entry_kind: point.kind,
           email: msg.email,
           entry_id: entry.id,
-          entry_limit: msg.limit,
-          remaining: msg.limit,
           kind: 'create',
         })
 
