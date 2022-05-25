@@ -35,6 +35,9 @@
     "src/**/*.ts",
     "LICENSE"
   ],
+  "engines": {
+    "node": ">=14"
+  },
   "devDependencies": {
     "@seneca/maintain": "^0.0.22",
     "@types/jest": "^27.4.1",
