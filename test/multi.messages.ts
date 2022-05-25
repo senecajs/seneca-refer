@@ -3,6 +3,7 @@ export default {
   pattern: 'biz:refer',
   allow: { missing: true },
   calls: [
+    //Create refer/point row for user
     {
       print: true,
       name: 'create-point',
@@ -81,6 +82,7 @@ export default {
       },
     },
 
+    // Creating: refer/entry referral records
     {
       print: true,
       name: 'create-multiple',
@@ -317,6 +319,7 @@ export default {
         ],
       },
     },
+
     // Validate new refer/occur records
     {
       print: true,
@@ -346,7 +349,8 @@ export default {
         },
       ],
     },
-    // Validate new all refer/reward updated
+
+    // Validate the refer/reward were updated
     {
       print: true,
       pattern: 'biz:null,role:entity,base:refer,name:reward,cmd:list',
