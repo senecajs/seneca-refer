@@ -35,13 +35,13 @@ describe('refer', () => {
     await SenecaMsgTest(seneca, LimitMessages)()
   })
 
-  // // Use seneca-msg-test for multiple referrals
-  //
-  // test('multi.messages', async () => {
-  //   const seneca = await makeSeneca()
-  //   await SenecaMsgTest(seneca, MultiMessages)()
-  // })
-  //
+  // Use seneca-msg-test for multiple referrals
+
+  test('multi.messages', async () => {
+    const seneca = await makeSeneca()
+    await SenecaMsgTest(seneca, MultiMessages)()
+  })
+
   // // Use seneca-msg-test for conflict referrals
   //
   // test('conflict.messages', async () => {
