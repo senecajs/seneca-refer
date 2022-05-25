@@ -30,6 +30,8 @@ describe('refer', () => {
     await SenecaMsgTest(seneca, BasicMessages)()
   })
 
+  // Use seneca-msg-test to test referrals limit
+
   test('limit.messages', async () => {
     const seneca = await makeSeneca()
     await SenecaMsgTest(seneca, LimitMessages)()

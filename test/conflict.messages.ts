@@ -28,7 +28,7 @@ export default {
 
     {
       print: true,
-      name: 'create-point',
+      name: 'create-point2',
       pattern: 'create:point',
       params: {
         user_id: 'u02',
@@ -50,7 +50,7 @@ export default {
 
     {
       print: true,
-      name: 'create-point',
+      name: 'create-point3',
       pattern: 'create:point',
       params: {
         user_id: 'u03',
@@ -72,7 +72,7 @@ export default {
 
     {
       print: true,
-      name: 'create-point',
+      name: 'create-point5',
       pattern: 'create:point',
       params: {
         user_id: 'u05',
@@ -98,8 +98,7 @@ export default {
       name: 'create-alice',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
-        user_id: 'u01',
-        kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
+        point_id: '`create-point:out.point.id`',
         email: 'alice@example.com',
       },
       out: {
@@ -124,8 +123,7 @@ export default {
       name: 'create-alice2',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
-        user_id: 'u02',
-        kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
+        point_id: '`create-point2:out.point.id`',
         email: 'alice@example.com',
       },
       out: {
@@ -150,8 +148,7 @@ export default {
       name: 'create-alice3',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
-        user_id: 'u03',
-        kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
+        point_id: '`create-point3:out.point.id`',
         email: 'alice@example.com',
       },
       out: {
@@ -260,8 +257,7 @@ export default {
       name: 'create-alice',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
-        user_id: 'u05',
-        kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
+        point_id: '`create-point5:out.point.id`',
         email: 'alice@example.com',
       },
       out: {
