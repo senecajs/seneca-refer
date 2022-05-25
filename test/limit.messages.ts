@@ -12,9 +12,6 @@ export default {
       params: {
         user_id: 'u01',
         kind: 'standard',
-        email: 'u01@example.com',
-        link: 'u01.com',
-        vanity_urls: ['myVanityUrl', 'myOtherVanityUrl'],
         limit: 2,
       },
       out: {
@@ -22,9 +19,6 @@ export default {
         point: {
           user_id: 'u01',
           kind: 'standard',
-          email: 'u01@example.com',
-          link: 'u01.com',
-          vanity_urls: ['myVanityUrl', 'myOtherVanityUrl'],
           limit: 2,
           remaining: 2,
         },
@@ -37,8 +31,7 @@ export default {
       name: 'create-alice',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
-        user_id: 'u01',
-        kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
+        point_id: '`create-point:out.point.id`',
         email: 'alice@example.com',
       },
       out: {
@@ -63,8 +56,7 @@ export default {
       name: 'create-alice2',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
-        user_id: 'u01',
-        kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
+        point_id: '`create-point:out.point.id`',
         email: 'alice2@example.com',
       },
       out: {
@@ -89,8 +81,7 @@ export default {
       name: 'create-alice3',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
-        user_id: 'u01',
-        kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
+        point_id: '`create-point:out.point.id`',
         email: 'alice3@example.com',
       },
       out: {
