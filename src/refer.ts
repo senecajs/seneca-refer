@@ -18,6 +18,7 @@ function refer(this: any, options: any) {
       email: msg.email,
       kind: 'accept',
     })
+
     if (!occur) {
       const entry = await seneca.entity('refer/entry').save$({
         user_id: msg.user_id,
@@ -42,6 +43,7 @@ function refer(this: any, options: any) {
         occur: [occur],
       }
     }
+
     return {
       ok: false,
       why: 'entry-invalid',
@@ -97,10 +99,12 @@ function refer(this: any, options: any) {
       email: msg.email,
       kind: 'create',
     })
+
     entryList.forEach((entry: any) => {
       if (entry.user_id === msg.userWinner) {
         return
       }
+
       seneca.entity('refer/occur').save$({
         user_id: entry.user_id,
         entry_kind: entry.entry_kind,
@@ -133,6 +137,7 @@ function refer(this: any, options: any) {
     }
 
     reward[msg.field] = reward[msg.field] + 1
+
     await reward.save$()
   }
 
@@ -171,6 +176,7 @@ function refer(this: any, options: any) {
             })
           }
         })
+
         seneca.sub(subpat, function (this: any, msg: any) {
           if (rule.where.kind === 'lost' && msg.q.kind === 'accept') {
             rule.call.forEach((callmsg: any) => {
@@ -185,6 +191,7 @@ function refer(this: any, options: any) {
       // else ignore as not yet implemented
     }
   }
+
   async function prepare(this: any) {
     const seneca = this
     await seneca.post('biz:refer,load:rules')
@@ -198,6 +205,7 @@ function refer(this: any, options: any) {
         delete canon[key]
       }
     })
+
     return {
       role: 'entity',
       cmd: rule.cmd,

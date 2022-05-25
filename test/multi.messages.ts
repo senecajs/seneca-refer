@@ -29,6 +29,7 @@ export default {
         ],
       },
     },
+
     {
       print: true,
       name: 'create-multiple2',
@@ -55,6 +56,7 @@ export default {
         ],
       },
     },
+
     {
       print: true,
       name: 'create-multiple3',
@@ -135,6 +137,7 @@ export default {
         },
       ],
     },
+
     // Validate all email were 'sent' (uses mock entity)
     {
       pattern: 'biz:null,role:entity,base:mock,name:email,cmd:list',
@@ -187,6 +190,7 @@ export default {
         ],
       },
     },
+
     {
       print: true,
       name: 'accept-multiple',
@@ -213,6 +217,7 @@ export default {
         ],
       },
     },
+
     {
       print: true,
       name: 'accept-multiple',
@@ -239,6 +244,7 @@ export default {
         ],
       },
     },
+
     // Validate new refer/occur records
     {
       print: true,
@@ -268,6 +274,7 @@ export default {
         },
       ],
     },
+
     // Validate new all refer/reward updated
     {
       print: true,
