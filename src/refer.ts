@@ -14,39 +14,40 @@ function refer(this: any, options: any) {
 
   async function actCreateEntry(this: any, msg: any) {
     const seneca = this
+
     let occur = await seneca.entity('refer/occur').load$({
       email: msg.email,
       kind: 'accept',
     })
 
-    if (!occur) {
-      const entry = await seneca.entity('refer/entry').save$({
-        user_id: msg.user_id,
-        kind: msg.kind,
-        email: msg.email,
-
-        // TODO: use a longer key!
-        key: this.util.Nid(), // unique key for this referral, used for validation
-      })
-
-      occur = await seneca.entity('refer/occur').save$({
-        user_id: msg.user_id,
-        entry_kind: msg.kind,
-        email: msg.email,
-        entry_id: entry.id,
-        kind: 'create',
-      })
-
+    if (occur) {
       return {
-        ok: true,
-        entry,
-        occur: [occur],
+        ok: false,
+        why: 'entry-invalid',
       }
     }
 
+    const entry = await seneca.entity('refer/entry').save$({
+      user_id: msg.user_id,
+      kind: msg.kind,
+      email: msg.email,
+
+      // TODO: use a longer key!
+      key: this.util.Nid(), // unique key for this referral, used for validation
+    })
+
+    occur = await seneca.entity('refer/occur').save$({
+      user_id: msg.user_id,
+      entry_kind: msg.kind,
+      email: msg.email,
+      entry_id: entry.id,
+      kind: 'create',
+    })
+
     return {
-      ok: false,
-      why: 'entry-invalid',
+      ok: true,
+      entry,
+      occur: [occur],
     }
   }
 
