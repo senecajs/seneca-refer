@@ -98,19 +98,19 @@ function refer(this: any, options: any) {
       kind: 'create',
     })
 
-    entryList.forEach((entry: any) => {
-      if (entry.user_id === msg.userWinner) {
-        return
+    for (let i = 0; i < entryList.length; i++) {
+      if (entryList[i].user_id === msg.userWinner) {
+        i++
       }
 
-      seneca.entity('refer/occur').save$({
-        user_id: entry.user_id,
-        entry_kind: entry.entry_kind,
+      await seneca.entity('refer/occur').save$({
+        user_id: entryList[i].user_id,
+        entry_kind: entryList[i].entry_kind,
         email: msg.email,
-        entry_id: entry.entry_id,
+        entry_id: entryList[i].entry_id,
         kind: 'lost',
       })
-    })
+    }
   }
 
   async function actRewardEntry(this: any, msg: any) {
