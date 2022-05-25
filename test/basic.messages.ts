@@ -6,6 +6,7 @@ export default {
   allow: { missing: true },
 
   calls: [
+    //Create refer/point row for user
     {
       print: true,
       name: 'create-point',
