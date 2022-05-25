@@ -23,7 +23,7 @@ function refer(this: any, options: any) {
     if (occur) {
       return {
         ok: false,
-        why: 'entry-invalid',
+        why: 'entry-exists',
       }
     }
 

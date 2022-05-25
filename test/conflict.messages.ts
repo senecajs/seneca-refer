@@ -178,7 +178,7 @@ export default {
       },
       out: {
         ok: false,
-        why: 'entry-invalid',
+        why: 'entry-exists',
       },
     },
   ],
