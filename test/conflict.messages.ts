@@ -3,6 +3,7 @@ export default {
   pattern: 'biz:refer',
   allow: { missing: true },
   calls: [
+    //Create refer/point row for user
     {
       print: true,
       name: 'create-point',
@@ -91,6 +92,7 @@ export default {
       },
     },
 
+    // Creating: refer/entry referral record
     {
       print: true,
       name: 'create-alice',
@@ -169,6 +171,7 @@ export default {
         ],
       },
     },
+
     // Accept referral from user 2
     {
       print: true,
@@ -196,6 +199,7 @@ export default {
         ],
       },
     },
+
     // Validate that only referral from user 2 have the status accepted
     {
       print: true,
@@ -211,7 +215,8 @@ export default {
         },
       ],
     },
-    // // Validate that the remaining referrals have the status equal to lost
+
+    // Validate that the remaining referrals have the status equal to lost
     {
       print: true,
       pattern: 'biz:null,role:entity,base:refer,name:occur,cmd:list',
@@ -233,6 +238,7 @@ export default {
         },
       ],
     },
+
     // try to accept a lost referral
     {
       print: true,
@@ -247,7 +253,8 @@ export default {
         why: 'entry-lost',
       },
     },
-    // try to referral a user
+
+    // try to referrer a user
     {
       print: true,
       name: 'create-alice',
