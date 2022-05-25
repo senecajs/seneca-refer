@@ -47,9 +47,6 @@ function refer(this: any, options: any) {
     return {
       ok: false,
       why: 'entry-invalid',
-      details: {
-        why_exactly: 'entry already a user',
-      },
     }
   }
 

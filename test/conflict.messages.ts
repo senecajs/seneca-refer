@@ -179,9 +179,6 @@ export default {
       out: {
         ok: false,
         why: 'entry-invalid',
-        details: {
-          why_exactly: 'entry already a user',
-        },
       },
     },
   ],
