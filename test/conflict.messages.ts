@@ -118,6 +118,7 @@ export default {
         ],
       },
     },
+
     {
       print: true,
       name: 'create-alice2',
@@ -143,6 +144,7 @@ export default {
         ],
       },
     },
+
     {
       print: true,
       name: 'create-alice3',
@@ -251,7 +253,7 @@ export default {
       },
     },
 
-    // try to referrer a user
+    // try to referral a user
     {
       print: true,
       name: 'create-alice',
@@ -262,10 +264,7 @@ export default {
       },
       out: {
         ok: false,
-        why: 'entry-invalid',
-        details: {
-          why_exactly: 'entry already a user',
-        },
+        why: 'entry-exists',
       },
     },
   ],

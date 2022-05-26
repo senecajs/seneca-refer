@@ -14,46 +14,35 @@ function refer(this: any, options: any) {
     .message('load:rules', actLoadRules)
     .prepare(prepare)
 
-  async function actCreatePoint(this: any, msg: any) {
-    const seneca = this
-
-    const point = await seneca.entity('refer/point').save$({
-      user_id: msg.user_id,
-      kind: msg.kind,
-      email: msg.email,
-      link: msg.link,
-      vanity_urls: msg.vanity_urls,
-      limit: msg.limit,
-      remaining: msg.limit,
-    })
-
-    return {
-      ok: true,
-      point,
-    }
-  }
-
   async function actCreateEntry(this: any, msg: any) {
     const seneca = this
+
     let occur = await seneca.entity('refer/occur').load$({
       email: msg.email,
       kind: 'accept',
     })
-    if (!occur) {
-      let point = await seneca.entity('refer/point').load$({
-        id: msg.point_id,
+
+    if (occur) {
+      return {
+        ok: false,
+        why: 'entry-exists',
+      }
+    }
+
+    let point = await seneca.entity('refer/point').load$({
+      id: msg.point_id,
+    })
+
+    if (point.remaining <= point.limit && point.remaining != 0) {
+      const entry = await seneca.entity('refer/entry').save$({
+        user_id: point.user_id,
+        kind: point.kind,
+        email: msg.email,
+        point_id: point.id,
+
+        // TODO: use a longer key!
+        key: this.util.Nid(), // unique key for this referral, used for validation
       })
-
-      if (point.remaining <= point.limit && point.remaining != 0) {
-        const entry = await seneca.entity('refer/entry').save$({
-          user_id: point.user_id,
-          kind: point.kind,
-          email: msg.email,
-          point_id: point.id,
-
-          // TODO: use a longer key!
-          key: this.util.Nid(), // unique key for this referral, used for validation
-        })
 
         occur = await seneca.entity('refer/occur').save$({
           user_id: point.user_id,
@@ -63,19 +52,11 @@ function refer(this: any, options: any) {
           kind: 'create',
         })
 
-        return {
-          ok: true,
-          entry,
-          occur: [occur],
-        }
+      return {
+        ok: true,
+        entry,
+        occur: [occur],
       }
-    }
-    return {
-      ok: false,
-      why: 'entry-invalid',
-      details: {
-        why_exactly: 'entry already a user',
-      },
     }
   }
 
@@ -136,18 +117,20 @@ function refer(this: any, options: any) {
       email: msg.email,
       kind: 'create',
     })
-    entryList.forEach((entry: any) => {
-      if (entry.user_id === msg.userWinner) {
-        return
+
+    for (let i = 0; i < entryList.length; i++) {
+      if (entryList[i].user_id === msg.userWinner) {
+        i++
       }
-      seneca.entity('refer/occur').save$({
-        user_id: entry.user_id,
-        entry_kind: entry.entry_kind,
+
+      await seneca.entity('refer/occur').save$({
+        user_id: entryList[i].user_id,
+        entry_kind: entryList[i].entry_kind,
         email: msg.email,
-        entry_id: entry.entry_id,
+        entry_id: entryList[i].entry_id,
         kind: 'lost',
       })
-    })
+    }
   }
 
   async function actRewardEntry(this: any, msg: any) {
@@ -172,6 +155,7 @@ function refer(this: any, options: any) {
     }
 
     reward[msg.field] = reward[msg.field] + 1
+
     await reward.save$()
   }
 
@@ -225,6 +209,7 @@ function refer(this: any, options: any) {
             })
           }
         })
+
         seneca.sub(subpat, function (this: any, msg: any) {
           if (rule.where.kind === 'lost' && msg.q.kind === 'accept') {
             rule.call.forEach((callmsg: any) => {
@@ -235,6 +220,7 @@ function refer(this: any, options: any) {
             })
           }
         })
+
         seneca.sub(subpat, function (this: any, msg: any) {
           if (rule.where.kind === 'limit' && msg.q.kind === 'accept') {
             rule.call.forEach((callmsg: any) => {
@@ -250,6 +236,7 @@ function refer(this: any, options: any) {
       // else ignore as not yet implemented
     }
   }
+
   async function prepare(this: any) {
     const seneca = this
     await seneca.post('biz:refer,load:rules')
@@ -263,6 +250,7 @@ function refer(this: any, options: any) {
         delete canon[key]
       }
     })
+
     return {
       role: 'entity',
       cmd: rule.cmd,

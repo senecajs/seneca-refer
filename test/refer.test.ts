@@ -100,6 +100,7 @@ async function makeBasicRules(seneca: any) {
       },
     ],
   })
+
   await seneca.entity('refer/rule').save$({
     ent: 'refer/occur',
     cmd: 'save',

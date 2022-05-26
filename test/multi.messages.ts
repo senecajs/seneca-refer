@@ -94,6 +94,7 @@ export default {
         ],
       },
     },
+
     {
       print: true,
       name: 'create-multiple2',
@@ -119,6 +120,7 @@ export default {
         ],
       },
     },
+
     {
       print: true,
       name: 'create-multiple3',
@@ -255,6 +257,7 @@ export default {
         ],
       },
     },
+
     {
       print: true,
       name: 'accept-multiple',
@@ -339,7 +342,7 @@ export default {
       ],
     },
 
-    // Validate the refer/reward were updated
+    // Validate new all refer/reward updated
     {
       print: true,
       pattern: 'biz:null,role:entity,base:refer,name:reward,cmd:list',
