@@ -5,33 +5,12 @@ function refer(this: any, options: any) {
 
   seneca
     .fix('biz:refer')
-    .message('create:point', actCreatePoint)
     .message('create:entry', actCreateEntry)
     .message('accept:entry', actAcceptEntry)
     .message('lost:entry', actLostEntry)
     .message('give:award', actRewardEntry)
-    .message('update:point', actUpdatePoint)
     .message('load:rules', actLoadRules)
     .prepare(prepare)
-
-  async function actCreatePoint(this: any, msg: any) {
-    const seneca = this
-
-    const point = await seneca.entity('refer/point').save$({
-      user_id: msg.user_id,
-      kind: msg.kind,
-      email: msg.email,
-      link: msg.link,
-      vanity_urls: msg.vanity_urls,
-      limit: msg.limit,
-      remaining: msg.limit,
-    })
-
-    return {
-      ok: true,
-      point,
-    }
-  }
 
   async function actCreateEntry(this: any, msg: any) {
     const seneca = this
@@ -48,34 +27,35 @@ function refer(this: any, options: any) {
       }
     }
 
-    let point = await seneca.entity('refer/point').load$({
-      id: msg.point_id,
+    // let point = await seneca.entity('refer/point').load$({
+    //   id: msg.point_id,
+    // })
+    //
+    // if (point.remaining > point.limit || point.remaining === 0) {
+    //   return
+    // }
+
+    const entry = await seneca.entity('refer/entry').save$({
+      user_id: msg.user_id,
+      kind: msg.kind,
+      email: msg.email,
+
+      // TODO: use a longer key!
+      key: this.util.Nid(), // unique key for this referral, used for validation
     })
 
-    if (point.remaining <= point.limit && point.remaining != 0) {
-      const entry = await seneca.entity('refer/entry').save$({
-        user_id: point.user_id,
-        kind: point.kind,
-        email: msg.email,
-        point_id: point.id,
+    occur = await seneca.entity('refer/occur').save$({
+      user_id: msg.user_id,
+      entry_kind: msg.kind,
+      email: msg.email,
+      entry_id: entry.id,
+      kind: 'create',
+    })
 
-        // TODO: use a longer key!
-        key: this.util.Nid(), // unique key for this referral, used for validation
-      })
-
-      occur = await seneca.entity('refer/occur').save$({
-        user_id: point.user_id,
-        entry_kind: point.kind,
-        email: msg.email,
-        entry_id: entry.id,
-        kind: 'create',
-      })
-
-      return {
-        ok: true,
-        entry,
-        occur: [occur],
-      }
+    return {
+      ok: true,
+      entry,
+      occur: [occur],
     }
   }
 
@@ -88,17 +68,6 @@ function refer(this: any, options: any) {
       return {
         ok: false,
         why: 'entry-unknown',
-      }
-    }
-
-    const { remaining } = await seneca
-      .entity('refer/point')
-      .load$({ user_id: entry.user_id, kind: entry.entry_kind })
-
-    if (remaining === 0) {
-      return {
-        ok: false,
-        why: 'exceed-limit',
       }
     }
 
@@ -155,12 +124,16 @@ function refer(this: any, options: any) {
   async function actRewardEntry(this: any, msg: any) {
     const seneca = this
 
-    const entry = await seneca.entity('refer/occur').load$({
+    const occur = await seneca.entity('refer/occur').load$({
       entry_id: msg.entry_id,
     })
 
+    // if(occur.remaining === 0){
+    //
+    // }
+
     let reward = await this.entity('refer/reward').load$({
-      entry_id: entry.id,
+      entry_id: occur.id,
     })
 
     if (!reward) {
@@ -174,23 +147,8 @@ function refer(this: any, options: any) {
     }
 
     reward[msg.field] = reward[msg.field] + 1
-
+    reward['remaining'] = msg.limit - reward.count
     await reward.save$()
-  }
-
-  async function actUpdatePoint(this: any, msg: any) {
-    const seneca = this
-
-    const point = await seneca.entity('refer/point').load$({
-      user_id: msg.user_id,
-      kind: msg.entry_kind,
-    })
-
-    if (point.remaining === 0) return
-
-    await point.save$({
-      remaining: point.remaining - 1,
-    })
   }
 
   async function actLoadRules(this: any, msg: any) {
@@ -235,18 +193,6 @@ function refer(this: any, options: any) {
               callmsg.ent = seneca.entity(rule.ent)
               callmsg.email = msg.q.email
               callmsg.userWinner = msg.q.user_id
-              this.act(callmsg)
-            })
-          }
-        })
-
-        seneca.sub(subpat, function (this: any, msg: any) {
-          if (rule.where.kind === 'limit' && msg.q.kind === 'accept') {
-            rule.call.forEach((callmsg: any) => {
-              callmsg.ent = seneca.entity(rule.ent)
-              callmsg.user_id = msg.q.user_id
-              callmsg.entry_kind = msg.q.entry_kind
-              callmsg.entry_id = msg.q.entry_id
               this.act(callmsg)
             })
           }
