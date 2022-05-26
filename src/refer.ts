@@ -14,6 +14,25 @@ function refer(this: any, options: any) {
     .message('load:rules', actLoadRules)
     .prepare(prepare)
 
+  async function actCreatePoint(this: any, msg: any) {
+    const seneca = this
+
+    const point = await seneca.entity('refer/point').save$({
+      user_id: msg.user_id,
+      kind: msg.kind,
+      email: msg.email,
+      link: msg.link,
+      vanity_urls: msg.vanity_urls,
+      limit: msg.limit,
+      remaining: msg.limit,
+    })
+
+    return {
+      ok: true,
+      point,
+    }
+  }
+
   async function actCreateEntry(this: any, msg: any) {
     const seneca = this
 
@@ -44,13 +63,13 @@ function refer(this: any, options: any) {
         key: this.util.Nid(), // unique key for this referral, used for validation
       })
 
-        occur = await seneca.entity('refer/occur').save$({
-          user_id: point.user_id,
-          entry_kind: point.kind,
-          email: msg.email,
-          entry_id: entry.id,
-          kind: 'create',
-        })
+      occur = await seneca.entity('refer/occur').save$({
+        user_id: point.user_id,
+        entry_kind: point.kind,
+        email: msg.email,
+        entry_id: entry.id,
+        kind: 'create',
+      })
 
       return {
         ok: true,
