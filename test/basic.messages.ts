@@ -6,26 +6,6 @@ export default {
   allow: { missing: true },
 
   calls: [
-    //Create refer/point row for user
-    {
-      print: true,
-      name: 'create-point',
-      pattern: 'create:point',
-      params: {
-        user_id: 'u01',
-        kind: 'standard',
-        limit: 2,
-      },
-      out: {
-        ok: true,
-        point: {
-          user_id: 'u01',
-          kind: 'standard',
-          limit: 2,
-          remaining: 2,
-        },
-      },
-    },
     // User with id=u01 sends referral to friend alice@example.com
     // Creating:
     //   - refer/entry referral record
@@ -38,7 +18,8 @@ export default {
       name: 'create-alice',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
-        point_id: '`create-point:out.point.id`',
+        user_id: 'u01',
+        kind: 'standard',
         email: 'alice@example.com',
       },
       out: {
@@ -72,7 +53,6 @@ export default {
           user_id: 'u01',
           kind: 'standard',
           email: 'alice@example.com',
-          point_id: '`create-point:out.point.id`',
         },
       ],
     },
@@ -162,22 +142,6 @@ export default {
         kind: 'accept',
         award: 'incr',
         count: 1, // alice@example.com accepted
-      },
-    },
-
-    // Validate number of remaining referrals
-    {
-      print: true,
-      pattern: 'biz:null,role:entity,base:refer,name:point,cmd:load',
-      params: {
-        q: {
-          user_id: 'u01',
-        },
-      },
-      out: {
-        user_id: 'u01',
-        kind: 'standard',
-        limit: 2,
         remaining: 1,
       },
     },
