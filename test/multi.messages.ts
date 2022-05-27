@@ -3,78 +3,14 @@ export default {
   pattern: 'biz:refer',
   allow: { missing: true },
   calls: [
-    //Create refer/point row for user
-    {
-      print: true,
-      name: 'create-point',
-      pattern: 'create:point',
-      params: {
-        user_id: 'u01',
-        kind: 'standard',
-        limit: 2,
-      },
-      out: {
-        ok: true,
-        point: {
-          user_id: 'u01',
-          kind: 'standard',
-          limit: 2,
-          remaining: 2,
-        },
-      },
-    },
-
-    {
-      print: true,
-      name: 'create-point2',
-      pattern: 'create:point',
-      params: {
-        user_id: 'u02',
-        kind: 'special',
-        link: 'u02.com',
-        vanity_urls: ['myVanityUrl2', 'myOtherVanityUrl2'],
-        limit: 3,
-      },
-      out: {
-        ok: true,
-        point: {
-          user_id: 'u02',
-          kind: 'special',
-          link: 'u02.com',
-          vanity_urls: ['myVanityUrl2', 'myOtherVanityUrl2'],
-          limit: 3,
-          remaining: 3,
-        },
-      },
-    },
-
-    {
-      print: true,
-      name: 'create-point3',
-      pattern: 'create:point',
-      params: {
-        user_id: 'u03',
-        kind: 'standard',
-        limit: 2,
-      },
-      out: {
-        ok: true,
-        point: {
-          user_id: 'u03',
-          kind: 'standard',
-          limit: 2,
-          remaining: 2,
-        },
-      },
-    },
-
     // Creating: refer/entry referral records
     {
       print: true,
       name: 'create-multiple',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
-        point_id: '`create-point:out.point.id`',
+        user_id: 'u01',
+        kind: 'standard',
         email: 'alice@example.com',
       },
       out: {
@@ -100,7 +36,8 @@ export default {
       name: 'create-multiple2',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
-        point_id: '`create-point2:out.point.id`',
+        user_id: 'u02',
+        kind: 'special',
         email: 'johndoe@example.com',
       },
       out: {
@@ -126,7 +63,8 @@ export default {
       name: 'create-multiple3',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
-        point_id: '`create-point3:out.point.id`',
+        user_id: 'u03',
+        kind: 'standard',
         email: 'foo@example.com',
       },
       out: {
@@ -135,7 +73,6 @@ export default {
           user_id: 'u03', // _id suffix for foreign keys
           kind: 'standard',
           email: 'foo@example.com',
-          point_id: '`create-point3:out.point.id`',
         },
         occur: [
           {
@@ -158,21 +95,18 @@ export default {
           user_id: 'u01',
           kind: 'standard',
           email: 'alice@example.com',
-          point_id: '`create-point:out.point.id`',
         },
         {
           id: '`create-multiple2:out.entry.id`',
           user_id: 'u02',
           kind: 'special',
           email: 'johndoe@example.com',
-          point_id: '`create-point2:out.point.id`',
         },
         {
           id: '`create-multiple3:out.entry.id`',
           user_id: 'u03',
           kind: 'standard',
           email: 'foo@example.com',
-          point_id: '`create-point3:out.point.id`',
         },
       ],
     },
@@ -353,6 +287,7 @@ export default {
           kind: 'accept',
           award: 'incr',
           count: 1,
+          remaining: 2,
         },
         {
           entry_id: '`create-multiple2:out.entry.id`',
@@ -360,6 +295,7 @@ export default {
           kind: 'accept',
           award: 'incr',
           count: 1,
+          remaining: 2,
         },
         {
           entry_id: '`create-multiple3:out.entry.id`',
@@ -367,6 +303,7 @@ export default {
           kind: 'accept',
           award: 'incr',
           count: 1,
+          remaining: 2,
         },
       ],
     },
