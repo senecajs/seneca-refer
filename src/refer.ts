@@ -124,31 +124,50 @@ function refer(this: any, options: any) {
   async function actRewardEntry(this: any, msg: any) {
     const seneca = this
 
-    const occur = await seneca.entity('refer/occur').load$({
-      entry_id: msg.entry_id,
-    })
+    // const occur = await seneca.entity('refer/occur').load$({
+    //   entry_id: msg.entry_id,
+    // })
 
     // if(occur.remaining === 0){
     //
     // }
 
-    let reward = await this.entity('refer/reward').load$({
-      entry_id: occur.id,
+    // let reward = await this.entity('refer/reward').list$({
+    //   $sort$: {
+    //     id: -1,
+    //   },
+    // })
+    let rewardList = await this.entity('refer/reward').list$({
+      user_id: msg.user_id,
+      entry_kind: msg.entry_kind,
     })
 
-    if (!reward) {
-      reward = seneca.make('refer/reward', {
+    if (rewardList.length === 0) {
+      let reward = seneca.make('refer/reward', {
         entry_id: msg.entry_id,
         entry_kind: msg.entry_kind,
         kind: msg.kind,
         award: msg.award,
+        user_id: msg.user_id,
       })
       reward[msg.field] = 0
-    }
+      reward[msg.field] = reward[msg.field] + 1
+      reward['remaining'] = msg.limit - reward.count
+      await reward.save$()
+    } else {
+      const count = rewardList[rewardList.length - 1].count
 
-    reward[msg.field] = reward[msg.field] + 1
-    reward['remaining'] = msg.limit - reward.count
-    await reward.save$()
+      let newReward = seneca.make('refer/reward', {
+        entry_id: msg.entry_id,
+        entry_kind: msg.entry_kind,
+        kind: msg.kind,
+        award: msg.award,
+        user_id: msg.user_id,
+      })
+      newReward[msg.field] = count + 1
+      newReward['remaining'] = msg.limit - newReward.count
+      await newReward.save$()
+    }
   }
 
   async function actLoadRules(this: any, msg: any) {
@@ -176,11 +195,12 @@ function refer(this: any, options: any) {
         })
 
         seneca.sub(subpat, function (this: any, msg: any) {
-          if (rule.where.kind === 'accept') {
+          if (rule.where.kind === 'accept' && msg.q.kind === 'accept') {
             rule.call.forEach((callmsg: any) => {
               callmsg.ent = seneca.entity(rule.ent)
               callmsg.entry_id = msg.q.entry_id
               callmsg.entry_kind = msg.q.entry_kind
+              callmsg.user_id = msg.q.user_id
 
               this.act(callmsg)
             })
