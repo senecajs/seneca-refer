@@ -138,11 +138,11 @@ function refer(this: any, options: any) {
     })
     if (rewardList.length === 0) {
       reward[msg.field] = 1
-      reward['remaining'] = msg.limit - reward.count
+      reward['remaining'] = msg.limit - reward[msg.field]
     } else {
-      const count = rewardList[rewardList.length - 1].count
-      reward[msg.field] = count + 1
-      reward['remaining'] = msg.limit - reward.count
+      const amountIncreased = rewardList[rewardList.length - 1][msg.field]
+      reward[msg.field] = amountIncreased + 1
+      reward['remaining'] = msg.limit - reward[msg.field]
     }
     await reward.save$()
   }
