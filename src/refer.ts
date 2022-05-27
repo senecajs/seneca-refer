@@ -88,9 +88,9 @@ function refer(this: any, options: any) {
       entry_kind: entry.kind,
     })
     if (rewardList.length > 0) {
-      const myCount = rewardList[rewardList.length - 1]
+      const lastReward = rewardList[rewardList.length - 1]
 
-      if (myCount.remaining === 0) {
+      if (lastReward.remaining === 0) {
         return {
           ok: false,
           why: 'limit-exceed',

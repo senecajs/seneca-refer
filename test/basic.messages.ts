@@ -142,7 +142,7 @@ export default {
         kind: 'accept',
         award: 'incr',
         count: 1, // alice@example.com accepted
-        remaining: 1,
+        remaining: 2,
       },
     },
 
