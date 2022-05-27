@@ -124,50 +124,27 @@ function refer(this: any, options: any) {
   async function actRewardEntry(this: any, msg: any) {
     const seneca = this
 
-    // const occur = await seneca.entity('refer/occur').load$({
-    //   entry_id: msg.entry_id,
-    // })
-
-    // if(occur.remaining === 0){
-    //
-    // }
-
-    // let reward = await this.entity('refer/reward').list$({
-    //   $sort$: {
-    //     id: -1,
-    //   },
-    // })
-    let rewardList = await this.entity('refer/reward').list$({
+    const rewardList = await seneca.entity('refer/reward').list$({
       user_id: msg.user_id,
       entry_kind: msg.entry_kind,
     })
 
+    let reward = seneca.make('refer/reward', {
+      entry_id: msg.entry_id,
+      entry_kind: msg.entry_kind,
+      kind: msg.kind,
+      award: msg.award,
+      user_id: msg.user_id,
+    })
     if (rewardList.length === 0) {
-      let reward = seneca.make('refer/reward', {
-        entry_id: msg.entry_id,
-        entry_kind: msg.entry_kind,
-        kind: msg.kind,
-        award: msg.award,
-        user_id: msg.user_id,
-      })
-      reward[msg.field] = 0
-      reward[msg.field] = reward[msg.field] + 1
+      reward[msg.field] = 1
       reward['remaining'] = msg.limit - reward.count
-      await reward.save$()
     } else {
       const count = rewardList[rewardList.length - 1].count
-
-      let newReward = seneca.make('refer/reward', {
-        entry_id: msg.entry_id,
-        entry_kind: msg.entry_kind,
-        kind: msg.kind,
-        award: msg.award,
-        user_id: msg.user_id,
-      })
-      newReward[msg.field] = count + 1
-      newReward['remaining'] = msg.limit - newReward.count
-      await newReward.save$()
+      reward[msg.field] = count + 1
+      reward['remaining'] = msg.limit - reward.count
     }
+    await reward.save$()
   }
 
   async function actLoadRules(this: any, msg: any) {
