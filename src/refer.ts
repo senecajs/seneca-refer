@@ -83,6 +83,21 @@ function refer(this: any, options: any) {
       }
     }
 
+    const rewardList = await seneca.entity('refer/reward').list$({
+      user_id: msg.user_id,
+      entry_kind: entry.kind,
+    })
+    if (rewardList.length > 0) {
+      const myCount = rewardList[rewardList.length - 1]
+
+      if (myCount.remaining === 0) {
+        return {
+          ok: false,
+          why: 'limit-exceed',
+        }
+      }
+    }
+
     const occur = await seneca.entity('refer/occur').save$({
       user_id: msg.user_id,
       entry_kind: entry.kind,

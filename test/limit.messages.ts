@@ -256,7 +256,6 @@ export default {
       },
     },
 
-    // { print: true, pattern: 'biz:null,role:mem-store,cmd:dump' },
     //Validate the remaining is properly updated
     {
       print: true,
@@ -276,19 +275,31 @@ export default {
         },
       ],
     },
-    // // Validate referral accepted above the limit
-    // {
-    //   print: true,
-    //   name: 'accept-alice',
-    //   pattern: 'accept:entry',
-    //   params: {
-    //     key: '`create-alice3:out.entry.key`',
-    //     user_id: 'u01',
-    //   },
-    //   out: {
-    //     ok: false,
-    //     why: 'exceed-limit',
-    //   },
-    // },
+
+    // Validate referral isn't accepted above the limit
+    {
+      print: true,
+      name: 'create-alice6',
+      pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
+      params: {
+        user_id: 'u01', // _id suffix for foreign keys
+        kind: 'standard',
+        email: 'alice6@example.com',
+      },
+    },
+
+    {
+      print: true,
+      name: 'accept-alice',
+      pattern: 'accept:entry',
+      params: {
+        key: '`create-alice6:out.entry.key`',
+        user_id: 'u01',
+      },
+      out: {
+        ok: false,
+        why: 'limit-exceed',
+      },
+    },
   ],
 }
