@@ -181,15 +181,17 @@ function refer(this: any, options: any) {
 
         seneca.sub(subpat, function (this: any, msg: any) {
           if (rule.where.kind === 'accept' && msg.q.kind === 'accept') {
-            rule.call.forEach((callmsg: any) => {
-              callmsg.ent = seneca.entity(rule.ent)
-              callmsg.entry_id = msg.q.entry_id
-              callmsg.entry_kind = msg.q.entry_kind
-              callmsg.user_id = msg.q.user_id
-              callmsg.email = msg.q.email
+            if (rule.where.entry_kind === msg.q.entry_kind) {
+              rule.call.forEach((callmsg: any) => {
+                callmsg.ent = seneca.entity(rule.ent)
+                callmsg.entry_id = msg.q.entry_id
+                callmsg.entry_kind = msg.q.entry_kind
+                callmsg.user_id = msg.q.user_id
+                callmsg.email = msg.q.email
 
-              this.act(callmsg)
-            })
+                this.act(callmsg)
+              })
+            }
           }
         })
 
