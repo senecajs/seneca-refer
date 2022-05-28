@@ -37,20 +37,20 @@ export default {
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
         user_id: 'u02',
-        kind: 'special',
+        kind: 'standard',
         email: 'johndoe@example.com',
       },
       out: {
         ok: true,
         entry: {
           user_id: 'u02', // _id suffix for foreign keys
-          kind: 'special',
+          kind: 'standard',
           email: 'johndoe@example.com',
         },
         occur: [
           {
             user_id: 'u02',
-            entry_kind: 'special',
+            entry_kind: 'standard',
             kind: 'create',
             email: 'johndoe@example.com',
           },
@@ -99,7 +99,7 @@ export default {
         {
           id: '`create-multiple2:out.entry.id`',
           user_id: 'u02',
-          kind: 'special',
+          kind: 'standard',
           email: 'johndoe@example.com',
         },
         {
@@ -125,7 +125,7 @@ export default {
         {
           id: '`create-multiple2:out.occur[0].id`',
           entry_id: '`create-multiple2:out.entry.id`',
-          entry_kind: 'special',
+          entry_kind: 'standard',
           kind: 'create',
           email: 'johndoe@example.com',
         },
@@ -204,12 +204,12 @@ export default {
         ok: true,
         entry: {
           user_id: 'u02',
-          kind: 'special',
+          kind: 'standard',
           email: 'johndoe@example.com',
         },
         occur: [
           {
-            entry_kind: 'special',
+            entry_kind: 'standard',
             entry_id: '`create-multiple2:out.entry.id`',
             email: 'johndoe@example.com',
             user_id: 'u02',
@@ -260,7 +260,7 @@ export default {
           kind: 'accept',
         },
         {
-          entry_kind: 'special',
+          entry_kind: 'standard',
           entry_id: '`create-multiple2:out.entry.id`',
           email: 'johndoe@example.com',
           user_id: 'u02',
@@ -291,7 +291,7 @@ export default {
         },
         {
           entry_id: '`create-multiple2:out.entry.id`',
-          entry_kind: 'special',
+          entry_kind: 'standard',
           kind: 'accept',
           award: 'incr',
           count: 1,

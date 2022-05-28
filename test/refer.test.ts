@@ -7,10 +7,10 @@ import SenecaMsgTest from 'seneca-msg-test'
 import ReferDoc from '../src/refer-doc'
 import Refer from '../src/refer'
 
-import BasicMessages from './basic.messages'
-import LimitMessages from './limit.messages'
-import MultiMessages from './multi.messages'
-import ConflictMessages from './conflict.messages'
+import BasicMessages from './standard/basic.messages'
+import LimitMessages from './standard/limit.messages'
+import MultiMessages from './standard/multi.messages'
+import ConflictMessages from './standard/conflict.messages'
 
 describe('refer', () => {
   test('happy', async () => {
