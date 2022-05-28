@@ -3,102 +3,14 @@ export default {
   pattern: 'biz:refer',
   allow: { missing: true },
   calls: [
-    //Create refer/point row for user
-    {
-      print: true,
-      name: 'create-point',
-      pattern: 'create:point',
-      params: {
-        user_id: 'u01',
-        kind: 'standard',
-        email: 'u01@example.com',
-        limit: 2,
-      },
-      out: {
-        ok: true,
-        point: {
-          user_id: 'u01',
-          kind: 'standard',
-          email: 'u01@example.com',
-          limit: 2,
-          remaining: 2,
-        },
-      },
-    },
-
-    {
-      print: true,
-      name: 'create-point2',
-      pattern: 'create:point',
-      params: {
-        user_id: 'u02',
-        kind: 'standard',
-        email: 'u02@example.com',
-        limit: 2,
-      },
-      out: {
-        ok: true,
-        point: {
-          user_id: 'u02',
-          kind: 'standard',
-          email: 'u02@example.com',
-          limit: 2,
-          remaining: 2,
-        },
-      },
-    },
-
-    {
-      print: true,
-      name: 'create-point3',
-      pattern: 'create:point',
-      params: {
-        user_id: 'u03',
-        kind: 'standard',
-        email: 'u03@example.com',
-        limit: 2,
-      },
-      out: {
-        ok: true,
-        point: {
-          user_id: 'u03',
-          kind: 'standard',
-          email: 'u03@example.com',
-          limit: 2,
-          remaining: 2,
-        },
-      },
-    },
-
-    {
-      print: true,
-      name: 'create-point5',
-      pattern: 'create:point',
-      params: {
-        user_id: 'u05',
-        kind: 'standard',
-        email: 'u03@example.com',
-        limit: 2,
-      },
-      out: {
-        ok: true,
-        point: {
-          user_id: 'u05',
-          kind: 'standard',
-          email: 'u03@example.com',
-          limit: 2,
-          remaining: 2,
-        },
-      },
-    },
-
     // Creating: refer/entry referral record
     {
       print: true,
       name: 'create-alice',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
-        point_id: '`create-point:out.point.id`',
+        user_id: 'u01',
+        kind: 'standard',
         email: 'alice@example.com',
       },
       out: {
@@ -124,7 +36,8 @@ export default {
       name: 'create-alice2',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
-        point_id: '`create-point2:out.point.id`',
+        user_id: 'u02',
+        kind: 'standard',
         email: 'alice@example.com',
       },
       out: {
@@ -150,7 +63,8 @@ export default {
       name: 'create-alice3',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
-        point_id: '`create-point3:out.point.id`',
+        user_id: 'u03',
+        kind: 'standard',
         email: 'alice@example.com',
       },
       out: {
@@ -259,7 +173,8 @@ export default {
       name: 'create-alice',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
-        point_id: '`create-point5:out.point.id`',
+        user_id: 'u05',
+        kind: 'standard',
         email: 'alice@example.com',
       },
       out: {
