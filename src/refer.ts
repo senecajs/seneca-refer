@@ -27,14 +27,6 @@ function refer(this: any, options: any) {
       }
     }
 
-    // let point = await seneca.entity('refer/point').load$({
-    //   id: msg.point_id,
-    // })
-    //
-    // if (point.remaining > point.limit || point.remaining === 0) {
-    //   return
-    // }
-
     const entry = await seneca.entity('refer/entry').save$({
       user_id: msg.user_id,
       kind: msg.kind,
@@ -148,6 +140,7 @@ function refer(this: any, options: any) {
       entry_id: msg.entry_id,
       entry_kind: msg.entry_kind,
       kind: msg.kind,
+      email: msg.email,
       award: msg.award,
       user_id: msg.user_id,
     })
@@ -193,6 +186,7 @@ function refer(this: any, options: any) {
               callmsg.entry_id = msg.q.entry_id
               callmsg.entry_kind = msg.q.entry_kind
               callmsg.user_id = msg.q.user_id
+              callmsg.email = msg.q.email
 
               this.act(callmsg)
             })
@@ -200,11 +194,11 @@ function refer(this: any, options: any) {
         })
 
         seneca.sub(subpat, function (this: any, msg: any) {
-          if (rule.where.kind === 'lost' && msg.q.kind === 'accept') {
+          if (rule.where.kind === 'lost' && msg.ent.kind === 'accept') {
             rule.call.forEach((callmsg: any) => {
               callmsg.ent = seneca.entity(rule.ent)
-              callmsg.email = msg.q.email
-              callmsg.userWinner = msg.q.user_id
+              callmsg.email = msg.ent.email
+              callmsg.userWinner = msg.ent.user_id
               this.act(callmsg)
             })
           }
