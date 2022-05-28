@@ -11,7 +11,6 @@ import BasicMessages from './basic.messages'
 import LimitMessages from './limit.messages'
 import MultiMessages from './multi.messages'
 import ConflictMessages from './conflict.messages'
-import SpecialMessages from './special.messages'
 
 describe('refer', () => {
   test('happy', async () => {
@@ -50,13 +49,6 @@ describe('refer', () => {
   test('conflict.messages', async () => {
     const seneca = await makeSeneca()
     await SenecaMsgTest(seneca, ConflictMessages)()
-  })
-
-  // Use seneca-msg-test for special referrals
-
-  test('special.messages', async () => {
-    const seneca = await makeSeneca()
-    await SenecaMsgTest(seneca, SpecialMessages)()
   })
 
   // test('maintain', Maintain)
@@ -110,24 +102,14 @@ async function makeBasicRules(seneca: any) {
         kind: 'accept',
         award: 'incr',
         field: 'count',
+        limit: 3,
         give: 'award',
         biz: 'refer',
       },
     ],
   })
   await seneca.entity('refer/rule').save$({
-    ent: 'refer/occur',
-    cmd: 'save',
-    where: { kind: 'limit' },
-    call: [
-      {
-        update: 'point',
-        biz: 'refer',
-      },
-    ],
-  })
-  await seneca.entity('refer/rule').save$({
-    ent: 'refer/occur',
+    ent: 'refer/reward',
     cmd: 'save',
     where: { kind: 'lost' },
     call: [
