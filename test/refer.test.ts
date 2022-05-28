@@ -12,6 +12,7 @@ import LimitMessages from './standard/limit.messages'
 import MultiMessages from './standard/multi.messages'
 import ConflictMessages from './standard/conflict.messages'
 import SpecialMessages from './special/special.messages'
+import SpecialLimitMessages from './special/special.limit.messages'
 
 describe('refer', () => {
   test('happy', async () => {
@@ -57,6 +58,13 @@ describe('refer', () => {
   test('special.messages', async () => {
     const seneca = await makeSeneca()
     await SenecaMsgTest(seneca, SpecialMessages)()
+  })
+
+  // Use seneca-msg-test to test special referrals limit
+
+  test('special.limit.messages', async () => {
+    const seneca = await makeSeneca()
+    await SenecaMsgTest(seneca, SpecialLimitMessages)()
   })
 
   // test('maintain', Maintain)
