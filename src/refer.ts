@@ -165,7 +165,7 @@ function refer(this: any, options: any) {
   async function actRewardPrizeEntry(this: any, msg: any) {
     const seneca = this
 
-    let reward = await seneca.entity('refer/reward').load$({
+    const reward = await seneca.entity('refer/reward').load$({
       entry_id: msg.entry_id,
     })
 
@@ -191,12 +191,12 @@ function refer(this: any, options: any) {
       return
     }
 
-    let rewardList = await seneca.entity('refer/reward').list$({
+    const rewardList = await seneca.entity('refer/reward').list$({
       user_id: msg.user_id,
       entry_kind: msg.entry_kind,
     })
 
-    let reward = await seneca.entity('refer/reward').load$({
+    const reward = await seneca.entity('refer/reward').load$({
       entry_id: msg.entry_id,
     })
 
