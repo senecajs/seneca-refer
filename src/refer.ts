@@ -100,7 +100,7 @@ function refer(this: any, options: any) {
 
     for (let i = 0; i < entryList.length; i++) {
       if (entryList[i].user_id === msg.userWinner) {
-        i++
+        break
       }
 
       await seneca.entity('refer/occur').save$({
