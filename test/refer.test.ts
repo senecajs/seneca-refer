@@ -55,7 +55,7 @@ describe('refer', () => {
     await SenecaMsgTest(seneca, ConflictMessages)()
   })
 
-  // Use seneca-msg-test for special referrals
+  // Use seneca-msg-test for special referrals basic
 
   test('special.messages', async () => {
     const seneca = await makeSeneca()

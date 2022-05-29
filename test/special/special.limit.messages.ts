@@ -4,7 +4,7 @@ export default {
   allow: { missing: true },
 
   calls: [
-    // Create referral
+    // Creating: refer/entry referral record for u01
     {
       print: true,
       name: 'create-alice',
@@ -32,7 +32,7 @@ export default {
       },
     },
 
-    // Create referral 2
+    // Creating: refer/entry referral record for u02
     {
       print: true,
       name: 'create-alice2',
@@ -88,7 +88,7 @@ export default {
       },
     },
 
-    // Create the referral3 and accept
+    // Create refer/entry  referral record 3 from u01 and accept
     {
       print: true,
       name: 'create-alice3',
@@ -143,7 +143,7 @@ export default {
       },
     },
 
-    // Create the referral4 and accept
+    // Create refer/entry  referral record 4 from u01 and accept
     {
       print: true,
       name: 'create-alice4',
@@ -198,7 +198,7 @@ export default {
       },
     },
 
-    // Create the referral5 for user 2 and accept
+    // Create refer/entry  referral record 5 from u02 and accept
     {
       print: true,
       name: 'create-alice5',
@@ -273,7 +273,7 @@ export default {
       ],
     },
 
-    // Validate referral isn't accepted above the limit
+    // Validate referrals aren't accept above the limit
     {
       print: false,
       name: 'create-alice6',

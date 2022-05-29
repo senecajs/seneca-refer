@@ -81,6 +81,7 @@ function refer(this: any, options: any) {
       user_id: msg.user_id,
       entry_kind: entry.kind,
     })
+
     if (rewardList.length > 0) {
       const lastReward = rewardList[rewardList.length - 1]
 
@@ -146,6 +147,7 @@ function refer(this: any, options: any) {
       award: msg.award,
       user_id: msg.user_id,
     })
+
     if (rewardList.length === 0) {
       reward[msg.field] = 1
       reward['remaining'] = msg.limit - reward[msg.field]
@@ -154,7 +156,9 @@ function refer(this: any, options: any) {
       reward[msg.field] = amountIncreased + 1
       reward['remaining'] = msg.limit - reward[msg.field]
     }
+
     await reward.save$()
+
     await seneca.act('biz:refer,give:award,set:prize', msg)
   }
 

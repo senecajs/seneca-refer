@@ -3,7 +3,7 @@ export default {
   pattern: 'biz:refer',
   allow: { missing: true },
   calls: [
-    // Creating: refer/entry referral record
+    // Creating: refer/entry referral record for u01
     {
       print: true,
       name: 'create-alice',
@@ -31,6 +31,7 @@ export default {
       },
     },
 
+    // Creating: refer/entry referral record for u02
     {
       print: true,
       name: 'create-alice2',
@@ -58,6 +59,7 @@ export default {
       },
     },
 
+    // Creating: refer/entry referral record for u03
     {
       print: true,
       name: 'create-alice3',
@@ -173,7 +175,7 @@ export default {
       name: 'create-alice',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
-        user_id: 'u05',
+        user_id: 'u04',
         kind: 'special',
         email: 'alice@example.com',
       },
