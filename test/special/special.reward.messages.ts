@@ -4,7 +4,7 @@ export default {
   allow: { missing: true },
 
   calls: [
-    // Create referral and accept
+    // Creating: refer/entry referral records from u01 and accept
     {
       print: true,
       name: 'create-alice',
@@ -26,7 +26,7 @@ export default {
       },
     },
 
-    // Create referral and accept2
+    // Creating: refer/entry referral records 2 from u01 and accept
     {
       print: true,
       name: 'create-alice2',
@@ -48,7 +48,7 @@ export default {
       },
     },
 
-    // Create referral and accept3
+    // Creating: refer/entry referral records 3 from u01 and accept
     {
       print: true,
       name: 'create-alice3',
@@ -70,7 +70,7 @@ export default {
       },
     },
 
-    // Create referral and accept4
+    // Creating: refer/entry referral records 4 from u01 and accept
     {
       print: true,
       name: 'create-alice4',
@@ -92,7 +92,7 @@ export default {
       },
     },
 
-    // Create referral and accept5
+    // Creating: refer/entry referral records 5 from u01 and accept
     {
       print: true,
       name: 'create-alice5',
@@ -114,6 +114,8 @@ export default {
       },
     },
 
+    // Validate the user receives the prize and extra reward properly
+    // Every referral above the goal (limit) the user receives an extra reward
     {
       print: true,
       pattern: 'biz:null,role:entity,base:refer,name:reward,cmd:list',

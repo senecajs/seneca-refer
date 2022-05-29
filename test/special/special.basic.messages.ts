@@ -3,7 +3,7 @@ export default {
   pattern: 'biz:refer',
   allow: { missing: true },
   calls: [
-    // Creating: refer/entry referral records
+    // Creating: refer/entry referral records from u01
     {
       print: true,
       name: 'create-multiple',
@@ -31,6 +31,7 @@ export default {
       },
     },
 
+    // Creating: refer/entry referral 2 records from u01
     {
       print: true,
       name: 'create-multiple2',
@@ -58,6 +59,7 @@ export default {
       },
     },
 
+    // Creating: refer/entry referral 3 records from u01
     {
       print: true,
       name: 'create-multiple3',
