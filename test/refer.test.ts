@@ -14,6 +14,7 @@ import ConflictMessages from './standard/conflict.messages'
 import SpecialMessages from './special/special.messages'
 import SpecialLimitMessages from './special/special.limit.messages'
 import SpecialConflictMessages from './special/special.conflict.messages'
+import SpecialRewardMessages from './special/special.reward.messages'
 
 describe('refer', () => {
   test('happy', async () => {
@@ -75,6 +76,13 @@ describe('refer', () => {
     await SenecaMsgTest(seneca, SpecialConflictMessages)()
   })
 
+  // Use seneca-msg-test to test special referrals reward
+
+  test('special.reward.messages', async () => {
+    const seneca = await makeSeneca()
+    await SenecaMsgTest(seneca, SpecialRewardMessages)()
+  })
+
   // test('maintain', Maintain)
 })
 
@@ -126,6 +134,7 @@ async function makeBasicRules(seneca: any) {
         kind: 'accept',
         award: 'incr',
         field: 'count',
+        prize: 1,
         limit: 3,
         give: 'award',
         biz: 'refer',
@@ -148,6 +157,56 @@ async function makeBasicRules(seneca: any) {
       },
     ],
   })
+
+  // await seneca.entity('refer/rule').save$({
+  //   ent: 'refer/reward',
+  //   cmd: 'save',
+  //   where: { kind: 'prize', entry_kind: 'standard' },
+  //   call: [
+  //     {
+  //       field: 'count',
+  //       award: 'delivered',
+  //       set: 'prize',
+  //       give: 'award',
+  //       prize: 1,
+  //       amount: 3,
+  //       biz: 'refer',
+  //     },
+  //   ],
+  // })
+
+  // await seneca.entity('refer/rule').save$({
+  //   ent: 'refer/reward',
+  //   cmd: 'save',
+  //   where: { kind: 'prize', entry_kind: 'special' },
+  //   call: [
+  //     {
+  //       field: 'count',
+  //       set: 'prize',
+  //       give: 'award',
+  //       prize: 1,
+  //       amount: 5,
+  //       biz: 'refer',
+  //     },
+  //   ],
+  // })
+
+  // await seneca.entity('refer/rule').save$({
+  //   ent: 'refer/reward',
+  //   cmd: 'save',
+  //   where: { kind: 'extra', entry_kind: 'special' },
+  //   call: [
+  //     {
+  //       field: 'count',
+  //       set: 'prize',
+  //       extra: 'reward',
+  //       give: 'award',
+  //       prize: 2,
+  //       rate: 3,
+  //       biz: 'refer',
+  //     },
+  //   ],
+  // })
 
   await seneca.entity('refer/rule').save$({
     ent: 'refer/reward',

@@ -9,6 +9,8 @@ function refer(this: any, options: any) {
     .message('accept:entry', actAcceptEntry)
     .message('lost:entry', actLostEntry)
     .message('give:award', actRewardEntry)
+    .message('give:award,set:prize', actRewardPrizeEntry)
+    // .message('give:award,set:prize,extra:reward', actRewardPrizeExtraEntry)
     .message('load:rules', actLoadRules)
     .prepare(prepare)
 
@@ -115,7 +117,7 @@ function refer(this: any, options: any) {
 
     for (let i = 0; i < entryList.length; i++) {
       if (entryList[i].user_id === msg.userWinner) {
-        i++
+        continue
       }
 
       await seneca.entity('refer/occur').save$({
@@ -153,6 +155,39 @@ function refer(this: any, options: any) {
       reward['remaining'] = msg.limit - reward[msg.field]
     }
     await reward.save$()
+    await seneca.act('biz:refer,give:award,set:prize', msg)
+  }
+
+  async function actRewardPrizeEntry(this: any, msg: any) {
+    const seneca = this
+
+    let reward = await seneca.entity('refer/reward').load$({
+      entry_id: msg.entry_id,
+    })
+
+    if (reward.count < msg.amount) {
+      return
+    }
+    await reward.save$({
+      prize: msg.prize,
+    })
+  }
+
+  async function actRewardPrizeExtraEntry(this: any, msg: any) {
+    const seneca = this
+
+    let reward = await seneca.entity('refer/reward').load$({
+      entry_id: msg.entry_id,
+    })
+
+    let rateCheck = reward.count % msg.rate
+    if (!rateCheck || rateCheck > 0) {
+      return
+    }
+
+    await reward.save$({
+      prize: reward.prize + msg.prize,
+    })
   }
 
   async function actLoadRules(this: any, msg: any) {
@@ -202,6 +237,17 @@ function refer(this: any, options: any) {
               callmsg.email = msg.ent.email
               callmsg.userWinner = msg.ent.user_id
               this.act(callmsg)
+            })
+          }
+        })
+
+        seneca.sub(subpat, function (this: any, msg: any) {
+          if (rule.where.kind === 'prize' && msg.ent.kind === 'accept') {
+            rule.call.forEach((callmsg: any) => {
+              callmsg.user_id = msg.ent.user_id
+              callmsg.entry_kind = rule.where.user_id
+              callmsg.entry_id = msg.ent.entry_id
+              callmsg.entry_kind = this.act(callmsg)
             })
           }
         })
