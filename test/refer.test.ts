@@ -136,6 +136,7 @@ async function makeBasicRules(seneca: any) {
         field: 'count',
         prize: 1,
         limit: 3,
+        goal: 0,
         give: 'award',
         biz: 'refer',
       },
@@ -150,63 +151,17 @@ async function makeBasicRules(seneca: any) {
       {
         kind: 'accept',
         award: 'incr',
+        sort: 'goal',
         field: 'count',
-        limit: 10,
+        limit: 5,
         give: 'award',
+        prize: 1,
+        extra: 1,
+        goal: 3,
         biz: 'refer',
       },
     ],
   })
-
-  // await seneca.entity('refer/rule').save$({
-  //   ent: 'refer/reward',
-  //   cmd: 'save',
-  //   where: { kind: 'prize', entry_kind: 'standard' },
-  //   call: [
-  //     {
-  //       field: 'count',
-  //       award: 'delivered',
-  //       set: 'prize',
-  //       give: 'award',
-  //       prize: 1,
-  //       amount: 3,
-  //       biz: 'refer',
-  //     },
-  //   ],
-  // })
-
-  // await seneca.entity('refer/rule').save$({
-  //   ent: 'refer/reward',
-  //   cmd: 'save',
-  //   where: { kind: 'prize', entry_kind: 'special' },
-  //   call: [
-  //     {
-  //       field: 'count',
-  //       set: 'prize',
-  //       give: 'award',
-  //       prize: 1,
-  //       amount: 5,
-  //       biz: 'refer',
-  //     },
-  //   ],
-  // })
-
-  // await seneca.entity('refer/rule').save$({
-  //   ent: 'refer/reward',
-  //   cmd: 'save',
-  //   where: { kind: 'extra', entry_kind: 'special' },
-  //   call: [
-  //     {
-  //       field: 'count',
-  //       set: 'prize',
-  //       extra: 'reward',
-  //       give: 'award',
-  //       prize: 2,
-  //       rate: 3,
-  //       biz: 'refer',
-  //     },
-  //   ],
-  // })
 
   await seneca.entity('refer/rule').save$({
     ent: 'refer/reward',

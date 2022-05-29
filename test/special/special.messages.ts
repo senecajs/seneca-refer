@@ -287,7 +287,7 @@ export default {
           kind: 'accept',
           award: 'incr',
           count: 1,
-          remaining: 9,
+          remaining: 4,
         },
         {
           entry_id: '`create-multiple2:out.entry.id`',
@@ -295,7 +295,7 @@ export default {
           kind: 'accept',
           award: 'incr',
           count: 2,
-          remaining: 8,
+          remaining: 3,
         },
         {
           entry_id: '`create-multiple3:out.entry.id`',
@@ -303,7 +303,7 @@ export default {
           kind: 'accept',
           award: 'incr',
           count: 3,
-          remaining: 7,
+          remaining: 2,
         },
       ],
     },

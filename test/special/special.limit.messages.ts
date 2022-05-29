@@ -32,63 +32,7 @@ export default {
       },
     },
 
-    // Create referral 3
-    {
-      print: true,
-      name: 'create-alice3',
-      pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
-      params: {
-        user_id: 'u01', // _id suffix for foreign keys
-        kind: 'special',
-        email: 'alice3@example.com',
-      },
-      out: {
-        ok: true,
-        entry: {
-          user_id: 'u01', // _id suffix for foreign keys
-          kind: 'special',
-          email: 'alice3@example.com',
-        },
-        occur: [
-          {
-            user_id: 'u01',
-            entry_kind: 'special',
-            kind: 'create',
-            email: 'alice3@example.com',
-          },
-        ],
-      },
-    },
-
-    // Accept the referral
-    {
-      print: true,
-      name: 'accept-alice',
-      pattern: 'accept:entry',
-      params: {
-        key: '`create-alice:out.entry.key`',
-        user_id: 'u01',
-      },
-      out: {
-        ok: true,
-        entry: {
-          user_id: 'u01',
-          kind: 'special',
-          email: 'alice@example.com',
-        },
-        occur: [
-          {
-            entry_kind: 'special',
-            entry_id: '`create-alice:out.entry.id`',
-            email: 'alice@example.com',
-            user_id: 'u01',
-            kind: 'accept',
-          },
-        ],
-      },
-    },
-
-    // Create the referral2
+    // Create referral 2
     {
       print: true,
       name: 'create-alice2',
@@ -116,13 +60,13 @@ export default {
       },
     },
 
-    // Accept the referral2
+    // Accept the referral 1
     {
       print: true,
       name: 'accept-alice',
       pattern: 'accept:entry',
       params: {
-        key: '`create-alice2:out.entry.key`',
+        key: '`create-alice:out.entry.key`',
         user_id: 'u01',
       },
       out: {
@@ -130,13 +74,13 @@ export default {
         entry: {
           user_id: 'u01',
           kind: 'special',
-          email: 'alice2@example.com',
+          email: 'alice@example.com',
         },
         occur: [
           {
             entry_kind: 'special',
-            entry_id: '`create-alice2:out.entry.id`',
-            email: 'alice2@example.com',
+            entry_id: '`create-alice:out.entry.id`',
+            email: 'alice@example.com',
             user_id: 'u01',
             kind: 'accept',
           },
@@ -144,7 +88,62 @@ export default {
       },
     },
 
-    // Create the referral4
+    // Create the referral3 and accept
+    {
+      print: true,
+      name: 'create-alice3',
+      pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
+      params: {
+        user_id: 'u01', // _id suffix for foreign keys
+        kind: 'special',
+        email: 'alice3@example.com',
+      },
+      out: {
+        ok: true,
+        entry: {
+          user_id: 'u01', // _id suffix for foreign keys
+          kind: 'special',
+          email: 'alice3@example.com',
+        },
+        occur: [
+          {
+            user_id: 'u01',
+            entry_kind: 'special',
+            kind: 'create',
+            email: 'alice3@example.com',
+          },
+        ],
+      },
+    },
+
+    {
+      print: true,
+      name: 'accept-alice',
+      pattern: 'accept:entry',
+      params: {
+        key: '`create-alice3:out.entry.key`',
+        user_id: 'u01',
+      },
+      out: {
+        ok: true,
+        entry: {
+          user_id: 'u01',
+          kind: 'special',
+          email: 'alice3@example.com',
+        },
+        occur: [
+          {
+            entry_kind: 'special',
+            entry_id: '`create-alice3:out.entry.id`',
+            email: 'alice3@example.com',
+            user_id: 'u01',
+            kind: 'accept',
+          },
+        ],
+      },
+    },
+
+    // Create the referral4 and accept
     {
       print: true,
       name: 'create-alice4',
@@ -172,7 +171,6 @@ export default {
       },
     },
 
-    // Accept the referral4
     {
       print: true,
       name: 'accept-alice',
@@ -200,7 +198,7 @@ export default {
       },
     },
 
-    // Create the referral5 for user 2
+    // Create the referral5 for user 2 and accept
     {
       print: true,
       name: 'create-alice5',
@@ -228,7 +226,6 @@ export default {
       },
     },
 
-    // Accept the referral 5
     {
       print: true,
       name: 'accept-alice',
@@ -262,23 +259,23 @@ export default {
       pattern: 'biz:null,role:entity,base:refer,name:reward,cmd:list',
       out: [
         {
-          remaining: 9,
+          remaining: 4,
         },
         {
-          remaining: 8,
+          remaining: 3,
         },
         {
-          remaining: 7,
+          remaining: 2,
         },
         {
-          remaining: 9,
+          remaining: 4,
         },
       ],
     },
 
     // Validate referral isn't accepted above the limit
     {
-      print: true,
+      print: false,
       name: 'create-alice6',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
@@ -289,7 +286,7 @@ export default {
     },
 
     {
-      print: true,
+      print: false,
       name: 'accept-alice',
       pattern: 'accept:entry',
       params: {
@@ -299,7 +296,7 @@ export default {
     },
 
     {
-      print: true,
+      print: false,
       name: 'create-alice7',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
@@ -310,7 +307,7 @@ export default {
     },
 
     {
-      print: true,
+      print: false,
       name: 'accept-alice',
       pattern: 'accept:entry',
       params: {
@@ -320,7 +317,7 @@ export default {
     },
 
     {
-      print: true,
+      print: false,
       name: 'create-alice8',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
@@ -336,110 +333,6 @@ export default {
       pattern: 'accept:entry',
       params: {
         key: '`create-alice8:out.entry.key`',
-        user_id: 'u01',
-      },
-    },
-
-    {
-      print: true,
-      name: 'create-alice9',
-      pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
-      params: {
-        user_id: 'u01', // _id suffix for foreign keys
-        kind: 'special',
-        email: 'alice9@example.com',
-      },
-    },
-
-    {
-      print: true,
-      name: 'accept-alice',
-      pattern: 'accept:entry',
-      params: {
-        key: '`create-alice9:out.entry.key`',
-        user_id: 'u01',
-      },
-    },
-
-    {
-      print: true,
-      name: 'create-alice10',
-      pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
-      params: {
-        user_id: 'u01', // _id suffix for foreign keys
-        kind: 'special',
-        email: 'alice10@example.com',
-      },
-    },
-
-    {
-      print: true,
-      name: 'accept-alice',
-      pattern: 'accept:entry',
-      params: {
-        key: '`create-alice10:out.entry.key`',
-        user_id: 'u01',
-      },
-    },
-
-    {
-      print: true,
-      name: 'create-alice11',
-      pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
-      params: {
-        user_id: 'u01', // _id suffix for foreign keys
-        kind: 'special',
-        email: 'alice11@example.com',
-      },
-    },
-
-    {
-      print: true,
-      name: 'accept-alice',
-      pattern: 'accept:entry',
-      params: {
-        key: '`create-alice11:out.entry.key`',
-        user_id: 'u01',
-      },
-    },
-
-    {
-      print: true,
-      name: 'create-alice12',
-      pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
-      params: {
-        user_id: 'u01', // _id suffix for foreign keys
-        kind: 'special',
-        email: 'alice12@example.com',
-      },
-    },
-
-    {
-      print: true,
-      name: 'accept-alice',
-      pattern: 'accept:entry',
-      params: {
-        key: '`create-alice12:out.entry.key`',
-        user_id: 'u01',
-      },
-    },
-    {
-      print: true,
-      name: 'create-alice13',
-      pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
-      params: {
-        user_id: 'u01', // _id suffix for foreign keys
-        kind: 'special',
-        email: 'alice13@example.com',
-      },
-    },
-
-    {
-      print: true,
-      name: 'accept-alice',
-      pattern: 'accept:entry',
-      params: {
-        key: '`create-alice13:out.entry.key`',
         user_id: 'u01',
       },
       out: {

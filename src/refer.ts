@@ -10,7 +10,7 @@ function refer(this: any, options: any) {
     .message('lost:entry', actLostEntry)
     .message('give:award', actRewardEntry)
     .message('give:award,set:prize', actRewardPrizeEntry)
-    // .message('give:award,set:prize,extra:reward', actRewardPrizeExtraEntry)
+    .message('give:award,set:prize,reward:extra', actRewardPrizeExtraEntry)
     .message('load:rules', actLoadRules)
     .prepare(prepare)
 
@@ -165,29 +165,45 @@ function refer(this: any, options: any) {
       entry_id: msg.entry_id,
     })
 
-    if (reward.count < msg.amount) {
+    if (reward.count < msg.goal) {
       return
     }
+
     await reward.save$({
       prize: msg.prize,
     })
+
+    if (reward.count === msg.goal) {
+      return
+    }
+
+    await seneca.act('biz:refer,give:award,set:prize,reward:extra', msg)
   }
 
   async function actRewardPrizeExtraEntry(this: any, msg: any) {
     const seneca = this
 
+    if (msg.sort != 'goal') {
+      return
+    }
+
+    let rewardList = await seneca.entity('refer/reward').list$({
+      user_id: msg.user_id,
+      entry_kind: msg.entry_kind,
+    })
+
     let reward = await seneca.entity('refer/reward').load$({
       entry_id: msg.entry_id,
     })
 
-    let rateCheck = reward.count % msg.rate
-    if (!rateCheck || rateCheck > 0) {
-      return
-    }
+    let extra = 0
 
-    await reward.save$({
-      prize: reward.prize + msg.prize,
-    })
+    for (let i = msg.goal; i < rewardList.length; i++) {
+      extra++
+      await reward.save$({
+        extra: extra * msg.extra,
+      })
+    }
   }
 
   async function actLoadRules(this: any, msg: any) {
