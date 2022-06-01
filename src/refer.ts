@@ -93,21 +93,21 @@ function refer(this: any, options: any) {
   async function actLostEntry(this: any, msg: any) {
     const seneca = this
 
-    const entryList = await seneca.entity('refer/occur').list$({
+    const occurList = await seneca.entity('refer/occur').list$({
       email: msg.email,
       kind: 'create',
     })
 
-    for (let i = 0; i < entryList.length; i++) {
-      if (entryList[i].user_id === msg.userWinner) {
-        continue
-      }
+    const unacceptedReferrals = occurList.filter(
+      (occur: any) => occur.user_id !== msg.userWinner
+    )
 
+    for (let i = 0; i < unacceptedReferrals.length; i++) {
       await seneca.entity('refer/occur').save$({
-        user_id: entryList[i].user_id,
-        entry_kind: entryList[i].entry_kind,
+        user_id: unacceptedReferrals[i].user_id,
+        entry_kind: unacceptedReferrals[i].entry_kind,
         email: msg.email,
-        entry_id: entryList[i].entry_id,
+        entry_id: unacceptedReferrals[i].entry_id,
         kind: 'lost',
       })
     }
