@@ -7,9 +7,14 @@ import SenecaMsgTest from 'seneca-msg-test'
 import ReferDoc from '../src/refer-doc'
 import Refer from '../src/refer'
 
-import BasicMessages from './basic.messages'
-import MultiMessages from './multi.messages'
-import ConflictMessages from './conflict.messages'
+import BasicMessages from './standard/basic.messages'
+import LimitMessages from './standard/limit.messages'
+import MultiMessages from './standard/multi.messages'
+import ConflictMessages from './standard/conflict.messages'
+import SpecialMessages from './special/special.basic.messages'
+import SpecialLimitMessages from './special/special.limit.messages'
+import SpecialConflictMessages from './special/special.conflict.messages'
+import SpecialRewardMessages from './special/special.reward.messages'
 
 describe('refer', () => {
   test('happy', async () => {
@@ -29,6 +34,13 @@ describe('refer', () => {
     await SenecaMsgTest(seneca, BasicMessages)()
   })
 
+  // Use seneca-msg-test to test referrals limit
+
+  test('limit.messages', async () => {
+    const seneca = await makeSeneca()
+    await SenecaMsgTest(seneca, LimitMessages)()
+  })
+
   // Use seneca-msg-test for multiple referrals
 
   test('multi.messages', async () => {
@@ -41,6 +53,34 @@ describe('refer', () => {
   test('conflict.messages', async () => {
     const seneca = await makeSeneca()
     await SenecaMsgTest(seneca, ConflictMessages)()
+  })
+
+  // Use seneca-msg-test for special referrals basic
+
+  test('special.messages', async () => {
+    const seneca = await makeSeneca()
+    await SenecaMsgTest(seneca, SpecialMessages)()
+  })
+
+  // Use seneca-msg-test to test special referrals limit
+
+  test('special.limit.messages', async () => {
+    const seneca = await makeSeneca()
+    await SenecaMsgTest(seneca, SpecialLimitMessages)()
+  })
+
+  // Use seneca-msg-test to test special referrals conflict
+
+  test('special.conflict.messages', async () => {
+    const seneca = await makeSeneca()
+    await SenecaMsgTest(seneca, SpecialConflictMessages)()
+  })
+
+  // Use seneca-msg-test to test special referrals reward
+
+  test('special.reward.messages', async () => {
+    const seneca = await makeSeneca()
+    await SenecaMsgTest(seneca, SpecialRewardMessages)()
   })
 
   // test('maintain', Maintain)
@@ -88,12 +128,15 @@ async function makeBasicRules(seneca: any) {
   await seneca.entity('refer/rule').save$({
     ent: 'refer/occur',
     cmd: 'save',
-    where: { kind: 'accept' },
+    where: { kind: 'accept', entry_kind: 'standard' },
     call: [
       {
         kind: 'accept',
         award: 'incr',
         field: 'count',
+        prize: 1,
+        limit: 3,
+        goal: 0,
         give: 'award',
         biz: 'refer',
       },
@@ -102,6 +145,26 @@ async function makeBasicRules(seneca: any) {
 
   await seneca.entity('refer/rule').save$({
     ent: 'refer/occur',
+    cmd: 'save',
+    where: { kind: 'accept', entry_kind: 'special' },
+    call: [
+      {
+        kind: 'accept',
+        award: 'incr',
+        sort: 'goal',
+        field: 'count',
+        limit: 5,
+        give: 'award',
+        prize: 1,
+        extra: 1,
+        goal: 3,
+        biz: 'refer',
+      },
+    ],
+  })
+
+  await seneca.entity('refer/rule').save$({
+    ent: 'refer/reward',
     cmd: 'save',
     where: { kind: 'lost' },
     call: [

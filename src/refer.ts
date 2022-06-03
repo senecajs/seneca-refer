@@ -9,6 +9,8 @@ function refer(this: any, options: any) {
     .message('accept:entry', actAcceptEntry)
     .message('lost:entry', actLostEntry)
     .message('give:award', actRewardEntry)
+    .message('give:award,set:prize', actRewardPrizeEntry)
+    .message('give:award,set:prize,reward:extra', actRewardPrizeExtraEntry)
     .message('load:rules', actLoadRules)
     .prepare(prepare)
 
@@ -75,6 +77,22 @@ function refer(this: any, options: any) {
       }
     }
 
+    const rewardList = await seneca.entity('refer/reward').list$({
+      user_id: msg.user_id,
+      entry_kind: entry.kind,
+    })
+
+    if (rewardList.length > 0) {
+      const lastReward = rewardList[rewardList.length - 1]
+
+      if (lastReward.remaining === 0) {
+        return {
+          ok: false,
+          why: 'limit-exceed',
+        }
+      }
+    }
+
     const occur = await seneca.entity('refer/occur').save$({
       user_id: msg.user_id,
       entry_kind: entry.kind,
@@ -116,27 +134,80 @@ function refer(this: any, options: any) {
   async function actRewardEntry(this: any, msg: any) {
     const seneca = this
 
-    const entry = await seneca.entity('refer/occur').load$({
+    const rewardList = await seneca.entity('refer/reward').list$({
+      user_id: msg.user_id,
+      entry_kind: msg.entry_kind,
+    })
+
+    let reward = seneca.make('refer/reward', {
+      entry_id: msg.entry_id,
+      entry_kind: msg.entry_kind,
+      kind: msg.kind,
+      email: msg.email,
+      award: msg.award,
+      user_id: msg.user_id,
+    })
+
+    if (rewardList.length === 0) {
+      reward[msg.field] = 1
+      reward['remaining'] = msg.limit - reward[msg.field]
+    } else {
+      const amountIncreased = rewardList[rewardList.length - 1][msg.field]
+      reward[msg.field] = amountIncreased + 1
+      reward['remaining'] = msg.limit - reward[msg.field]
+    }
+
+    await reward.save$()
+
+    await seneca.act('biz:refer,give:award,set:prize', msg)
+  }
+
+  async function actRewardPrizeEntry(this: any, msg: any) {
+    const seneca = this
+
+    const reward = await seneca.entity('refer/reward').load$({
       entry_id: msg.entry_id,
     })
 
-    let reward = await this.entity('refer/reward').load$({
-      entry_id: entry.id,
-    })
-
-    if (!reward) {
-      reward = seneca.make('refer/reward', {
-        entry_id: msg.entry_id,
-        entry_kind: msg.entry_kind,
-        kind: msg.kind,
-        award: msg.award,
-      })
-      reward[msg.field] = 0
+    if (reward.count < msg.goal) {
+      return
     }
 
-    reward[msg.field] = reward[msg.field] + 1
+    await reward.save$({
+      prize: msg.prize,
+    })
 
-    await reward.save$()
+    if (reward.count === msg.goal) {
+      return
+    }
+
+    await seneca.act('biz:refer,give:award,set:prize,reward:extra', msg)
+  }
+
+  async function actRewardPrizeExtraEntry(this: any, msg: any) {
+    const seneca = this
+
+    if (msg.sort != 'goal') {
+      return
+    }
+
+    const rewardList = await seneca.entity('refer/reward').list$({
+      user_id: msg.user_id,
+      entry_kind: msg.entry_kind,
+    })
+
+    const reward = await seneca.entity('refer/reward').load$({
+      entry_id: msg.entry_id,
+    })
+
+    let extra = 0
+
+    for (let i = msg.goal; i < rewardList.length; i++) {
+      extra++
+      await reward.save$({
+        extra: extra * msg.extra,
+      })
+    }
   }
 
   async function actLoadRules(this: any, msg: any) {
@@ -164,24 +235,39 @@ function refer(this: any, options: any) {
         })
 
         seneca.sub(subpat, function (this: any, msg: any) {
-          if (rule.where.kind === 'accept') {
+          if (rule.where.kind === 'accept' && msg.q.kind === 'accept') {
+            if (rule.where.entry_kind === msg.q.entry_kind) {
+              rule.call.forEach((callmsg: any) => {
+                callmsg.ent = seneca.entity(rule.ent)
+                callmsg.entry_id = msg.q.entry_id
+                callmsg.entry_kind = msg.q.entry_kind
+                callmsg.user_id = msg.q.user_id
+                callmsg.email = msg.q.email
+
+                this.act(callmsg)
+              })
+            }
+          }
+        })
+
+        seneca.sub(subpat, function (this: any, msg: any) {
+          if (rule.where.kind === 'lost' && msg.ent.kind === 'accept') {
             rule.call.forEach((callmsg: any) => {
               callmsg.ent = seneca.entity(rule.ent)
-              callmsg.entry_id = msg.q.entry_id
-              callmsg.entry_kind = msg.q.entry_kind
-
+              callmsg.email = msg.ent.email
+              callmsg.userWinner = msg.ent.user_id
               this.act(callmsg)
             })
           }
         })
 
         seneca.sub(subpat, function (this: any, msg: any) {
-          if (rule.where.kind === 'lost' && msg.q.kind === 'accept') {
+          if (rule.where.kind === 'prize' && msg.ent.kind === 'accept') {
             rule.call.forEach((callmsg: any) => {
-              callmsg.ent = seneca.entity(rule.ent)
-              callmsg.email = msg.q.email
-              callmsg.userWinner = msg.q.user_id
-              this.act(callmsg)
+              callmsg.user_id = msg.ent.user_id
+              callmsg.entry_kind = rule.where.user_id
+              callmsg.entry_id = msg.ent.entry_id
+              callmsg.entry_kind = this.act(callmsg)
             })
           }
         })

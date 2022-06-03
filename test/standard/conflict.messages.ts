@@ -3,13 +3,14 @@ export default {
   pattern: 'biz:refer',
   allow: { missing: true },
   calls: [
+    // Creating: refer/entry referral record
     {
       print: true,
       name: 'create-alice',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
         user_id: 'u01',
-        kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
+        kind: 'standard',
         email: 'alice@example.com',
       },
       out: {
@@ -36,7 +37,7 @@ export default {
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
         user_id: 'u02',
-        kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
+        kind: 'standard',
         email: 'alice@example.com',
       },
       out: {
@@ -63,7 +64,7 @@ export default {
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
         user_id: 'u03',
-        kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
+        kind: 'standard',
         email: 'alice@example.com',
       },
       out: {
@@ -173,7 +174,7 @@ export default {
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
         user_id: 'u05',
-        kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
+        kind: 'standard',
         email: 'alice@example.com',
       },
       out: {

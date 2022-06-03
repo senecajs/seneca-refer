@@ -3,13 +3,14 @@ export default {
   pattern: 'biz:refer',
   allow: { missing: true },
   calls: [
+    // Creating: refer/entry referral records
     {
       print: true,
       name: 'create-multiple',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
         user_id: 'u01',
-        kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
+        kind: 'standard',
         email: 'alice@example.com',
       },
       out: {
@@ -36,7 +37,7 @@ export default {
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
         user_id: 'u02',
-        kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
+        kind: 'standard',
         email: 'johndoe@example.com',
       },
       out: {
@@ -63,7 +64,7 @@ export default {
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
         user_id: 'u03',
-        kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
+        kind: 'standard',
         email: 'foo@example.com',
       },
       out: {
@@ -286,6 +287,7 @@ export default {
           kind: 'accept',
           award: 'incr',
           count: 1,
+          remaining: 2,
         },
         {
           entry_id: '`create-multiple2:out.entry.id`',
@@ -293,6 +295,7 @@ export default {
           kind: 'accept',
           award: 'incr',
           count: 1,
+          remaining: 2,
         },
         {
           entry_id: '`create-multiple3:out.entry.id`',
@@ -300,6 +303,7 @@ export default {
           kind: 'accept',
           award: 'incr',
           count: 1,
+          remaining: 2,
         },
       ],
     },

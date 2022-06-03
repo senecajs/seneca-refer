@@ -6,7 +6,7 @@ export default {
   allow: { missing: true },
 
   calls: [
-    // User with id=u01 sends referal to friend alice@example.com
+    // User with id=u01 sends referral to friend alice@example.com
     // Creating:
     //   - refer/entry referral record
     //   - refer/occur event record
@@ -19,7 +19,7 @@ export default {
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
         user_id: 'u01',
-        kind: 'standard', // avoid using 'type', 'kind' has fewer conflicts
+        kind: 'standard',
         email: 'alice@example.com',
       },
       out: {
@@ -142,6 +142,7 @@ export default {
         kind: 'accept',
         award: 'incr',
         count: 1, // alice@example.com accepted
+        remaining: 2,
       },
     },
 
