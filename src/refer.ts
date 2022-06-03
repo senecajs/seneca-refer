@@ -7,11 +7,25 @@ function refer(this: any, options: any) {
     .fix('biz:refer')
     .message('create:entry', actCreateEntry)
     .message('accept:entry', actAcceptEntry)
+    .message('lost:entry', actLostEntry)
+    .message('give:award', actRewardEntry)
     .message('load:rules', actLoadRules)
     .prepare(prepare)
 
   async function actCreateEntry(this: any, msg: any) {
     const seneca = this
+
+    let occur = await seneca.entity('refer/occur').load$({
+      email: msg.email,
+      kind: 'accept',
+    })
+
+    if (occur) {
+      return {
+        ok: false,
+        why: 'entry-exists',
+      }
+    }
 
     const entry = await seneca.entity('refer/entry').save$({
       user_id: msg.user_id,
@@ -22,7 +36,7 @@ function refer(this: any, options: any) {
       key: this.util.Nid(), // unique key for this referral, used for validation
     })
 
-    const occur = await seneca.entity('refer/occur').save$({
+    occur = await seneca.entity('refer/occur').save$({
       user_id: msg.user_id,
       entry_kind: msg.kind,
       email: msg.email,
@@ -49,10 +63,22 @@ function refer(this: any, options: any) {
       }
     }
 
+    let lostOccur = await this.entity('refer/occur').load$({
+      entry_id: entry.id,
+      kind: 'lost',
+    })
+
+    if (lostOccur) {
+      return {
+        ok: false,
+        why: 'entry-lost',
+      }
+    }
+
     const occur = await seneca.entity('refer/occur').save$({
       user_id: msg.user_id,
-      entry_kind: msg.kind,
-      email: msg.email,
+      entry_kind: entry.kind,
+      email: entry.email,
       entry_id: entry.id,
       kind: 'accept',
     })
@@ -62,6 +88,55 @@ function refer(this: any, options: any) {
       entry,
       occur: [occur],
     }
+  }
+
+  async function actLostEntry(this: any, msg: any) {
+    const seneca = this
+
+    const occurList = await seneca.entity('refer/occur').list$({
+      email: msg.email,
+      kind: 'create',
+    })
+
+    const unacceptedReferrals = occurList.filter(
+      (occur: any) => occur.user_id !== msg.userWinner
+    )
+
+    for (let i = 0; i < unacceptedReferrals.length; i++) {
+      await seneca.entity('refer/occur').save$({
+        user_id: unacceptedReferrals[i].user_id,
+        entry_kind: unacceptedReferrals[i].entry_kind,
+        email: msg.email,
+        entry_id: unacceptedReferrals[i].entry_id,
+        kind: 'lost',
+      })
+    }
+  }
+
+  async function actRewardEntry(this: any, msg: any) {
+    const seneca = this
+
+    const entry = await seneca.entity('refer/occur').load$({
+      entry_id: msg.entry_id,
+    })
+
+    let reward = await this.entity('refer/reward').load$({
+      entry_id: entry.id,
+    })
+
+    if (!reward) {
+      reward = seneca.make('refer/reward', {
+        entry_id: msg.entry_id,
+        entry_kind: msg.entry_kind,
+        kind: msg.kind,
+        award: msg.award,
+      })
+      reward[msg.field] = 0
+    }
+
+    reward[msg.field] = reward[msg.field] + 1
+
+    await reward.save$()
   }
 
   async function actLoadRules(this: any, msg: any) {
@@ -74,26 +149,40 @@ function refer(this: any, options: any) {
 
     for (let rule of rules) {
       if (rule.ent) {
-        const ent = seneca.entity(rule.ent)
-        const canon = ent.canon$({ object: true })
-        const subpat = {
-          role: 'entity',
-          cmd: rule.cmd,
-          ...canon,
-          out$: true,
-        }
+        const subpat = generateSubPat(seneca, rule)
 
         seneca.sub(subpat, function (this: any, msg: any) {
-          // TODO: match and 'where' fields
-          if (msg.ent.kind === rule.where.kind) {
-            // TODO: handle more than 1!
-            const callmsg = { ...rule.call[0] }
+          if (rule.where.kind === 'create') {
+            rule.call.forEach((callmsg: any) => {
+              // TODO: use https://github.com/rjrodger/inks
+              callmsg.toaddr = msg.ent.email
+              callmsg.fromaddr = 'invite@example.com'
 
-            // TODO: use https://github.com/rjrodger/inks
-            callmsg.toaddr = msg.ent.email
-            callmsg.fromaddr = 'invite@example.com'
+              this.act(callmsg)
+            })
+          }
+        })
 
-            this.act(callmsg)
+        seneca.sub(subpat, function (this: any, msg: any) {
+          if (rule.where.kind === 'accept') {
+            rule.call.forEach((callmsg: any) => {
+              callmsg.ent = seneca.entity(rule.ent)
+              callmsg.entry_id = msg.q.entry_id
+              callmsg.entry_kind = msg.q.entry_kind
+
+              this.act(callmsg)
+            })
+          }
+        })
+
+        seneca.sub(subpat, function (this: any, msg: any) {
+          if (rule.where.kind === 'lost' && msg.q.kind === 'accept') {
+            rule.call.forEach((callmsg: any) => {
+              callmsg.ent = seneca.entity(rule.ent)
+              callmsg.email = msg.q.email
+              callmsg.userWinner = msg.q.user_id
+              this.act(callmsg)
+            })
           }
         })
       }
@@ -104,6 +193,24 @@ function refer(this: any, options: any) {
   async function prepare(this: any) {
     const seneca = this
     await seneca.post('biz:refer,load:rules')
+  }
+
+  function generateSubPat(seneca: any, rule: any): object {
+    const ent = seneca.entity(rule.ent)
+    const canon = ent.canon$({ object: true })
+    Object.keys(canon).forEach((key) => {
+      if (!canon[key]) {
+        delete canon[key]
+      }
+    })
+
+    return {
+      role: 'entity',
+      cmd: rule.cmd,
+      q: rule.where,
+      ...canon,
+      out$: true,
+    }
   }
 }
 

@@ -8,6 +8,8 @@ import ReferDoc from '../src/refer-doc'
 import Refer from '../src/refer'
 
 import BasicMessages from './basic.messages'
+import MultiMessages from './multi.messages'
+import ConflictMessages from './conflict.messages'
 
 describe('refer', () => {
   test('happy', async () => {
@@ -25,6 +27,20 @@ describe('refer', () => {
   test('basic.messages', async () => {
     const seneca = await makeSeneca()
     await SenecaMsgTest(seneca, BasicMessages)()
+  })
+
+  // Use seneca-msg-test for multiple referrals
+
+  test('multi.messages', async () => {
+    const seneca = await makeSeneca()
+    await SenecaMsgTest(seneca, MultiMessages)()
+  })
+
+  // Use seneca-msg-test for conflict referrals
+
+  test('conflict.messages', async () => {
+    const seneca = await makeSeneca()
+    await SenecaMsgTest(seneca, ConflictMessages)()
   })
 
   // test('maintain', Maintain)
@@ -68,20 +84,44 @@ async function makeBasicRules(seneca: any) {
       },
     ],
   })
+
+  await seneca.entity('refer/rule').save$({
+    ent: 'refer/occur',
+    cmd: 'save',
+    where: { kind: 'accept' },
+    call: [
+      {
+        kind: 'accept',
+        award: 'incr',
+        field: 'count',
+        give: 'award',
+        biz: 'refer',
+      },
+    ],
+  })
+
+  await seneca.entity('refer/rule').save$({
+    ent: 'refer/occur',
+    cmd: 'save',
+    where: { kind: 'lost' },
+    call: [
+      {
+        lost: 'entry',
+        biz: 'refer',
+      },
+    ],
+  })
 }
 
 async function makeMockActions(seneca: any) {
-  seneca.message(
-    'sys:email,send:email,toaddr:alice@example.com',
-    async function (this: any, msg: any) {
-      this.entity('mock/email').save$({
-        toaddr: msg.toaddr,
-        fromaddr: msg.fromaddr,
-        subject: msg.subject,
-        kind: msg.kind,
-        code: msg.code,
-        what: 'sent',
-      })
-    }
-  )
+  seneca.message('sys:email,send:email', async function (this: any, msg: any) {
+    this.entity('mock/email').save$({
+      toaddr: msg.toaddr,
+      fromaddr: msg.fromaddr,
+      subject: msg.subject,
+      kind: msg.kind,
+      code: msg.code,
+      what: 'sent',
+    })
+  })
 }

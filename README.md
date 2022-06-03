@@ -43,6 +43,7 @@ _None._
 ## Action Patterns
 
 - [biz:refer,create:entry](#-bizrefercreateentry-)
+- [biz:refer,accept:entry](#-bizreferacceptentry-)
 - [biz:refer,load:rules](#-bizreferloadrules-)
 
 <!--END:action-list-->
@@ -54,6 +55,14 @@ _None._
 ### &laquo; `biz:refer,create:entry` &raquo;
 
 Create referral entry.
+
+---
+
+---
+
+### &laquo; `biz:refer,accept:entry` &raquo;
+
+Accept referral entry.
 
 ---
 
