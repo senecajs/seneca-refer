@@ -4,7 +4,6 @@ export default {
   allow: { missing: true },
   calls: [
     {
-      print: true,
       name: 'create-multiple',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
@@ -31,7 +30,6 @@ export default {
     },
 
     {
-      print: true,
       name: 'create-multiple2',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
@@ -58,7 +56,6 @@ export default {
     },
 
     {
-      print: true,
       name: 'create-multiple3',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
@@ -86,7 +83,6 @@ export default {
 
     // Validate that all refer/entry exists and are correct
     {
-      print: true,
       pattern: 'biz:null,role:entity,base:refer,name:entry,cmd:list',
       out: [
         {
@@ -165,7 +161,6 @@ export default {
 
     // Accept all referrals
     {
-      print: true,
       name: 'accept-multiple',
       pattern: 'accept:entry',
       params: {
@@ -192,7 +187,6 @@ export default {
     },
 
     {
-      print: true,
       name: 'accept-multiple',
       pattern: 'accept:entry',
       params: {
@@ -219,7 +213,6 @@ export default {
     },
 
     {
-      print: true,
       name: 'accept-multiple',
       pattern: 'accept:entry',
       params: {
@@ -247,7 +240,6 @@ export default {
 
     // Validate new refer/occur records
     {
-      print: true,
       pattern: 'biz:null,role:entity,base:refer,name:occur,cmd:list',
       params: { q: { kind: 'accept' } },
       out: [
@@ -277,7 +269,6 @@ export default {
 
     // Validate new all refer/reward updated
     {
-      print: true,
       pattern: 'biz:null,role:entity,base:refer,name:reward,cmd:list',
       out: [
         {

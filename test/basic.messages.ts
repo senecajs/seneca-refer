@@ -14,7 +14,6 @@ export default {
     // Email sending to be implemented with @seneca/mail later
     // NOTE: implementation is just hard-coded!
     {
-      print: true,
       name: 'create-alice',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
@@ -45,7 +44,6 @@ export default {
 
     // Validate the refer/entry exists and is correct
     {
-      print: true,
       pattern: 'biz:null,role:entity,base:refer,name:entry,cmd:list',
       out: [
         {
@@ -87,7 +85,6 @@ export default {
 
     // Accept the referral
     {
-      print: true,
       name: 'accept-alice',
       pattern: 'accept:entry',
       params: {
@@ -115,7 +112,6 @@ export default {
 
     // Validate new refer/occur record
     {
-      print: true,
       pattern: 'biz:null,role:entity,base:refer,name:occur,cmd:load',
       params: { q: { kind: 'accept' } },
       out: {
@@ -129,7 +125,6 @@ export default {
 
     // Validate new refer/reward updated
     {
-      print: true,
       pattern: 'biz:null,role:entity,base:refer,name:reward,cmd:load',
       params: {
         q: {
@@ -147,7 +142,6 @@ export default {
 
     // Check return for invalid entry key
     {
-      print: true,
       name: 'accept-alice',
       pattern: 'accept:entry',
       params: {

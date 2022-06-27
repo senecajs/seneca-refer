@@ -5,14 +5,15 @@ function refer(this: any, options: any) {
 
   seneca
     .fix('biz:refer')
-    .message('create:entry', actCreateEntry)
-    .message('accept:entry', actAcceptEntry)
-    .message('lost:entry', actLostEntry)
-    .message('give:award', actRewardEntry)
-    .message('load:rules', actLoadRules)
+    .message('create:entry', msgCreateEntry)
+    .message('accept:entry', msgAcceptEntry)
+    .message('lost:entry', msgLostEntry)
+    .message('give:award', msgRewardEntry)
+    .message('load:rules', msgLoadRules)
     .prepare(prepare)
 
-  async function actCreateEntry(this: any, msg: any) {
+
+  async function msgCreateEntry(this: any, msg: any) {
     const seneca = this
 
     let occur = await seneca.entity('refer/occur').load$({
@@ -51,7 +52,7 @@ function refer(this: any, options: any) {
     }
   }
 
-  async function actAcceptEntry(this: any, msg: any) {
+  async function msgAcceptEntry(this: any, msg: any) {
     const seneca = this
 
     const entry = await seneca.entity('refer/entry').load$({ key: msg.key })
@@ -90,7 +91,7 @@ function refer(this: any, options: any) {
     }
   }
 
-  async function actLostEntry(this: any, msg: any) {
+  async function msgLostEntry(this: any, msg: any) {
     const seneca = this
 
     const occurList = await seneca.entity('refer/occur').list$({
@@ -113,7 +114,7 @@ function refer(this: any, options: any) {
     }
   }
 
-  async function actRewardEntry(this: any, msg: any) {
+  async function msgRewardEntry(this: any, msg: any) {
     const seneca = this
 
     const entry = await seneca.entity('refer/occur').load$({
@@ -139,7 +140,7 @@ function refer(this: any, options: any) {
     await reward.save$()
   }
 
-  async function actLoadRules(this: any, msg: any) {
+  async function msgLoadRules(this: any, msg: any) {
     const seneca = this
 
     const rules = await seneca.entity('refer/rule').list$()
@@ -151,7 +152,7 @@ function refer(this: any, options: any) {
       if (rule.ent) {
         const subpat = generateSubPat(seneca, rule)
 
-        seneca.sub(subpat, function (this: any, msg: any) {
+        seneca.sub(subpat, function(this: any, msg: any) {
           if (rule.where.kind === 'create') {
             rule.call.forEach((callmsg: any) => {
               // TODO: use https://github.com/rjrodger/inks
@@ -163,7 +164,7 @@ function refer(this: any, options: any) {
           }
         })
 
-        seneca.sub(subpat, function (this: any, msg: any) {
+        seneca.sub(subpat, function(this: any, msg: any) {
           if (rule.where.kind === 'accept') {
             rule.call.forEach((callmsg: any) => {
               callmsg.ent = seneca.entity(rule.ent)
@@ -175,7 +176,7 @@ function refer(this: any, options: any) {
           }
         })
 
-        seneca.sub(subpat, function (this: any, msg: any) {
+        seneca.sub(subpat, function(this: any, msg: any) {
           if (rule.where.kind === 'lost' && msg.q.kind === 'accept') {
             rule.call.forEach((callmsg: any) => {
               callmsg.ent = seneca.entity(rule.ent)

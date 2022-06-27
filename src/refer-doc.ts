@@ -1,7 +1,7 @@
 /* Copyright © 2022 Seneca Project Contributors, MIT License. */
 
 const docs = {
-  actCreateEntry: {
+  msgCreateEntry: {
     desc: 'Create referral entry.',
   },
 }

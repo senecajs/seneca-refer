@@ -4,7 +4,6 @@ export default {
   allow: { missing: true },
   calls: [
     {
-      print: true,
       name: 'create-alice',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
@@ -31,7 +30,6 @@ export default {
     },
 
     {
-      print: true,
       name: 'create-alice2',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
@@ -58,7 +56,6 @@ export default {
     },
 
     {
-      print: true,
       name: 'create-alice3',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
@@ -86,7 +83,6 @@ export default {
 
     // Accept referral from user 2
     {
-      print: true,
       name: 'accept-alice',
       pattern: 'accept:entry',
       params: {
@@ -114,7 +110,6 @@ export default {
 
     // Validate that only referral from user 2 have the status accepted
     {
-      print: true,
       pattern: 'biz:null,role:entity,base:refer,name:occur,cmd:list',
       params: { q: { kind: 'accept' } },
       out: [
@@ -130,7 +125,6 @@ export default {
 
     // Validate that the remaining referrals have the status equal to lost
     {
-      print: true,
       pattern: 'biz:null,role:entity,base:refer,name:occur,cmd:list',
       params: { q: { kind: 'lost' } },
       out: [
@@ -153,7 +147,6 @@ export default {
 
     // try to accept a lost referral
     {
-      print: true,
       name: 'accept-alice',
       pattern: 'accept:entry',
       params: {
@@ -168,7 +161,6 @@ export default {
 
     // try to referral a user
     {
-      print: true,
       name: 'create-alice',
       pattern: 'create:entry', // call { biz:refer, create:entry, ...params }
       params: {
