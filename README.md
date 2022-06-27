@@ -40,37 +40,67 @@ _None._
 
 <!--START:action-list-->
 
+
 ## Action Patterns
 
-- [biz:refer,create:entry](#-bizrefercreateentry-)
-- [biz:refer,accept:entry](#-bizreferacceptentry-)
-- [biz:refer,load:rules](#-bizreferloadrules-)
+* [accept:entry,biz:refer](#-acceptentrybizrefer-)
+* [biz:refer,create:entry](#-bizrefercreateentry-)
+* [biz:refer,ensure:entry](#-bizreferensureentry-)
+* [biz:refer,give:award](#-bizrefergiveaward-)
+* [biz:refer,load:rules](#-bizreferloadrules-)
+* [biz:refer,lost:entry](#-bizreferlostentry-)
+
 
 <!--END:action-list-->
 
 <!--START:action-desc-->
 
+
 ## Action Descriptions
 
+### &laquo; `accept:entry,biz:refer` &raquo;
+
+No description provided.
+
+
+
+----------
 ### &laquo; `biz:refer,create:entry` &raquo;
 
 Create referral entry.
 
----
 
----
 
-### &laquo; `biz:refer,accept:entry` &raquo;
+----------
+### &laquo; `biz:refer,ensure:entry` &raquo;
 
-Accept referral entry.
+No description provided.
 
----
 
+
+----------
+### &laquo; `biz:refer,give:award` &raquo;
+
+No description provided.
+
+
+
+----------
 ### &laquo; `biz:refer,load:rules` &raquo;
 
 No description provided.
 
----
+
+
+----------
+### &laquo; `biz:refer,lost:entry` &raquo;
+
+No description provided.
+
+
+
+----------
+
 
 <!--END:action-desc-->
 

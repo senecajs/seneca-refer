@@ -1,6 +1,6 @@
 {
   "name": "@seneca/refer",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "main": "dist/refer.js",
   "type": "commonjs",
   "types": "dist/refer.d.ts",
