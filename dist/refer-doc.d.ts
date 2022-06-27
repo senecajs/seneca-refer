@@ -1,5 +1,5 @@
 declare const docs: {
-    actCreateEntry: {
+    msgCreateEntry: {
         desc: string;
     };
 };

@@ -3,58 +3,195 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 function refer(options) {
     const seneca = this;
+    const genCode = this.util.Nid({ length: 16 });
     seneca
         .fix('biz:refer')
-        .message('create:entry', actCreateEntry)
-        // .message('accept:entry', actAcceptEntry)
-        .message('load:rules', actLoadRules)
+        .message('create:entry', msgCreateEntry)
+        .message('ensure:entry', msgEnsureEntry)
+        .message('accept:entry', msgAcceptEntry)
+        .message('lost:entry', msgLostEntry)
+        .message('give:award', msgRewardEntry)
+        .message('load:rules', msgLoadRules)
         .prepare(prepare);
-    async function actCreateEntry(msg) {
-        let seneca = this;
-        let entry = await seneca.entity('refer/entry').save$({
-            user_id: msg.user_id,
-            kind: msg.kind,
-            email: msg.email,
+    async function msgCreateEntry(msg) {
+        const seneca = this;
+        let user_id = msg.user_id;
+        let email = msg.email; // not required if mode === 'multi'
+        let kind = msg.kind || 'standard';
+        let mode = msg.mode || 'single';
+        let peg = msg.peg || 'none'; // app specific entry type
+        let occur;
+        if ('single' === mode) {
+            occur = await seneca.entity('refer/occur').load$({
+                email,
+                kind: 'accept',
+            });
+            if (occur) {
+                return {
+                    ok: false,
+                    why: 'entry-exists',
+                };
+            }
+        }
+        const entry = await seneca.entity('refer/entry').save$({
+            user_id,
+            kind,
+            email,
+            mode,
+            peg,
             // TODO: use a longer key!
-            key: this.util.Nid() // unique key for this referral, used for validation
+            // unique key for this referral, used for validation
+            key: genCode()
         });
-        let occur = await seneca.entity('refer/occur').save$({
-            user_id: msg.user_id,
-            entry_kind: msg.kind,
-            email: msg.email,
+        if ('single' === mode) {
+            occur = await seneca.entity('refer/occur').save$({
+                user_id: msg.user_id,
+                entry_kind: msg.kind,
+                entry_mode: msg.mode,
+                entry_peg: msg.peg,
+                email: msg.email,
+                entry_id: entry.id,
+                kind: 'create',
+            });
+        }
+        return {
+            ok: true,
+            entry,
+            occur: [occur],
+        };
+    }
+    // Create if not exists, otherwise return match
+    // Most useful for mode=multi 
+    async function msgEnsureEntry(msg) {
+        const seneca = this;
+        let user_id = msg.user_id;
+        let kind = msg.kind || 'standard';
+        let peg = msg.peg;
+        let entry = await seneca.entity('refer/entry').load$({
+            user_id,
+            kind,
+            peg,
+        });
+        let out;
+        if (null == entry) {
+            let createMsg = { ...msg, create: 'entry' };
+            delete createMsg.ensure;
+            out = await seneca.post(createMsg);
+        }
+        else {
+            out = {
+                ok: true,
+                entry,
+                occur: [],
+            };
+        }
+        return out;
+    }
+    async function msgAcceptEntry(msg) {
+        const seneca = this;
+        const entry = await seneca.entity('refer/entry').load$({ key: msg.key });
+        if (!entry) {
+            return {
+                ok: false,
+                why: 'entry-unknown',
+            };
+        }
+        let lostOccur = await this.entity('refer/occur').load$({
             entry_id: entry.id,
-            kind: 'create',
+            kind: 'lost',
+        });
+        if (lostOccur) {
+            return {
+                ok: false,
+                why: 'entry-lost',
+            };
+        }
+        const occur = await seneca.entity('refer/occur').save$({
+            user_id: msg.user_id,
+            entry_kind: entry.kind,
+            email: entry.email,
+            entry_id: entry.id,
+            kind: 'accept',
         });
         return {
             ok: true,
             entry,
-            occur: [occur]
+            occur: [occur],
         };
     }
-    async function actLoadRules(msg) {
-        let seneca = this;
-        let rules = await seneca.entity('refer/rule').list$();
+    async function msgLostEntry(msg) {
+        const seneca = this;
+        const occurList = await seneca.entity('refer/occur').list$({
+            email: msg.email,
+            kind: 'create',
+        });
+        const unacceptedReferrals = occurList.filter((occur) => occur.user_id !== msg.userWinner);
+        for (let i = 0; i < unacceptedReferrals.length; i++) {
+            await seneca.entity('refer/occur').save$({
+                user_id: unacceptedReferrals[i].user_id,
+                entry_kind: unacceptedReferrals[i].entry_kind,
+                email: msg.email,
+                entry_id: unacceptedReferrals[i].entry_id,
+                kind: 'lost',
+            });
+        }
+    }
+    async function msgRewardEntry(msg) {
+        const seneca = this;
+        const entry = await seneca.entity('refer/occur').load$({
+            entry_id: msg.entry_id,
+        });
+        let reward = await this.entity('refer/reward').load$({
+            entry_id: entry.id,
+        });
+        if (!reward) {
+            reward = seneca.make('refer/reward', {
+                entry_id: msg.entry_id,
+                entry_kind: msg.entry_kind,
+                kind: msg.kind,
+                award: msg.award,
+            });
+            reward[msg.field] = 0;
+        }
+        reward[msg.field] = reward[msg.field] + 1;
+        await reward.save$();
+    }
+    async function msgLoadRules(msg) {
+        const seneca = this;
+        const rules = await seneca.entity('refer/rule').list$();
         // TODO: handle rule updates?
         // TODO: create a @seneca/rule plugin? later!
         for (let rule of rules) {
             if (rule.ent) {
-                let ent = seneca.entity(rule.ent);
-                let canon = ent.canon$({ object: true });
-                let subpat = {
-                    role: 'entity',
-                    cmd: rule.cmd,
-                    ...canon,
-                    out$: true
-                };
+                const subpat = generateSubPat(seneca, rule);
                 seneca.sub(subpat, function (msg) {
-                    // TODO: match and 'where' fields
-                    if (msg.ent.kind === rule.where.kind) {
-                        // TODO: handle more than 1!
-                        let callmsg = { ...rule.call[0] };
-                        // TODO: use https://github.com/rjrodger/inks
-                        callmsg.toaddr = msg.ent.email;
-                        callmsg.fromaddr = 'invite@example.com';
-                        this.act(callmsg);
+                    if (rule.where.kind === 'create') {
+                        rule.call.forEach((callmsg) => {
+                            // TODO: use https://github.com/rjrodger/inks
+                            callmsg.toaddr = msg.ent.email;
+                            callmsg.fromaddr = 'invite@example.com';
+                            this.act(callmsg);
+                        });
+                    }
+                });
+                seneca.sub(subpat, function (msg) {
+                    if (rule.where.kind === 'accept') {
+                        rule.call.forEach((callmsg) => {
+                            callmsg.ent = seneca.entity(rule.ent);
+                            callmsg.entry_id = msg.q.entry_id;
+                            callmsg.entry_kind = msg.q.entry_kind;
+                            this.act(callmsg);
+                        });
+                    }
+                });
+                seneca.sub(subpat, function (msg) {
+                    if (rule.where.kind === 'lost' && msg.q.kind === 'accept') {
+                        rule.call.forEach((callmsg) => {
+                            callmsg.ent = seneca.entity(rule.ent);
+                            callmsg.email = msg.q.email;
+                            callmsg.userWinner = msg.q.user_id;
+                            this.act(callmsg);
+                        });
                     }
                 });
             }
@@ -62,18 +199,34 @@ function refer(options) {
         }
     }
     async function prepare() {
-        let seneca = this;
+        const seneca = this;
         await seneca.post('biz:refer,load:rules');
+    }
+    function generateSubPat(seneca, rule) {
+        const ent = seneca.entity(rule.ent);
+        const canon = ent.canon$({ object: true });
+        Object.keys(canon).forEach((key) => {
+            if (!canon[key]) {
+                delete canon[key];
+            }
+        });
+        return {
+            role: 'entity',
+            cmd: rule.cmd,
+            q: rule.where,
+            ...canon,
+            out$: true,
+        };
     }
 }
 // Default options.
 const defaults = {
     // TODO: Enable debug logging
-    debug: false
+    debug: false,
 };
 Object.assign(refer, { defaults });
 exports.default = refer;
-if ('undefined' !== typeof (module)) {
+if ('undefined' !== typeof module) {
     module.exports = refer;
 }
 //# sourceMappingURL=refer.js.map

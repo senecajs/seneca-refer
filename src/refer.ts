@@ -3,9 +3,13 @@
 function refer(this: any, options: any) {
   const seneca: any = this
 
+  const genCode = this.util.Nid({ length: 16 })
+
+
   seneca
     .fix('biz:refer')
     .message('create:entry', msgCreateEntry)
+    .message('ensure:entry', msgEnsureEntry)
     .message('accept:entry', msgAcceptEntry)
     .message('lost:entry', msgLostEntry)
     .message('give:award', msgRewardEntry)
@@ -16,34 +20,51 @@ function refer(this: any, options: any) {
   async function msgCreateEntry(this: any, msg: any) {
     const seneca = this
 
-    let occur = await seneca.entity('refer/occur').load$({
-      email: msg.email,
-      kind: 'accept',
-    })
+    let user_id = msg.user_id
+    let email = msg.email // not required if mode === 'multi'
+    let kind = msg.kind || 'standard'
+    let mode = msg.mode || 'single'
+    let peg = msg.peg || 'none' // app specific entry type
 
-    if (occur) {
-      return {
-        ok: false,
-        why: 'entry-exists',
+    let occur
+
+    if ('single' === mode) {
+      occur = await seneca.entity('refer/occur').load$({
+        email,
+        kind: 'accept',
+      })
+
+      if (occur) {
+        return {
+          ok: false,
+          why: 'entry-exists',
+        }
       }
     }
 
     const entry = await seneca.entity('refer/entry').save$({
-      user_id: msg.user_id,
-      kind: msg.kind,
-      email: msg.email,
+      user_id,
+      kind,
+      email,
+      mode,
+      peg,
 
       // TODO: use a longer key!
-      key: this.util.Nid(), // unique key for this referral, used for validation
+      // unique key for this referral, used for validation
+      key: genCode()
     })
 
-    occur = await seneca.entity('refer/occur').save$({
-      user_id: msg.user_id,
-      entry_kind: msg.kind,
-      email: msg.email,
-      entry_id: entry.id,
-      kind: 'create',
-    })
+    if ('single' === mode) {
+      occur = await seneca.entity('refer/occur').save$({
+        user_id: msg.user_id,
+        entry_kind: msg.kind,
+        entry_mode: msg.mode,
+        entry_peg: msg.peg,
+        email: msg.email,
+        entry_id: entry.id,
+        kind: 'create',
+      })
+    }
 
     return {
       ok: true,
@@ -51,6 +72,41 @@ function refer(this: any, options: any) {
       occur: [occur],
     }
   }
+
+
+  // Create if not exists, otherwise return match
+  // Most useful for mode=multi 
+  async function msgEnsureEntry(this: any, msg: any) {
+    const seneca = this
+
+    let user_id = msg.user_id
+    let kind = msg.kind || 'standard'
+    let peg = msg.peg
+
+    let entry = await seneca.entity('refer/entry').load$({
+      user_id,
+      kind,
+      peg,
+    })
+
+    let out
+
+    if (null == entry) {
+      let createMsg = { ...msg, create: 'entry' }
+      delete createMsg.ensure
+      out = await seneca.post(createMsg)
+    }
+    else {
+      out = {
+        ok: true,
+        entry,
+        occur: [],
+      }
+    }
+
+    return out
+  }
+
 
   async function msgAcceptEntry(this: any, msg: any) {
     const seneca = this

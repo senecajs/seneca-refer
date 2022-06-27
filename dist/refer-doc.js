@@ -2,12 +2,12 @@
 /* Copyright © 2022 Seneca Project Contributors, MIT License. */
 Object.defineProperty(exports, "__esModule", { value: true });
 const docs = {
-    actCreateEntry: {
+    msgCreateEntry: {
         desc: 'Create referral entry.',
     },
 };
 exports.default = docs;
-if ('undefined' !== typeof (module)) {
+if ('undefined' !== typeof module) {
     module.exports = docs;
 }
 //# sourceMappingURL=refer-doc.js.map
