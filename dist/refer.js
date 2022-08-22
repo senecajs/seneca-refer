@@ -159,13 +159,16 @@ function refer(options) {
     async function msgLoadRules(msg) {
         const seneca = this;
         const rules = await seneca.entity('refer/rule').list$();
+        console.log('RULES', rules);
         // TODO: handle rule updates?
         // TODO: create a @seneca/rule plugin? later!
         for (let rule of rules) {
             if (rule.ent) {
                 const subpat = generateSubPat(seneca, rule);
+                console.log('AAA', subpat, rule);
                 seneca.sub(subpat, function (msg) {
                     if (rule.where.kind === 'create') {
+                        console.log('BBB', subpat);
                         rule.call.forEach((callmsg) => {
                             // TODO: use https://github.com/rjrodger/inks
                             callmsg.toaddr = msg.ent.email;
@@ -200,6 +203,7 @@ function refer(options) {
     }
     async function prepare() {
         const seneca = this;
+        console.log('PREPARE');
         await seneca.post('biz:refer,load:rules');
     }
     function generateSubPat(seneca, rule) {

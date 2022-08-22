@@ -14,6 +14,9 @@ function refer(this: any, options: any) {
     .message('lost:entry', msgLostEntry)
     .message('give:award', msgRewardEntry)
     .message('load:rules', msgLoadRules)
+
+  // TODO: seneca.prepare should not be affected by seneca.fix
+  seneca
     .prepare(prepare)
 
 
@@ -196,6 +199,7 @@ function refer(this: any, options: any) {
     await reward.save$()
   }
 
+
   async function msgLoadRules(this: any, msg: any) {
     const seneca = this
 
@@ -207,7 +211,6 @@ function refer(this: any, options: any) {
     for (let rule of rules) {
       if (rule.ent) {
         const subpat = generateSubPat(seneca, rule)
-
         seneca.sub(subpat, function(this: any, msg: any) {
           if (rule.where.kind === 'create') {
             rule.call.forEach((callmsg: any) => {
@@ -247,10 +250,12 @@ function refer(this: any, options: any) {
     }
   }
 
+
   async function prepare(this: any) {
     const seneca = this
     await seneca.post('biz:refer,load:rules')
   }
+
 
   function generateSubPat(seneca: any, rule: any): object {
     const ent = seneca.entity(rule.ent)

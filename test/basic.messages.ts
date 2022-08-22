@@ -72,6 +72,7 @@ export default {
 
     // Validate email was 'sent' (uses mock entity)
     {
+      name: 'email-sent',
       pattern: 'biz:null,role:entity,base:mock,name:email,cmd:list',
       out: [
         {

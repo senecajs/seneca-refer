@@ -8,7 +8,7 @@ import ReferDoc from '../src/refer-doc'
 import Refer from '../src/refer'
 
 import BasicMessages from './basic.messages'
-import MultiMessages from './multi.messages'
+import ManyMessages from './many.messages'
 import ConflictMessages from './conflict.messages'
 
 describe('refer', () => {
@@ -29,11 +29,11 @@ describe('refer', () => {
     await SenecaMsgTest(seneca, BasicMessages)()
   })
 
-  // Use seneca-msg-test for multiple referrals
+  // Use seneca-msg-test for many referrals
 
-  test('multi.messages', async () => {
+  test('many.messages', async () => {
     const seneca = await makeSeneca()
-    await SenecaMsgTest(seneca, MultiMessages)()
+    await SenecaMsgTest(seneca, ManyMessages)()
   })
 
   // Use seneca-msg-test for conflict referrals
@@ -114,7 +114,7 @@ async function makeBasicRules(seneca: any) {
 }
 
 async function makeMockActions(seneca: any) {
-  seneca.message('sys:email,send:email', async function (this: any, msg: any) {
+  seneca.message('sys:email,send:email', async function(this: any, msg: any) {
     this.entity('mock/email').save$({
       toaddr: msg.toaddr,
       fromaddr: msg.fromaddr,
