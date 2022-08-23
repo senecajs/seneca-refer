@@ -1,6 +1,6 @@
 {
   "name": "@seneca/refer",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "main": "dist/refer.js",
   "type": "commonjs",
   "types": "dist/refer.d.ts",
@@ -41,7 +41,7 @@
   "devDependencies": {
     "@seneca/maintain": "^0.0.22",
     "@types/jest": "^28.1.7",
-    "@types/node": "^18.7.10",
+    "@types/node": "^18.7.11",
     "esbuild": "^0.15.5",
     "esbuild-jest": "^0.5.0",
     "jest": "^28.1.3",

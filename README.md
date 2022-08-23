@@ -47,8 +47,11 @@ _None._
 * [biz:refer,create:entry](#-bizrefercreateentry-)
 * [biz:refer,ensure:entry](#-bizreferensureentry-)
 * [biz:refer,give:award](#-bizrefergiveaward-)
+* [biz:refer,load:entry](#-bizreferloadentry-)
 * [biz:refer,load:rules](#-bizreferloadrules-)
 * [biz:refer,lost:entry](#-bizreferlostentry-)
+* [biz:refer,update:occur](#-bizreferupdateoccur-)
+* [biz:refer,update:entry](#-bizreferupdateentry-)
 
 
 <!--END:action-list-->
@@ -86,6 +89,13 @@ No description provided.
 
 
 ----------
+### &laquo; `biz:refer,load:entry` &raquo;
+
+No description provided.
+
+
+
+----------
 ### &laquo; `biz:refer,load:rules` &raquo;
 
 No description provided.
@@ -94,6 +104,20 @@ No description provided.
 
 ----------
 ### &laquo; `biz:refer,lost:entry` &raquo;
+
+No description provided.
+
+
+
+----------
+### &laquo; `biz:refer,update:occur` &raquo;
+
+No description provided.
+
+
+
+----------
+### &laquo; `biz:refer,update:entry` &raquo;
 
 No description provided.
 
