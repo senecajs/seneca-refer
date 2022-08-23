@@ -10,6 +10,8 @@ import Refer from '../src/refer'
 import BasicMessages from './basic.messages'
 import ManyMessages from './many.messages'
 import ConflictMessages from './conflict.messages'
+import InviteMessages from './invite.messages'
+
 
 describe('refer', () => {
   test('happy', async () => {
@@ -22,29 +24,50 @@ describe('refer', () => {
     await seneca.ready()
   })
 
-  // Use seneca-msg-test for the referral scenarios
+
+  test('gen', async () => {
+    const seneca = Seneca({ legacy: false })
+      .test()
+      .use('promisify')
+      .use('entity')
+      .use(Refer)
+    await seneca.ready()
+
+    let genToken = seneca.export('refer/genToken')
+    let genCode = seneca.export('refer/genCode')
+
+    expect(genToken().length).toEqual(16)
+    expect(genCode().length).toEqual(6)
+  })
+
 
   test('basic.messages', async () => {
     const seneca = await makeSeneca()
     await SenecaMsgTest(seneca, BasicMessages)()
   })
 
-  // Use seneca-msg-test for many referrals
 
   test('many.messages', async () => {
     const seneca = await makeSeneca()
     await SenecaMsgTest(seneca, ManyMessages)()
   })
 
-  // Use seneca-msg-test for conflict referrals
 
   test('conflict.messages', async () => {
     const seneca = await makeSeneca()
     await SenecaMsgTest(seneca, ConflictMessages)()
   })
 
+
+  test('invite.messages', async () => {
+    const seneca = await makeSeneca()
+    await SenecaMsgTest(seneca, InviteMessages)()
+  })
+
+
   // test('maintain', Maintain)
 })
+
 
 async function makeSeneca() {
   const seneca = Seneca({ legacy: false })

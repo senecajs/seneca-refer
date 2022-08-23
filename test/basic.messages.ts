@@ -28,14 +28,12 @@ export default {
           kind: 'standard',
           email: 'alice@example.com',
         },
-        occur: [
-          {
-            user_id: 'u01',
-            entry_kind: 'standard',
-            kind: 'create',
-            email: 'alice@example.com',
-          },
-        ],
+        occur: {
+          user_id: 'u01',
+          entry_kind: 'standard',
+          kind: 'create',
+          email: 'alice@example.com',
+        }
       },
     },
 
@@ -61,7 +59,7 @@ export default {
       out: [
         {
           // back references, see: https://github.com/rjrodger/inks
-          id: '`create-alice:out.occur[0].id`',
+          id: '`create-alice:out.occur.id`',
           entry_id: '`create-alice:out.entry.id`',
           entry_kind: 'standard',
           kind: 'create',
@@ -86,10 +84,10 @@ export default {
 
     // Accept the referral
     {
-      name: 'accept-alice',
+      name: 'accept-alice-token',
       pattern: 'accept:entry',
       params: {
-        key: '`create-alice:out.entry.key`',
+        token: '`create-alice:out.entry.token`',
         user_id: 'u01',
       },
       out: {
@@ -99,15 +97,13 @@ export default {
           kind: 'standard',
           email: 'alice@example.com',
         },
-        occur: [
-          {
-            entry_kind: 'standard',
-            entry_id: '`create-alice:out.entry.id`',
-            email: 'alice@example.com',
-            user_id: 'u01',
-            kind: 'accept',
-          },
-        ],
+        occur: {
+          entry_kind: 'standard',
+          entry_id: '`create-alice:out.entry.id`',
+          email: 'alice@example.com',
+          user_id: 'u01',
+          kind: 'accept',
+        },
       },
     },
 
@@ -141,12 +137,12 @@ export default {
       },
     },
 
-    // Check return for invalid entry key
+    // Check return for invalid entry token
     {
       name: 'accept-alice',
       pattern: 'accept:entry',
       params: {
-        key: '123',
+        token: '123',
       },
       out: {
         ok: false,

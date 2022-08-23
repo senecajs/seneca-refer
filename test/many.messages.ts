@@ -18,14 +18,12 @@ export default {
           kind: 'standard',
           email: 'alice@example.com',
         },
-        occur: [
-          {
-            user_id: 'u01',
-            entry_kind: 'standard',
-            kind: 'create',
-            email: 'alice@example.com',
-          },
-        ],
+        occur: {
+          user_id: 'u01',
+          entry_kind: 'standard',
+          kind: 'create',
+          email: 'alice@example.com',
+        },
       },
     },
 
@@ -44,14 +42,12 @@ export default {
           kind: 'standard',
           email: 'johndoe@example.com',
         },
-        occur: [
-          {
-            user_id: 'u02',
-            entry_kind: 'standard',
-            kind: 'create',
-            email: 'johndoe@example.com',
-          },
-        ],
+        occur: {
+          user_id: 'u02',
+          entry_kind: 'standard',
+          kind: 'create',
+          email: 'johndoe@example.com',
+        },
       },
     },
 
@@ -70,14 +66,12 @@ export default {
           kind: 'standard',
           email: 'foo@example.com',
         },
-        occur: [
-          {
-            user_id: 'u03',
-            entry_kind: 'standard',
-            kind: 'create',
-            email: 'foo@example.com',
-          },
-        ],
+        occur: {
+          user_id: 'u03',
+          entry_kind: 'standard',
+          kind: 'create',
+          email: 'foo@example.com',
+        },
       },
     },
 
@@ -111,21 +105,21 @@ export default {
       pattern: 'biz:null,role:entity,base:refer,name:occur,cmd:list',
       out: [
         {
-          id: '`create-multiple:out.occur[0].id`',
+          id: '`create-multiple:out.occur.id`',
           entry_id: '`create-multiple:out.entry.id`',
           entry_kind: 'standard',
           kind: 'create',
           email: 'alice@example.com',
         },
         {
-          id: '`create-multiple2:out.occur[0].id`',
+          id: '`create-multiple2:out.occur.id`',
           entry_id: '`create-multiple2:out.entry.id`',
           entry_kind: 'standard',
           kind: 'create',
           email: 'johndoe@example.com',
         },
         {
-          id: '`create-multiple3:out.occur[0].id`',
+          id: '`create-multiple3:out.occur.id`',
           entry_id: '`create-multiple3:out.entry.id`',
           entry_kind: 'standard',
           kind: 'create',
@@ -164,7 +158,7 @@ export default {
       name: 'accept-multiple',
       pattern: 'accept:entry',
       params: {
-        key: '`create-multiple:out.entry.key`',
+        token: '`create-multiple:out.entry.token`',
         user_id: 'u01',
       },
       out: {
@@ -174,15 +168,13 @@ export default {
           kind: 'standard',
           email: 'alice@example.com',
         },
-        occur: [
-          {
-            entry_kind: 'standard',
-            entry_id: '`create-multiple:out.entry.id`',
-            email: 'alice@example.com',
-            user_id: 'u01',
-            kind: 'accept',
-          },
-        ],
+        occur: {
+          entry_kind: 'standard',
+          entry_id: '`create-multiple:out.entry.id`',
+          email: 'alice@example.com',
+          user_id: 'u01',
+          kind: 'accept',
+        },
       },
     },
 
@@ -190,7 +182,7 @@ export default {
       name: 'accept-multiple',
       pattern: 'accept:entry',
       params: {
-        key: '`create-multiple2:out.entry.key`',
+        token: '`create-multiple2:out.entry.token`',
         user_id: 'u02',
       },
       out: {
@@ -200,15 +192,13 @@ export default {
           kind: 'standard',
           email: 'johndoe@example.com',
         },
-        occur: [
-          {
-            entry_kind: 'standard',
-            entry_id: '`create-multiple2:out.entry.id`',
-            email: 'johndoe@example.com',
-            user_id: 'u02',
-            kind: 'accept',
-          },
-        ],
+        occur: {
+          entry_kind: 'standard',
+          entry_id: '`create-multiple2:out.entry.id`',
+          email: 'johndoe@example.com',
+          user_id: 'u02',
+          kind: 'accept',
+        },
       },
     },
 
@@ -216,7 +206,7 @@ export default {
       name: 'accept-multiple',
       pattern: 'accept:entry',
       params: {
-        key: '`create-multiple3:out.entry.key`',
+        token: '`create-multiple3:out.entry.token`',
         user_id: 'u03',
       },
       out: {
@@ -226,15 +216,13 @@ export default {
           kind: 'standard',
           email: 'foo@example.com',
         },
-        occur: [
-          {
-            entry_kind: 'standard',
-            entry_id: '`create-multiple3:out.entry.id`',
-            email: 'foo@example.com',
-            user_id: 'u03',
-            kind: 'accept',
-          },
-        ],
+        occur: {
+          entry_kind: 'standard',
+          entry_id: '`create-multiple3:out.entry.id`',
+          email: 'foo@example.com',
+          user_id: 'u03',
+          kind: 'accept',
+        },
       },
     },
 

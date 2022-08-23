@@ -18,14 +18,12 @@ export default {
           kind: 'standard',
           email: 'alice@example.com',
         },
-        occur: [
-          {
-            user_id: 'u01',
-            entry_kind: 'standard',
-            kind: 'create',
-            email: 'alice@example.com',
-          },
-        ],
+        occur: {
+          user_id: 'u01',
+          entry_kind: 'standard',
+          kind: 'create',
+          email: 'alice@example.com',
+        },
       },
     },
 
@@ -44,14 +42,12 @@ export default {
           kind: 'standard',
           email: 'alice@example.com',
         },
-        occur: [
-          {
-            user_id: 'u02',
-            entry_kind: 'standard',
-            kind: 'create',
-            email: 'alice@example.com',
-          },
-        ],
+        occur: {
+          user_id: 'u02',
+          entry_kind: 'standard',
+          kind: 'create',
+          email: 'alice@example.com',
+        },
       },
     },
 
@@ -70,14 +66,12 @@ export default {
           kind: 'standard',
           email: 'alice@example.com',
         },
-        occur: [
-          {
-            user_id: 'u03',
-            entry_kind: 'standard',
-            kind: 'create',
-            email: 'alice@example.com',
-          },
-        ],
+        occur: {
+          user_id: 'u03',
+          entry_kind: 'standard',
+          kind: 'create',
+          email: 'alice@example.com',
+        },
       },
     },
 
@@ -86,7 +80,7 @@ export default {
       name: 'accept-alice',
       pattern: 'accept:entry',
       params: {
-        key: '`create-alice2:out.entry.key`',
+        token: '`create-alice2:out.entry.token`',
         user_id: 'u02',
       },
       out: {
@@ -96,15 +90,13 @@ export default {
           kind: 'standard',
           email: 'alice@example.com',
         },
-        occur: [
-          {
-            entry_kind: 'standard',
-            entry_id: '`create-alice2:out.entry.id`',
-            email: 'alice@example.com',
-            user_id: 'u02',
-            kind: 'accept',
-          },
-        ],
+        occur: {
+          entry_kind: 'standard',
+          entry_id: '`create-alice2:out.entry.id`',
+          email: 'alice@example.com',
+          user_id: 'u02',
+          kind: 'accept',
+        },
       },
     },
 
@@ -150,7 +142,7 @@ export default {
       name: 'accept-alice',
       pattern: 'accept:entry',
       params: {
-        key: '`create-alice3:out.entry.key`',
+        token: '`create-alice3:out.entry.token`',
         user_id: 'u03',
       },
       out: {
