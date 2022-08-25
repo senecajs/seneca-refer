@@ -125,6 +125,8 @@ function refer(this: any, options: ReferOptions) {
         email: msg.email,
         entry_id: entry.id,
         kind: 'create',
+        code: entry.code,
+        token: entry.token,
       }).save$()
     }
 
@@ -227,6 +229,8 @@ function refer(this: any, options: ReferOptions) {
         email: entry.email,
         entry_id: entry.id,
         kind: 'accept',
+        code: entry.code,
+        token: entry.token,
       })
 
       entry.count = accepts.length + 1
@@ -246,10 +250,17 @@ function refer(this: any, options: ReferOptions) {
     const seneca = this
 
     let occur_id = msg.occur_id
+    let code = msg.code
+    let token = msg.token
+    let occurUpdate = msg.occur
 
-    let user_id = msg.user_id
+    let q: any = {}
 
-    let occur = await seneca.entity('refer/occur').load$(occur_id)
+    if (occur_id) {
+      q.id = occur_id
+    }
+
+    let occur = await seneca.entity('refer/occur').load$(q)
 
     if (!occur) {
       return {
@@ -258,8 +269,7 @@ function refer(this: any, options: ReferOptions) {
       }
     }
 
-    // The user who used the referral
-    occur.user_id = user_id
+    occur.data$(occurUpdate)
 
     await occur.save$()
 
@@ -517,6 +527,7 @@ const defaults: ReferOptions = {
     alphabet: 'BCDFGHJKLMNPQRSTVWXYZ2456789'
   }
 }
+
 
 Object.assign(refer, { defaults })
 

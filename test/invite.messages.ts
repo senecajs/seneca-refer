@@ -103,18 +103,20 @@ export default {
       pattern: 'update:occur',
       params: {
         occur_id: '`accept-infinite-3:out.occur.id`',
-        user_id: 'u02'
+        occur: {
+          user_id: 'u02'
+        }
       },
       out: {
         ok: true,
         occur: {
           id: '`accept-infinite-3:out.occur.id`',
+          code: '`accept-infinite-3:out.occur.code`',
           entry_kind: 'standard',
           user_id: 'u02'
         }
       }
     },
-
 
     // Limit 2
 
