@@ -18,8 +18,7 @@ describe('refer', () => {
     expect(ReferDoc).toBeDefined()
     const seneca = Seneca({ legacy: false })
       .test()
-      .use('promisify')
-      .use('entity')
+      .use('@seneca/entity')
       .use(Refer)
     await seneca.ready()
   })
@@ -28,8 +27,7 @@ describe('refer', () => {
   test('gen', async () => {
     const seneca = Seneca({ legacy: false })
       .test()
-      .use('promisify')
-      .use('entity')
+      .use('@seneca/entity')
       .use(Refer)
     await seneca.ready()
 
@@ -72,9 +70,8 @@ describe('refer', () => {
 async function makeSeneca() {
   const seneca = Seneca({ legacy: false })
     .test()
-    .use('promisify')
-    .use('entity')
-    .use('entity-util', { when: { active: true } })
+    .use('@seneca/entity')
+    .use('@seneca/entity-util', { when: { active: true } })
 
   await makeBasicRules(seneca)
 
