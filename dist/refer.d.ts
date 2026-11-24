@@ -1,4 +1,4 @@
-declare type ReferOptions = {
+type ReferOptions = {
     debug?: boolean;
     token: {
         len?: number;

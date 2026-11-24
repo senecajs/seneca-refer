@@ -15,17 +15,23 @@
 ## Install
 
 ```sh
-$ npm install @seneca/refer
+$ npm install seneca@^4 @seneca/entity @seneca/refer
 ```
+
+Requires Node.js `>=24`, Seneca `^4.0.0` and `@seneca/entity` `^29.0.0`:
+referral entries are saved as `refer/entry` and `refer/occur` entities.
 
 ## Quick Example
 
 ```js
-// Setup - get the key value (<SECRET>) separately from a vault or
-// environment variable.
-Seneca().use('refer', {})
+const seneca = Seneca().use('@seneca/entity').use('@seneca/refer', {})
 
-TODO
+const created = await seneca.post('biz:refer,create:entry', {
+  user_id: 'u01',
+  email: 'alice@example.com',
+})
+
+await seneca.post('biz:refer,accept:entry', { token: created.entry.token })
 ```
 
 <!--START:options-->

@@ -1,6 +1,8 @@
 declare const docs: {
-    msgCreateEntry: {
-        desc: string;
+    messages: {
+        msgCreateEntry: {
+            desc: string;
+        };
     };
 };
 export default docs;
